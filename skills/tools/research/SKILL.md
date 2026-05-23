@@ -27,15 +27,21 @@ Examples:
 
 ### 3. Invoke the research agent
 
-Use the `Agent` tool with `subagent_type: "research"`. Pass the topic as the prompt:
+Invoke the `research` agent using your tool's subagent mechanism:
 
-> "Research the following topic and produce a structured markdown report following your standard methodology: <topic>"
+**Claude Code** — use the `Agent` tool:
+```
+Agent(subagent_type: "research", prompt: "Research the following topic and produce a structured markdown report following your standard methodology: <topic>")
+```
+If you see "Agent type 'research' not found" (agent registered mid-session), fall back to `subagent_type: "general-purpose"` and include the inline instructions below.
 
-Wait for the agent to return the full report.
+**Kiro** — delegate to the `research` subagent directly (it is installed in `~/.kiro/agents/research.md`). Pass the topic as the task prompt.
 
-> **Note:** If you see "Agent type 'research' not found", this means the research agent was registered after this session started. Fall back to `subagent_type: "general-purpose"` and include these instructions in the prompt:
->
-> *You are a web research agent. Decompose the topic into 3-5 sub-questions, WebSearch each, WebFetch the top 2-3 results per question, then synthesize a markdown report with sections: Summary, Key Findings (with inline citations), Trade-offs / Caveats, Sources. Always cite URLs. Flag conflicts. Mark content older than 1 year as potentially outdated.*
+**Codex CLI or any other tool** — no dedicated research agent is available. Run the research inline using `web_search` and `web_fetch` tools directly with these instructions:
+
+> *Decompose the topic into 3-5 sub-questions. Search each. Fetch the top 2-3 results per question. Synthesize a markdown report with sections: Summary, Key Findings (inline citations), Trade-offs / Caveats, Sources. Always cite URLs. Flag conflicts. Mark content older than 1 year as potentially outdated.*
+
+Wait for the full report before proceeding.
 
 ### 4. Decide whether to save the report
 
