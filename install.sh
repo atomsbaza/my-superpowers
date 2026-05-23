@@ -5,20 +5,39 @@
 #   claude/agents/<category>/*.md  → ~/.claude/agents/
 #   kiro/agents/<category>/*.md    → ~/.kiro/agents/
 #   skills/<category>/<name>/      → ~/.claude/skills/ and ~/.kiro/skills/ (flat)
+#
+# Usage:
+#   ./install.sh           — link new items, skip existing
+#   ./install.sh --force   — remove existing copies/links and re-link everything
 
 set -e
 
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
+FORCE=false
+
+for arg in "$@"; do
+  case "$arg" in
+    --force|-f) FORCE=true ;;
+    *) echo "Unknown argument: $arg"; exit 1 ;;
+  esac
+done
 
 link_or_skip() {
   local src="$1"
   local dest="$2"
   local label="$3"
+
   if [ -e "$dest" ] || [ -L "$dest" ]; then
-    echo "  [skip] $label"
+    if $FORCE; then
+      rm -rf "$dest"
+      ln -s "$src" "$dest"
+      echo "  [relink] $label"
+    else
+      echo "  [skip]   $label (use --force to relink)"
+    fi
   else
     ln -s "$src" "$dest"
-    echo "  [link] $label"
+    echo "  [link]   $label"
   fi
 }
 
@@ -48,6 +67,7 @@ install_skills() {
 }
 
 echo "=== my-superpowers install ==="
+$FORCE && echo "Mode: --force (relinking all)" || echo "Mode: skip existing (run --force to relink)"
 echo ""
 
 # ── Claude Code ──────────────────────────────────────────────
