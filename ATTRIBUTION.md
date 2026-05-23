@@ -22,9 +22,6 @@ by Jesse Vincent / Prime Radiant, licensed under MIT:
 - `receiving-code-review`
 - `verification-before-completion`
 
-**skills/debugging/**
-- `post-mortem`
-
 **skills/git/**
 - `using-git-worktrees`
 - `finishing-a-development-branch`
@@ -40,6 +37,9 @@ by Thananon:
 
 **skills/quality/**
 - `scrutinize`
+
+**skills/debugging/**
+- `post-mortem`
 
 ## Original work
 
