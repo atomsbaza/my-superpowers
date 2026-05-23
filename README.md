@@ -1,6 +1,18 @@
 # my-superpowers
 
-Personal collection of AI coding agent skills and agents for Claude Code, Codex CLI, Kiro, and other tools.
+Personal collection of AI coding agent skills and agents for Claude Code, Kiro, and Codex CLI.
+
+## Structure
+
+```
+claude/agents/   Claude Code agent definitions (~/.claude/agents/)
+kiro/agents/     Kiro subagent definitions     (~/.kiro/agents/)
+skills/          Shared skills — cross-platform (~/.claude/skills/, ~/.kiro/skills/, ~/.agents/skills/)
+```
+
+Skills use the open [AgentSkills](https://agentskills.io/specification) standard and work identically across Claude Code, Kiro, Codex CLI, Cursor, and Windsurf.
+
+Agents are tool-specific: Claude Code and Kiro each have their own agent files (same system prompts, adapted model names and tool syntax).
 
 ## Install
 
@@ -9,17 +21,17 @@ git clone git@github.com:atomsbaza/my-superpowers.git ~/my-superpowers
 cd ~/my-superpowers && chmod +x install.sh && ./install.sh
 ```
 
-Skills are organized into categories in this repo but installed **flat** into each tool's skills directory — so `/research`, `/brainstorming`, etc. all work as expected.
+The script auto-detects which tools are installed and symlinks the right files.
 
-| Tool | Skills path | Agents path |
+| Tool | Skills | Agents |
 |---|---|---|
-| Claude Code | `~/.claude/skills/` | `~/.claude/agents/` |
-| Codex CLI | `~/.agents/skills/` | — |
-| Kiro | `~/.kiro/skills/` | — |
+| Claude Code | `~/.claude/skills/` (flat) | `~/.claude/agents/` |
+| Kiro | `~/.kiro/skills/` (flat) | `~/.kiro/agents/` |
+| Codex CLI | `~/.agents/skills/` (flat) | — |
 
 ---
 
-## Skills
+## Skills (cross-platform)
 
 ### Planning
 > Use before writing any code — design, investigate, document decisions.
@@ -61,7 +73,6 @@ Skills are organized into categories in this repo but installed **flat** into ea
 | `post-mortem` | Write the canonical record of a fixed bug |
 
 ### Git & Branches
-> Branch management and release workflow.
 
 | Skill | What it does |
 |---|---|
@@ -69,7 +80,6 @@ Skills are organized into categories in this repo but installed **flat** into ea
 | `finishing-a-development-branch` | Guided merge/PR/cleanup when implementation is done |
 
 ### Communication
-> Working with humans and other agents.
 
 | Skill | What it does |
 |---|---|
@@ -78,7 +88,6 @@ Skills are organized into categories in this repo but installed **flat** into ea
 | `management-talk` | Rewrite technical content for leadership audiences |
 
 ### Tools
-> Utility and meta skills.
 
 | Skill | What it does |
 |---|---|
@@ -90,7 +99,9 @@ Skills are organized into categories in this repo but installed **flat** into ea
 
 ## Agents
 
-> Agents are Claude Code–specific. They run as subagents via the `Agent` tool.
+> Agent files are tool-specific but share the same system prompts.
+> `claude/agents/` → Claude Code format (`model: sonnet/opus`, tools as string)
+> `kiro/agents/` → Kiro format (`model: claude-sonnet-4-6/claude-opus-4-7`, tools as array)
 
 ### Review
 | Agent | What it does |
@@ -105,7 +116,7 @@ Skills are organized into categories in this repo but installed **flat** into ea
 |---|---|
 | `docs-writer` | Write READMEs, API docs, inline comments |
 | `doc-updater` | Keep docs in sync with code changes |
-| `wiki-updater` | Update Logseq project wiki after meaningful work |
+| `wiki-updater` | Update Logseq project wiki after meaningful work *(Claude Code only)* |
 
 ### Development
 | Agent | What it does |
@@ -123,7 +134,7 @@ Skills are organized into categories in this repo but installed **flat** into ea
 ### Research
 | Agent | What it does |
 |---|---|
-| `research` | Web research subagent (WebSearch + WebFetch) |
+| `research` | Web research subagent with cited markdown report output |
 
 ---
 

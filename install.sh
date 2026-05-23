@@ -1,7 +1,10 @@
 #!/bin/bash
-# install.sh — sets up skills and agents for supported AI coding tools
-# Skills are organized in categories (skills/<category>/<skill-name>/)
-# but installed flat into each tool's skills directory.
+# install.sh — sets up skills and agents for Claude Code and Kiro
+#
+# Structure:
+#   claude/agents/<category>/*.md  → ~/.claude/agents/
+#   kiro/agents/<category>/*.md    → ~/.kiro/agents/
+#   skills/<category>/<name>/      → ~/.claude/skills/ and ~/.kiro/skills/ (flat)
 
 set -e
 
@@ -10,37 +13,36 @@ REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 link_or_skip() {
   local src="$1"
   local dest="$2"
-  local name="$3"
+  local label="$3"
   if [ -e "$dest" ] || [ -L "$dest" ]; then
-    echo "  [skip] $name already exists"
+    echo "  [skip] $label"
   else
     ln -s "$src" "$dest"
-    echo "  [link] $name"
+    echo "  [link] $label"
   fi
 }
 
-install_skills() {
-  local skills_dir="$1"
-  mkdir -p "$skills_dir"
-  # Walk two levels deep: skills/<category>/<skill-name>/
-  for category_dir in "$REPO_DIR/skills"/*/; do
-    for skill_dir in "$category_dir"*/; do
-      [ -d "$skill_dir" ] || continue
-      skill_name=$(basename "$skill_dir")
-      link_or_skip "$skill_dir" "$skills_dir/$skill_name" "$skill_name"
+install_agents() {
+  local src_root="$1"   # e.g. REPO_DIR/claude/agents
+  local dest_dir="$2"   # e.g. ~/.claude/agents
+  mkdir -p "$dest_dir"
+  for category_dir in "$src_root"/*/; do
+    for agent_file in "$category_dir"*.md; do
+      [ -f "$agent_file" ] || continue
+      name=$(basename "$agent_file")
+      link_or_skip "$agent_file" "$dest_dir/$name" "$name"
     done
   done
 }
 
-install_agents() {
-  local agents_dir="$1"
-  mkdir -p "$agents_dir"
-  # Walk two levels deep: agents/<category>/<agent>.md
-  for category_dir in "$REPO_DIR/agents"/*/; do
-    for agent_file in "$category_dir"*.md; do
-      [ -f "$agent_file" ] || continue
-      agent_name=$(basename "$agent_file")
-      link_or_skip "$agent_file" "$agents_dir/$agent_name" "$agent_name"
+install_skills() {
+  local dest_dir="$1"   # e.g. ~/.claude/skills
+  mkdir -p "$dest_dir"
+  for category_dir in "$REPO_DIR/skills"/*/; do
+    for skill_dir in "$category_dir"*/; do
+      [ -d "$skill_dir" ] || continue
+      name=$(basename "$skill_dir")
+      link_or_skip "$skill_dir" "$dest_dir/$name" "$name"
     done
   done
 }
@@ -48,22 +50,32 @@ install_agents() {
 echo "=== my-superpowers install ==="
 echo ""
 
-# Claude Code
-echo "Claude Code (~/.claude/skills, ~/.claude/agents):"
+# ── Claude Code ──────────────────────────────────────────────
+echo "Claude Code:"
+echo "  agents → ~/.claude/agents/"
+install_agents "$REPO_DIR/claude/agents" "$HOME/.claude/agents"
+echo "  skills → ~/.claude/skills/"
 install_skills "$HOME/.claude/skills"
-install_agents "$HOME/.claude/agents"
 echo ""
 
-# Codex CLI
-echo "Codex CLI (~/.agents/skills):"
-install_skills "$HOME/.agents/skills"
-echo ""
-
-# Kiro — install if detected
+# ── Kiro ─────────────────────────────────────────────────────
 if command -v kiro &>/dev/null || [ -d "$HOME/.kiro" ]; then
-  echo "Kiro (~/.kiro/skills):"
+  echo "Kiro:"
+  echo "  agents → ~/.kiro/agents/"
+  install_agents "$REPO_DIR/kiro/agents" "$HOME/.kiro/agents"
+  echo "  skills → ~/.kiro/skills/"
   install_skills "$HOME/.kiro/skills"
+  echo ""
+else
+  echo "Kiro: not detected (skipped)"
+  echo "  To install for Kiro later: mkdir ~/.kiro && ./install.sh"
   echo ""
 fi
 
-echo "Done. Restart your AI tool to pick up new skills."
+# ── Codex CLI ────────────────────────────────────────────────
+echo "Codex CLI:"
+echo "  skills → ~/.agents/skills/"
+install_skills "$HOME/.agents/skills"
+echo ""
+
+echo "Done. Restart your AI tool to pick up new skills and agents."
