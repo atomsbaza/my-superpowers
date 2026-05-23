@@ -141,3 +141,4 @@ The script auto-detects which tools are installed and symlinks the right files.
 ## Credits
 
 Several skills adapted from [obra/superpowers](https://github.com/obra/superpowers) by Jesse Vincent.
+Several skills adapted from [thananon/9arm-skills](https://github.com/thananon/9arm-skills) by Thananon.
