@@ -33,12 +33,19 @@ by Jesse Vincent / Prime Radiant, licensed under MIT:
 - `writing-skills`
 - `find-skills`
 
+## thananon/9arm-skills
+
+The following skills were adapted from [thananon/9arm-skills](https://github.com/thananon/9arm-skills)
+by Thananon:
+
+**skills/quality/**
+- `scrutinize`
+
 ## Original work
 
 The following were created independently in this repo:
 
 - `skills/tools/research/` — custom web research skill
-- `skills/quality/scrutinize/` — outsider review skill
 - `skills/quality/improve-codebase-architecture/`
 - `skills/communication/` — session-summary, handoff, management-talk
 - `skills/debugging/diagnose/`
