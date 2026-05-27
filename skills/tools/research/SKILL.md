@@ -1,6 +1,6 @@
 ---
 name: research
-description: Web research on a given topic. Invokes the research subagent, saves a structured report to docs/research/ if that directory exists in the project, and returns a concise summary. Trigger on /research <topic>.
+description: Web research on a given topic. Asks the user for audience, goal, and scope before researching; invokes the research subagent with a focused brief; saves a structured report to docs/research/ if that directory exists; returns a concise summary. Trigger on /research <topic>.
 ---
 
 # /research
@@ -13,7 +13,19 @@ Web research on a topic. Use this skill when the user invokes `/research <topic>
 
 Take the user-provided topic from the skill arguments. If no topic was provided, ask: "What would you like me to research?"
 
-### 2. Generate a slug for the filename
+### 2. Gather context before researching
+
+Before invoking the research agent, ask the user these three questions **one at a time** (separate messages, wait for each answer before asking the next).
+
+1. **Audience** — "Who will read this research? (e.g., yourself, your team, an external stakeholder)"
+2. **Goal** — "What decision or action will this research inform?"
+3. **Scope** — "Any specific angle to focus on, or areas to exclude?"
+
+Keep each question short. Accept brief or vague answers — do not re-ask for more detail. If the user says "skip" or "no preference" for any question, record that and move on.
+
+If the user has already provided some of this context in their original `/research` invocation (e.g., they wrote "/research X for my team to decide Y"), do not re-ask for that piece — only ask for the missing ones.
+
+### 3. Generate a slug for the filename
 
 From the topic, generate a kebab-case slug:
 - Lowercase
@@ -25,25 +37,28 @@ Examples:
 - "Next.js app router caching" → `nextjs-app-router-caching`
 - "Zod vs Yup for runtime validation" → `zod-vs-yup-for-runtime-validation`
 
-### 3. Invoke the research agent
+### 4. Invoke the research agent
 
-Invoke the `research` agent using your tool's subagent mechanism:
+Synthesize the topic and the three answers (audience, goal, scope) into a single focused research brief. Do NOT just concatenate them — rewrite the research question so it reflects the audience, the decision it will inform, and any scope constraints.
 
-**Claude Code** — use the `Agent` tool:
-```
-Agent(subagent_type: "research", prompt: "Research the following topic and produce a structured markdown report following your standard methodology: <topic>")
-```
-If you see "Agent type 'research' not found" (agent registered mid-session), fall back to `subagent_type: "general-purpose"` and include the inline instructions below.
+Example:
+- Raw topic: "how can Kiro CLI be better"
+- Audience: "Kiro product team"
+- Goal: "send as feedback to influence their roadmap"
+- Scope: "focus on CLI gaps vs IDE, skip pricing"
+- Reshaped brief: "Research specific feature gaps between Kiro CLI and Kiro IDE that affect developer productivity. Focus on capabilities available in the IDE but missing from the CLI. Exclude pricing analysis. Output will be read by the Kiro product team as roadmap feedback, so findings must be concrete and actionable."
 
-**Kiro** — delegate to the `research` subagent directly (it is installed in `~/.kiro/agents/research.md`). Pass the topic as the task prompt.
+Use the `Agent` tool with `subagent_type: "research"`. Pass the reshaped brief as the prompt:
 
-**Codex CLI or any other tool** — no dedicated research agent is available. Run the research inline using `web_search` and `web_fetch` tools directly with these instructions:
+> "Research the following topic and produce a structured markdown report following your standard methodology: <reshaped brief>"
 
-> *Decompose the topic into 3-5 sub-questions. Search each. Fetch the top 2-3 results per question. Synthesize a markdown report with sections: Summary, Key Findings (inline citations), Trade-offs / Caveats, Sources. Always cite URLs. Flag conflicts. Mark content older than 1 year as potentially outdated.*
+Wait for the agent to return the full report.
 
-Wait for the full report before proceeding.
+> **Note:** If you see "Agent type 'research' not found", this means the research agent was registered after this session started. Fall back to `subagent_type: "general-purpose"` and include these instructions in the prompt:
+>
+> *You are a web research agent. Decompose the topic into 3-5 sub-questions, WebSearch each, WebFetch the top 2-3 results per question, then synthesize a markdown report with sections: Summary, Key Findings (with inline citations), Trade-offs / Caveats, Sources. Always cite URLs. Flag conflicts. Mark content older than 1 year as potentially outdated.*
 
-### 4. Decide whether to save the report
+### 5. Decide whether to save the report
 
 Check whether `docs/research/` exists in the current working directory:
 
@@ -54,7 +69,7 @@ test -d docs/research && echo "exists" || echo "missing"
 - **If it exists:** save the report to `docs/research/YYYY-MM-DD-<slug>.md` using today's date. Use the `Write` tool.
 - **If it does not exist:** do NOT create the directory. Print the full report inline in the conversation instead. Do not silently swallow the report.
 
-### 5. Return a summary to the user
+### 6. Return a summary to the user
 
 After saving (or printing), return a concise 3-5 sentence summary of the findings to the main conversation, plus:
 - The file path if saved, OR
