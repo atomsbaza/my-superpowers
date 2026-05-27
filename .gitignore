@@ -1,1 +1,62 @@
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment and local config
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build and cache output
+dist/
+build/
+out/
+.cache/
+.tmp/
+tmp/
+temp/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Local agent/runtime scratch
+.gemini/
+kiro/Global/
+
+# Repository content
+!skills/
+!skills/**
+skills/**/.DS_Store
