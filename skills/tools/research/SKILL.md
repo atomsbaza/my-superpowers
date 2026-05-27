@@ -1,6 +1,6 @@
 ---
 name: research
-description: Web research on a given topic. Asks the user for audience, goal, and scope before researching; invokes the research subagent with a focused brief; saves a structured report to docs/research/ if that directory exists; returns a concise summary. Trigger on /research <topic>.
+description: Web research on a given topic. Asks the user for audience, goal, and scope before researching; invokes the research subagent with a focused brief; saves a structured report to docs/research/<tool-subfolder>/ (auto-created by topic) if docs/research/ exists; returns a concise summary. Trigger on /research <topic>.
 ---
 
 # /research
@@ -58,16 +58,28 @@ Wait for the agent to return the full report.
 >
 > *You are a web research agent. Decompose the topic into 3-5 sub-questions, WebSearch each, WebFetch the top 2-3 results per question, then synthesize a markdown report with sections: Summary, Key Findings (with inline citations), Trade-offs / Caveats, Sources. Always cite URLs. Flag conflicts. Mark content older than 1 year as potentially outdated.*
 
-### 5. Decide whether to save the report
+### 5. Decide where to save the report
 
-Check whether `docs/research/` exists in the current working directory:
+The canonical research location is `/Users/pisitkoolplukpol/Work/docs/research/`.
 
+Check it exists:
 ```bash
-test -d docs/research && echo "exists" || echo "missing"
+test -d /Users/pisitkoolplukpol/Work/docs/research && echo "exists" || echo "missing"
 ```
 
-- **If it exists:** save the report to `docs/research/YYYY-MM-DD-<slug>.md` using today's date. Use the `Write` tool.
-- **If it does not exist:** do NOT create the directory. Print the full report inline in the conversation instead. Do not silently swallow the report.
+- **If it does not exist:** print the full report inline instead. Do not silently swallow the report.
+- **If it exists:** determine a subfolder from the topic.
+
+**Subfolder logic:**
+From the topic, extract the primary tool or technology name (e.g., "Kiro CLI headless mode" → `kiro`, "Claude Code hooks" → `claude-code`, "SwiftUI performance" → `swiftui`, "Next.js caching" → `nextjs`, "Jira MCP server" → `mcp`). Convert to kebab-case. If no clear tool/technology is identifiable, use no subfolder.
+
+Create the subfolder if needed, then save:
+```bash
+mkdir -p /Users/pisitkoolplukpol/Work/docs/research/<subfolder>
+```
+
+- **With subfolder:** save to `/Users/pisitkoolplukpol/Work/docs/research/<subfolder>/YYYY-MM-DD-<slug>.md`.
+- **Without subfolder:** save to `/Users/pisitkoolplukpol/Work/docs/research/YYYY-MM-DD-<slug>.md`.
 
 ### 6. Return a summary to the user
 
