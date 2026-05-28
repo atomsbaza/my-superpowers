@@ -1,33 +1,40 @@
 # my-superpowers
 
-Personal collection of AI coding agent skills and agents for Claude Code, Kiro, and Codex CLI.
+Personal collection of AI coding agent skills and agents for Claude Code and Kiro.
 
 ## Structure
 
 ```
-claude/agents/   Claude Code agent definitions (~/.claude/agents/)
-kiro/agents/     Kiro subagent definitions     (~/.kiro/agents/)
-skills/          Shared skills — cross-platform (~/.claude/skills/, ~/.kiro/skills/, ~/.agents/skills/)
+claude/agents/   Claude Code agent definitions  (~/.claude/agents/)
+kiro/agents/     Kiro subagent definitions       (~/.kiro/agents/)
+skills/          Shared skills — cross-platform  (~/.claude/skills/, ~/.kiro/skills/)
+docs/            Research reports, session logs, and design specs
+  research/
+    kiro/        Kiro CLI research
+    ios/         iOS / Xcode / Swift research
+    claude-code/ Claude Code research
+    mcp/         MCP server research
+  sessions/      Work session summaries
+  superpowers/   Plans and specs for this repo
 ```
 
-Skills use the open [AgentSkills](https://agentskills.io/specification) standard and work identically across Claude Code, Kiro, Codex CLI, Cursor, and Windsurf.
+Skills use the open [AgentSkills](https://agentskills.io/specification) standard and work identically across Claude Code and Kiro.
 
 Agents are tool-specific: Claude Code and Kiro each have their own agent files (same system prompts, adapted model names and tool syntax).
 
 ## Install
 
 ```bash
-git clone git@github.com:atomsbaza/my-superpowers.git ~/my-superpowers
-cd ~/my-superpowers && chmod +x install.sh && ./install.sh
+git clone git@github.com:atomsbaza/my-superpowers.git ~/Work/my-superpowers
+cd ~/Work/my-superpowers && chmod +x install.sh && ./install.sh
 ```
 
 The script auto-detects which tools are installed and symlinks the right files.
 
 | Tool | Skills | Agents |
 |---|---|---|
-| Claude Code | `~/.claude/skills/` (flat) | `~/.claude/agents/` |
-| Kiro | `~/.kiro/skills/` (flat) | `~/.kiro/agents/` |
-| Codex CLI | `~/.agents/skills/` (flat) | — |
+| Claude Code | `~/.claude/skills/` | `~/.claude/agents/` |
+| Kiro | `~/.kiro/skills/` | `~/.kiro/agents/` |
 
 ---
 
@@ -45,27 +52,24 @@ The script auto-detects which tools are installed and symlinks the right files.
 | `adr` | Capture architecture decisions as ADR documents |
 
 ### Execution
-> Run the plan.
 
 | Skill | What it does |
 |---|---|
+| `executing-plans` | Inline plan execution with checkpoints and status protocol |
 | `subagent-driven-development` | Execute plans task-by-task with fresh subagents + 2-stage review |
-| `executing-plans` | Inline plan execution with checkpoints |
 | `dispatching-parallel-agents` | Run independent tasks in parallel |
 
 ### Quality & Review
-> Ensure the work is correct before shipping.
 
 | Skill | What it does |
 |---|---|
-| `scrutinize` | Outsider sanity check — "should this exist?" |
-| `requesting-code-review` | Structured workflow for requesting a review |
+| `scrutinize` | Outsider sanity check — "should this exist and does it do what it claims?" |
+| `requesting-code-review` | Two-stage review: spec compliance first, then code quality |
 | `receiving-code-review` | Handle review feedback rigorously, not blindly |
 | `improve-codebase-architecture` | Find refactoring and architecture opportunities |
 | `verification-before-completion` | Run checks before claiming work is done |
 
 ### Debugging
-> When things go wrong.
 
 | Skill | What it does |
 |---|---|
@@ -91,7 +95,7 @@ The script auto-detects which tools are installed and symlinks the right files.
 
 | Skill | What it does |
 |---|---|
-| `research` | Web research — searches, fetches, synthesizes a cited report |
+| `research` | Web research — audience/goal/scope interview, then searches, fetches, and synthesizes a cited report saved to `docs/research/<topic>/` |
 | `find-skills` | Discover and install new skills |
 | `writing-skills` | TDD-based guide for creating new skills |
 
@@ -100,8 +104,8 @@ The script auto-detects which tools are installed and symlinks the right files.
 ## Agents
 
 > Agent files are tool-specific but share the same system prompts.
-> `claude/agents/` → Claude Code format (`model: sonnet/opus`, tools as string)
-> `kiro/agents/` → Kiro format (`model: claude-sonnet-4-6/claude-opus-4-7`, tools as array)
+> `claude/agents/` → Claude Code format
+> `kiro/agents/` → Kiro format
 
 ### Review
 | Agent | What it does |
