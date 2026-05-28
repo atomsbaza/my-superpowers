@@ -11,6 +11,7 @@ skills/          Shared skills — cross-platform  (~/.claude/skills/, ~/.kiro/s
 docs/            Research reports, session logs, and design specs
   research/
     kiro/        Kiro CLI research
+    dotnet/      .NET / C# development research
     ios/         iOS / Xcode / Swift research
     claude-code/ Claude Code research
     mcp/         MCP server research
