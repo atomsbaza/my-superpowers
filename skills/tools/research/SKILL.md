@@ -60,11 +60,11 @@ Wait for the agent to return the full report.
 
 ### 5. Decide where to save the report
 
-The canonical research location is `/Users/pisitkoolplukpol/Work/docs/research/`.
+The canonical research location is `/Users/pisitkoolplukpol/Work/my-superpowers/docs/research/`.
 
 Check it exists:
 ```bash
-test -d /Users/pisitkoolplukpol/Work/docs/research && echo "exists" || echo "missing"
+test -d /Users/pisitkoolplukpol/Work/my-superpowers/docs/research && echo "exists" || echo "missing"
 ```
 
 - **If it does not exist:** print the full report inline instead. Do not silently swallow the report.
@@ -75,11 +75,11 @@ From the topic, extract the primary tool or technology name (e.g., "Kiro CLI hea
 
 Create the subfolder if needed, then save:
 ```bash
-mkdir -p /Users/pisitkoolplukpol/Work/docs/research/<subfolder>
+mkdir -p /Users/pisitkoolplukpol/Work/my-superpowers/docs/research/<subfolder>
 ```
 
-- **With subfolder:** save to `/Users/pisitkoolplukpol/Work/docs/research/<subfolder>/YYYY-MM-DD-<slug>.md`.
-- **Without subfolder:** save to `/Users/pisitkoolplukpol/Work/docs/research/YYYY-MM-DD-<slug>.md`.
+- **With subfolder:** save to `/Users/pisitkoolplukpol/Work/my-superpowers/docs/research/<subfolder>/YYYY-MM-DD-<slug>.md`.
+- **Without subfolder:** save to `/Users/pisitkoolplukpol/Work/my-superpowers/docs/research/YYYY-MM-DD-<slug>.md`.
 
 ### 6. Return a summary to the user
 
