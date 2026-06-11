@@ -110,6 +110,8 @@ Apply these whenever reviewing code (in the `reviewing-code` skill or ad-hoc):
 
 - Never commit secrets, tokens, or `.env` values.
 - Treat all external input as untrusted. Validate at system boundaries.
-- Silent failures are forbidden: no empty catches, no misleading success states.
+- No silent failures — no empty catches, no misleading success states. A swallowed
+  error doesn't make the problem go away; it moves it somewhere harder to diagnose
+  and strips the context needed to fix it. Fail loudly or handle explicitly.
 - Do not add error handling for scenarios that cannot happen in the current code path.
 - Match existing project style. Note but do not fix unrelated code.

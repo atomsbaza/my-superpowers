@@ -17,6 +17,8 @@ docs/            Research reports, session logs, and design specs
     mcp/         MCP server research
   sessions/      Work session summaries
   superpowers/   Plans and specs for this repo
+tools/           Repo tooling (not installed)
+  agent-evals/   Measure & improve agent definitions (A/B vs baseline, benchmark)
 ```
 
 Skills use the open [AgentSkills](https://agentskills.io/specification) standard and work identically across Claude Code and Kiro.
@@ -140,6 +142,52 @@ The script auto-detects which tools are installed and symlinks the right files.
 | Agent | What it does |
 |---|---|
 | `research` | Web research subagent with cited markdown report output |
+
+### .NET Engineering Track (Claude Code only)
+| Agent | What it does |
+|---|---|
+| `principal-dotnet-engineer` | Solo full-SDLC agent for C# .NET 8/10: requirements → design → implementation → tests → review. OceanBase, EF Core, MediatR, Serilog, xUnit, Testcontainers. |
+| `qa-dotnet-engineer` | Full QA lifecycle: risk analysis, ISTQB manual test cases, Reqnroll BDD, Playwright E2E, NBomber performance, defect reports. |
+| `po-agent` | Language-agnostic Product Owner: vision, BRD, PRD, user stories, acceptance criteria, backlog prioritization (RICE/WSJF/MoSCoW/Kano), sprint plans, roadmaps, release notes. |
+
+#### Principal .NET Engineer Skills (`.claude/skills/`)
+| Skill | What it does |
+|---|---|
+| `analyzing-requirements` | BRD/PRD → bounded contexts, FRs, NFRs, open questions, recommended ADRs |
+| `authoring-adrs` | MADR-format Architecture Decision Records |
+| `designing-systems` | C4/ASCII diagrams, API contracts, entity model, OceanBase partition strategy |
+| `designing-database-schema` | EF Core Fluent API + OceanBase-compatible DDL, utf8mb4, partition migrations |
+| `implementing-dotnet` | C# .NET 8/10 code generation with security and logging standards |
+| `writing-tests` | xUnit unit tests, Testcontainers integration, WebApplicationFactory API tests, Bogus |
+| `reviewing-code` | 3-Golden-Rules review: correctness, security, observability, rollback assessment |
+| `orchestrating-workflow` | Chains all 7 principal engineer skills via workflow-state.json |
+
+#### QA .NET Engineer Skills (`.claude/skills/`)
+| Skill | What it does |
+|---|---|
+| `analyzing-requirements-for-qa` | BRD/PRD → risk-scored testable inventory (SFDIPOT + EP/BVA, P0/P1/P2) |
+| `creating-test-plan` | Risk-based test plan with pyramid, entry/exit criteria, environment strategy |
+| `generating-manual-test-cases` | ISTQB-format manual test cases with technique selection guide |
+| `generating-bdd-scenarios` | Reqnroll `.feature` files + C# step definition stubs |
+| `analyzing-codebase-for-test-gaps` | Grep-based scan for untested methods, missing exception paths, OceanBase issues |
+| `generating-automation-scripts` | POM + Playwright E2E + Testcontainers integration + Bogus data factories |
+| `generating-performance-tests` | NBomber steady-state, spike, soak, OceanBase pool pressure tests |
+| `reporting-test-results` | ISTQB defect reports, executive summary, Go/No-Go recommendation |
+| `orchestrating-qa-workflow` | Chains all 8 QA skills via .qa-workflow-state.json |
+
+#### Product Owner Skills (`.claude/skills/`)
+| Skill | What it does |
+|---|---|
+| `writing-product-vision` | Vision board, Geoffrey Moore positioning statement, JTBD, north star themes |
+| `writing-brd` | Business Requirements Document with problem, goals, stakeholders, risks |
+| `writing-prd` | Product Requirements Document with personas, user journeys, FRs, NFRs |
+| `writing-user-stories` | INVEST-quality stories via SPIDR splitting from epics or PRD |
+| `writing-acceptance-criteria` | Gherkin Given/When/Then ACs covering happy path, validation, auth, edge cases |
+| `prioritizing-backlog` | RICE / WSJF / MoSCoW / Kano prioritization with scoring worksheets |
+| `planning-sprint` | Sprint goal, story selection, capacity planning, risk/dependency mapping |
+| `writing-roadmap` | Outcome-based Now/Next/Later or OKR roadmap with exclusions |
+| `writing-release-notes` | Customer-facing release notes from sprint deliverables or commit history |
+| `orchestrating-po-workflow` | Chains all 9 PO skills via .po-workflow-state.json |
 
 ---
 
