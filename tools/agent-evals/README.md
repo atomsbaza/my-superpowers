@@ -148,14 +148,71 @@ happy, feedback is empty, or you stop making meaningful progress.
 
 ---
 
-## Description / triggering optimization (all three agents)
+## Autonomous loops
 
-The `description` frontmatter is what decides whether the agent gets invoked at
-all — independent of how good the body is, and it applies to subjective agents
-too. After the body is solid, build ~20 realistic trigger queries (a mix of
-should-trigger and tricky should-*not*-trigger near-misses), and check the
-description triggers correctly on them. Make descriptions slightly *pushy* —
-Claude tends to under-trigger. See `improving-agents.md` for the method.
+Two loops can run unattended via the `claude` CLI (`claude -p`). Both nest
+safely inside a Claude Code session. Pass `--model <id>` matching the model you
+ship to, so the test matches what users experience.
+
+### A) Description / triggering loop — `optimize_description.py` ✅ verified
+
+The `description` frontmatter is the *only* thing that decides whether Claude
+delegates to an agent — independent of how good the body is, and it applies to
+every agent including subjective ones. "Did it delegate?" is objective, so this
+loop is safe to run fully autonomously.
+
+**1. Write a trigger eval set** (~20 items) as JSON — a mix of should-trigger and
+tricky should-*not*-trigger near-misses:
+
+```json
+[
+  {"query": "I've got a loyalty-program epic — break it into INVEST stories with acceptance criteria before Thursday's grooming.", "should_trigger": true},
+  {"query": "Fix the NullReferenceException in OrderService.Calculate when the cart is empty.", "should_trigger": false}
+]
+```
+
+> Queries must be **substantive, specialist-warranting tasks**. In `claude -p`
+> the main model handles trivial/handleable tasks itself instead of delegating,
+> so weak queries just add noise. (Confirmed empirically.)
+
+**2. Run the loop** (split → eval current desc → propose → re-eval → keep best by
+held-out test score):
+
+```bash
+python3 tools/agent-evals/scripts/optimize_description.py \
+  --agent-path .claude/agents/po-agent.md \
+  --eval-set my-trigger-evals.json \
+  --max-iterations 5 --runs-per-query 3 --model <model-id> --verbose \
+  --output po-desc-report.json
+```
+
+Add `--apply` to write the winning description back into the agent's frontmatter.
+The winner is chosen by **test** score, not train, to avoid overfitting. You can
+also run a single eval pass without the loop via `trigger_eval.py`.
+
+### B) Body loop (objective agents only) — `improve_body.py` ⚠️ unverified end-to-end
+
+Improves the agent **body** against objective task evals, gated on a held-out set
+so it can't overfit. Only for agents with objectively checkable outputs — the
+.NET engineering agents, **not** `po-agent` (the script refuses evals without
+`expectations`). It runs the agent as the session (`claude --agent <name>`),
+grades, proposes a body edit, and **accepts it only if train improves and
+held-out test does not regress**.
+
+```bash
+python3 tools/agent-evals/scripts/improve_body.py \
+  --agent-path .claude/agents/principal-dotnet-engineer.md \
+  --eval-set dotnet-task-evals.json \
+  --workspace /tmp/principal-body-loop \
+  --max-iterations 3 --model <model-id> --verbose --apply
+```
+
+> **Status:** CLI/imports validated; the full run/grade/gate cycle has not been
+> exercised end-to-end (it needs a real .NET project and many full-execution
+> `claude -p` calls). **Run it in a throwaway git worktree** — it edits the
+> agent `.md` and lets the agent execute tasks. Its trust ceiling is the
+> objectivity of your `expectations`; make them script-checkable (have the
+> grader run `dotnet build`/`dotnet test`). See `docs/improving-agents.md`.
 
 ---
 
@@ -163,6 +220,9 @@ Claude tends to under-trigger. See `improving-agents.md` for the method.
 
 - `scripts/aggregate_benchmark.py` — runs → `benchmark.json` + `benchmark.md`
 - `scripts/validate_agent.py` — fast advisory lint of an agent definition
+- `scripts/trigger_eval.py` — does a description cause Claude to delegate? (one pass)
+- `scripts/optimize_description.py` — autonomous description/triggering loop ✅
+- `scripts/improve_body.py` — autonomous body loop for objective agents ⚠️
 - `agents/grader.md` — how the grader judges expectations and critiques the eval set
 - `references/schemas.md` — exact JSON contracts
 - `../../docs/improving-agents.md` — the improvement philosophy
