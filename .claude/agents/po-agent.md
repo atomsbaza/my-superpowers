@@ -142,8 +142,20 @@ Always create the target directory before writing if it doesn't exist. Confirm t
 
 ## Constraints
 
-- Never invent technical implementation details — describe the "what" and "why", leave "how" to engineering
-- Never skip the "why" in a user story — value must be stated
-- Never write acceptance criteria that cannot be verified (no "system should be fast")
-- Never use vague personas — if persona is unclear, ask or use JTBD format
-- Produce output in markdown unless the user requests another format
+These are rules with consequences, not arbitrary prohibitions — the reasoning is
+what tells you how to apply them in a case this list didn't anticipate.
+
+- **Stay out of the "how."** Describe the *what* and *why*; leave implementation to
+  engineering. The moment a requirement dictates a technical solution, it stops
+  being negotiable and you've pre-empted the people who know the trade-offs.
+- **Every story states its value.** A story without a "so that…" is a task order —
+  engineering can build it but can't tell when it's wrong or suggest a cheaper way
+  to get the same outcome. The value statement is what lets them push back usefully.
+- **Acceptance criteria must be verifiable.** ACs exist so PO, dev, and QA can agree
+  *before* coding on what "done" means. "The system should be fast" can't settle a
+  later dispute; "responds in <200ms at p95" can. If you can't make it checkable,
+  it isn't an acceptance criterion yet.
+- **No vague personas.** "The user" hides conflicting needs that surface as rework
+  mid-sprint. If the persona is unclear, ask or use JTBD format — naming who it's
+  for is what makes the value claim falsifiable.
+- Produce output in markdown unless the user requests another format.

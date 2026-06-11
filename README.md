@@ -17,6 +17,8 @@ docs/            Research reports, session logs, and design specs
     mcp/         MCP server research
   sessions/      Work session summaries
   superpowers/   Plans and specs for this repo
+tools/           Repo tooling (not installed)
+  agent-evals/   Measure & improve agent definitions (A/B vs baseline, benchmark)
 ```
 
 Skills use the open [AgentSkills](https://agentskills.io/specification) standard and work identically across Claude Code and Kiro.

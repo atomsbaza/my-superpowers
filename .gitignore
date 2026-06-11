@@ -56,6 +56,9 @@ venv/
 .gemini/
 kiro/Global/
 
+# agent-evals run workspaces (scratch; benchmarks are reviewed, not committed)
+*-workspace/
+
 # Repository content
 !skills/
 !skills/**
