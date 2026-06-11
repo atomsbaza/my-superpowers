@@ -49,6 +49,7 @@ The following were created independently in this repo:
 - `skills/quality/improve-codebase-architecture/`
 - `skills/communication/` — session-summary, handoff, management-talk
 - `skills/debugging/diagnose/`
-- `claude/agents/` — all agent definitions
-- `kiro/agents/` — Kiro-adapted agent definitions
-- `install.sh` — cross-tool install script
+- `.claude/agents/` — all agent definitions
+- `.claude/skills/` — .NET / QA / Product Owner skills
+- `tools/agent-evals/` — agent evaluation engine and improvement loops
+- `install.sh` — install script

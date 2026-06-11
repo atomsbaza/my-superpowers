@@ -1,10 +1,13 @@
 #!/bin/bash
-# install.sh — sets up skills and agents for Claude Code and Kiro
+# install.sh — sets up skills and agents for Claude Code (and Codex CLI)
 #
 # Structure:
-#   claude/agents/<category>/*.md  → ~/.claude/agents/
-#   kiro/agents/<category>/*.md    → ~/.kiro/agents/
-#   skills/<category>/<name>/      → ~/.claude/skills/ and ~/.kiro/skills/ (flat)
+#   .claude/agents/*.md        → ~/.claude/agents/        (flat agent definitions)
+#   .claude/skills/<name>/     → ~/.claude/skills/         (Claude Code skills)
+#   skills/<category>/<name>/  → ~/.claude/skills/         (cross-platform skills)
+#
+# Skills are discovered by their SKILL.md, so both the flat (.claude/skills)
+# and category-nested (skills/) layouts are picked up automatically.
 #
 # Usage:
 #   ./install.sh           — link new items, skip existing
@@ -42,27 +45,29 @@ link_or_skip() {
 }
 
 install_agents() {
-  local src_root="$1"   # e.g. REPO_DIR/claude/agents
+  local src_root="$1"   # e.g. REPO_DIR/.claude/agents (flat *.md)
   local dest_dir="$2"   # e.g. ~/.claude/agents
+  [ -d "$src_root" ] || return 0
   mkdir -p "$dest_dir"
-  for category_dir in "$src_root"/*/; do
-    for agent_file in "$category_dir"*.md; do
-      [ -f "$agent_file" ] || continue
-      name=$(basename "$agent_file")
-      link_or_skip "$agent_file" "$dest_dir/$name" "$name"
-    done
+  for agent_file in "$src_root"/*.md; do
+    [ -f "$agent_file" ] || continue
+    name=$(basename "$agent_file")
+    link_or_skip "$agent_file" "$dest_dir/$name" "$name"
   done
 }
 
 install_skills() {
   local dest_dir="$1"   # e.g. ~/.claude/skills
   mkdir -p "$dest_dir"
-  for category_dir in "$REPO_DIR/skills"/*/; do
-    for skill_dir in "$category_dir"*/; do
-      [ -d "$skill_dir" ] || continue
-      name=$(basename "$skill_dir")
+  # A skill is any directory containing a SKILL.md. Scan both skill roots so
+  # the flat (.claude/skills) and category-nested (skills/) layouts both work.
+  for root in "$REPO_DIR/.claude/skills" "$REPO_DIR/skills"; do
+    [ -d "$root" ] || continue
+    while IFS= read -r skill_md; do
+      skill_dir="$(dirname "$skill_md")"
+      name="$(basename "$skill_dir")"
       link_or_skip "$skill_dir" "$dest_dir/$name" "$name"
-    done
+    done < <(find "$root" -name SKILL.md)
   done
 }
 
@@ -73,24 +78,10 @@ echo ""
 # ── Claude Code ──────────────────────────────────────────────
 echo "Claude Code:"
 echo "  agents → ~/.claude/agents/"
-install_agents "$REPO_DIR/claude/agents" "$HOME/.claude/agents"
+install_agents "$REPO_DIR/.claude/agents" "$HOME/.claude/agents"
 echo "  skills → ~/.claude/skills/"
 install_skills "$HOME/.claude/skills"
 echo ""
-
-# ── Kiro ─────────────────────────────────────────────────────
-if command -v kiro &>/dev/null || [ -d "$HOME/.kiro" ]; then
-  echo "Kiro:"
-  echo "  agents → ~/.kiro/agents/"
-  install_agents "$REPO_DIR/kiro/agents" "$HOME/.kiro/agents"
-  echo "  skills → ~/.kiro/skills/"
-  install_skills "$HOME/.kiro/skills"
-  echo ""
-else
-  echo "Kiro: not detected (skipped)"
-  echo "  To install for Kiro later: mkdir ~/.kiro && ./install.sh"
-  echo ""
-fi
 
 # ── Codex CLI ────────────────────────────────────────────────
 echo "Codex CLI:"

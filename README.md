@@ -1,19 +1,20 @@
 # my-superpowers
 
-Personal collection of AI coding agent skills and agents for Claude Code and Kiro.
+Personal collection of AI coding agent skills and agents for Claude Code.
 
 ## Structure
 
 ```
-claude/agents/   Claude Code agent definitions  (~/.claude/agents/)
-kiro/agents/     Kiro subagent definitions       (~/.kiro/agents/)
-skills/          Shared skills — cross-platform  (~/.claude/skills/, ~/.kiro/skills/)
+.claude/agents/  Claude Code agent definitions  (→ ~/.claude/agents/)
+.claude/skills/  Claude Code skills — .NET / QA / PO  (→ ~/.claude/skills/)
+skills/          Cross-platform skills           (→ ~/.claude/skills/)
 docs/            Research reports, session logs, and design specs
   research/
-    kiro/        Kiro CLI research
-    dotnet/      .NET / C# development research
-    ios/         iOS / Xcode / Swift research
     claude-code/ Claude Code research
+    dotnet/      .NET / C# development research
+    docklock/    DockLock research
+    ios/         iOS / Xcode / Swift research
+    kiro/        Kiro CLI research (archived)
     mcp/         MCP server research
   sessions/      Work session summaries
   superpowers/   Plans and specs for this repo
@@ -21,9 +22,7 @@ tools/           Repo tooling (not installed)
   agent-evals/   Measure & improve agent definitions (A/B vs baseline, benchmark)
 ```
 
-Skills use the open [AgentSkills](https://agentskills.io/specification) standard and work identically across Claude Code and Kiro.
-
-Agents are tool-specific: Claude Code and Kiro each have their own agent files (same system prompts, adapted model names and tool syntax).
+Skills use the open [AgentSkills](https://agentskills.io/specification) standard. Agent definitions are flat `.md` files in `.claude/agents/`.
 
 ## Install
 
@@ -32,12 +31,12 @@ git clone git@github.com:atomsbaza/my-superpowers.git ~/Work/my-superpowers
 cd ~/Work/my-superpowers && chmod +x install.sh && ./install.sh
 ```
 
-The script auto-detects which tools are installed and symlinks the right files.
+The script symlinks agents and skills into place.
 
 | Tool | Skills | Agents |
 |---|---|---|
 | Claude Code | `~/.claude/skills/` | `~/.claude/agents/` |
-| Kiro | `~/.kiro/skills/` | `~/.kiro/agents/` |
+| Codex CLI | `~/.agents/skills/` | — |
 
 ---
 
@@ -106,49 +105,15 @@ The script auto-detects which tools are installed and symlinks the right files.
 
 ## Agents
 
-> Agent files are tool-specific but share the same system prompts.
-> `claude/agents/` → Claude Code format
-> `kiro/agents/` → Kiro format
+Claude Code agent definitions live in `.claude/agents/` (one flat `.md` each).
 
-### Review
-| Agent | What it does |
-|---|---|
-| `code-reviewer` | Line-by-line bug and security review |
-| `accessibility-reviewer` | Review UI accessibility across platforms |
-| `silent-failure-hunter` | Find swallowed errors and unsafe fallbacks |
-| `dependency-auditor` | Audit new dependencies before adding them |
-
-### Documentation
-| Agent | What it does |
-|---|---|
-| `docs-writer` | Write READMEs, API docs, inline comments |
-| `doc-updater` | Keep docs in sync with code changes |
-| `wiki-updater` | Update Logseq project wiki after meaningful work *(Claude Code only)* |
-
-### Development
-| Agent | What it does |
-|---|---|
-| `debugger` | Root cause analysis for bugs and crashes |
-| `refactor` | Refactor code for clarity and maintainability |
-| `test-writer` | Write unit and integration tests for existing code |
-
-### Workflow
-| Agent | What it does |
-|---|---|
-| `pr-description` | Write PR titles and descriptions from git diff |
-| `release-checklist` | Pre-release checklist (iOS, web, smart contracts) |
-
-### Research
-| Agent | What it does |
-|---|---|
-| `research` | Web research subagent with cited markdown report output |
-
-### .NET Engineering Track (Claude Code only)
 | Agent | What it does |
 |---|---|
 | `principal-dotnet-engineer` | Solo full-SDLC agent for C# .NET 8/10: requirements → design → implementation → tests → review. OceanBase, EF Core, MediatR, Serilog, xUnit, Testcontainers. |
 | `qa-dotnet-engineer` | Full QA lifecycle: risk analysis, ISTQB manual test cases, Reqnroll BDD, Playwright E2E, NBomber performance, defect reports. |
 | `po-agent` | Language-agnostic Product Owner: vision, BRD, PRD, user stories, acceptance criteria, backlog prioritization (RICE/WSJF/MoSCoW/Kano), sprint plans, roadmaps, release notes. |
+
+Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-evals/) — an A/B evaluation engine plus autonomous improvement loops.
 
 #### Principal .NET Engineer Skills (`.claude/skills/`)
 | Skill | What it does |
