@@ -1,0 +1,26 @@
+[
+  {"query": "We're on .NET 8 with EF Core + Pomelo against OceanBase. Implement a POST /api/orders endpoint that upserts by idempotency key so retries don't double-insert, with the cancellation token flowing through.", "expected_agent": "principal-dotnet-engineer"},
+  {"query": "Our PaymentService.cs does sync-over-async (.Result) on the Stripe call and deadlocks under load. Rework it to be properly async end to end.", "expected_agent": "principal-dotnet-engineer"},
+  {"query": "Write a generic repository pattern over EF Core for our .NET 10 service, with FromSqlInterpolated for raw queries and IOptions for connection settings.", "expected_agent": "principal-dotnet-engineer"},
+  {"query": "Review this C# diff before I merge — correctness, OceanBase optimistic-concurrency handling, and whether error responses leak internal details.", "expected_agent": "principal-dotnet-engineer"},
+  {"query": "Build a background hosted service in our .NET 8 worker that drains an outbox table every 5s with retry, cancellation on shutdown, and structured logging.", "expected_agent": "principal-dotnet-engineer"},
+  {"query": "Design the EF Core entity model and Fluent API config for a multi-tenant audit log that partitions by month on OceanBase.", "expected_agent": "principal-dotnet-engineer"},
+
+  {"query": "Generate ISTQB-format manual test cases for the password-reset flow: happy path, invalid/expired token, the 8-char boundary, and lockout after 5 attempts.", "expected_agent": "qa-dotnet-engineer"},
+  {"query": "Here's the PRD for our checkout redesign. Build a risk-based test plan — scope, approach by layer, entry/exit criteria, P0 vs P2.", "expected_agent": "qa-dotnet-engineer"},
+  {"query": "We use Reqnroll. Turn these acceptance criteria for the loyalty-points story into .feature files plus C# step definition stubs.", "expected_agent": "qa-dotnet-engineer"},
+  {"query": "Write Playwright E2E tests using the page object model for our .NET storefront — login, add to cart, checkout.", "expected_agent": "qa-dotnet-engineer"},
+  {"query": "Our /orders API needs p95 < 200ms at 500 RPS. Write the NBomber scenarios — steady-state, spike, and soak.", "expected_agent": "qa-dotnet-engineer"},
+  {"query": "Scan this .NET solution and tell me which service methods and exception handlers have no test coverage.", "expected_agent": "qa-dotnet-engineer"},
+
+  {"query": "We got exec buy-in for a B2B billing revamp. Write a BRD — business problem, measurable goals, stakeholders, in/out of scope, risk register.", "expected_agent": "po-agent"},
+  {"query": "Turn this one-pager about a customer loyalty program into a full PRD: personas with JTBD, user journeys, MoSCoW-tagged requirements, NFRs, success metrics.", "expected_agent": "po-agent"},
+  {"query": "Decompose this self-service-refunds epic into INVEST user stories using SPIDR, with Gherkin acceptance criteria including negative and authorization cases.", "expected_agent": "po-agent"},
+  {"query": "We have 18 feature requests and capacity for 5 this quarter — prioritize with RICE and turn it into a Now/Next/Later roadmap for leadership.", "expected_agent": "po-agent"},
+  {"query": "Plan sprint 14: the sprint goal, which stories fit our velocity of 32 points, and the dependencies and risks.", "expected_agent": "po-agent"},
+  {"query": "The 'export to CSV' story has no acceptance criteria. Write SMART Given/When/Then ACs covering happy path, empty data, large files, and unauthorized access.", "expected_agent": "po-agent"},
+
+  {"query": "Our React + TypeScript cart re-renders on every keystroke. Profile it and fix the unnecessary re-renders.", "expected_agent": "none"},
+  {"query": "I need a Python script that reads a folder of CSVs and loads them into Postgres with pandas.", "expected_agent": "none"},
+  {"query": "Our Swift iOS app crashes on launch after the iOS 18 update — find out why and fix it.", "expected_agent": "none"}
+]

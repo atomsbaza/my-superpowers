@@ -73,9 +73,19 @@ and pretending otherwise reproduces exactly the overfitting trap above.
 | `qa-dotnet-engineer` | test code, plans | **Mostly quantitative** — does the generated test compile and actually exercise the path? Plus qualitative for coverage judgment. |
 | `po-agent` | BRDs, PRDs, stories, roadmaps | **Qualitative review** — "is this a good PRD" is human judgment; forcing pass/fail assertions yields non-discriminating checks and false confidence. |
 
-**All three** still benefit from **description / triggering** evals — that's
-about whether the agent gets *invoked*, which is independent of output
-subjectivity.
+**All three** still benefit from **description / routing** evals — but measure
+the right thing (see below).
+
+> **Finding (2026-06): descriptions control routing, not spontaneous triggering.**
+> We first measured "does this single agent trigger?" and got ~0 — in headless
+> `claude -p` a capable main model just does substantive tasks itself instead of
+> delegating to one injected agent, and no wording changes that. The signal a
+> description *does* control is **which sibling wins** once delegation happens.
+> Measured that way (inject all siblings as competitors, condition on
+> delegation-sought, score the pick), the current descriptions route **~19/21**
+> correctly with perfect precision — they're already well-tuned. So
+> `optimize_description.py` is most valuable as a **regression guard when you add
+> or change an agent**, not as a routine tuner.
 
 For the qualitative agents: still run the test prompts and still show outputs to
 a human for review — just skip the benchmark numbers and the baseline
@@ -94,6 +104,18 @@ single task. "Run it more times" would not change that number. Treat a single
 run as a directional signal, not a verdict; for a result you'll act on, spawn
 the same eval a few times by hand and eyeball the spread. Adding a
 `runs_per_configuration` loop is the natural next upgrade.
+
+## Body loop: validated
+
+`improve_body.py` was validated end-to-end against
+[jasontaylordev/CleanArchitecture](https://github.com/jasontaylordev/CleanArchitecture)
+(net8.0): `principal-dotnet-engineer` added two new colours to the `Colour`
+value object plus NUnit tests, graded by a real `dotnet test` (5→6 passing) — a
+genuine pass, not a green no-op. Two things that made it trustworthy: each run
+is seeded from a fresh copy of the project (`--project-template`), and grading is
+a deterministic `--verify-cmd` that actually builds and tests (not an LLM
+grader). Open item: the accept/reject **gate** only fires on a failing baseline,
+which didn't occur here, so that branch hasn't run against a real failure.
 
 ## The discipline in one line
 
