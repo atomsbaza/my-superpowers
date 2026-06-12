@@ -1,0 +1,13 @@
+{
+  "_comment": "Objective body evals for principal-dotnet-engineer against jasontaylordev/CleanArchitecture (net8.0). Scoped to the Domain layer because the solution-wide build fails on a NuGet audit advisory (AutoMapper NU1903) unrelated to the task. Grading is objective: --verify-cmd 'dotnet test tests/Domain.UnitTests -c Debug' (builds Domain + runs its tests). Each run is seeded from --project-template.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "This is a .NET 8 Clean Architecture solution. Add support for a new colour 'Teal' with hex code \"#008080\" to the Colour value object at src/Domain/ValueObjects/Colour.cs, so that Colour.From(\"#008080\") returns the colour instead of throwing UnsupportedColourException (note Colour validates against its SupportedColours list). Then add an NUnit test to tests/Domain.UnitTests/ValueObjects/ColourTests.cs — the project uses NUnit and FluentAssertions — asserting that Colour.From(\"#008080\") succeeds and its Code equals \"#008080\". Run `dotnet test tests/Domain.UnitTests` and ensure it passes."
+    },
+    {
+      "id": 2,
+      "prompt": "This is a .NET 8 Clean Architecture solution. Add support for a new colour 'Pink' with hex code \"#FF69B4\" to the Colour value object at src/Domain/ValueObjects/Colour.cs, so that Colour.From(\"#FF69B4\") returns the colour instead of throwing UnsupportedColourException (Colour validates against its SupportedColours list). Add an NUnit test to tests/Domain.UnitTests/ValueObjects/ColourTests.cs (NUnit + FluentAssertions) asserting Colour.From(\"#FF69B4\") succeeds and its Code equals \"#FF69B4\". Run `dotnet test tests/Domain.UnitTests` and ensure it passes."
+    }
+  ]
+}

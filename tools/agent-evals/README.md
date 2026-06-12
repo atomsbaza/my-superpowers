@@ -154,65 +154,81 @@ Two loops can run unattended via the `claude` CLI (`claude -p`). Both nest
 safely inside a Claude Code session. Pass `--model <id>` matching the model you
 ship to, so the test matches what users experience.
 
-### A) Description / triggering loop — `optimize_description.py` ✅ verified
+### A) Description / routing loop — `optimize_description.py` ✅ verified
 
-The `description` frontmatter is the *only* thing that decides whether Claude
-delegates to an agent — independent of how good the body is, and it applies to
-every agent including subjective ones. "Did it delegate?" is objective, so this
-loop is safe to run fully autonomously.
+A description's real job is **discrimination**: among the sibling agents, win the
+queries you own and don't steal a sibling's. That's what we measure — not "did a
+single agent trigger?".
 
-**1. Write a trigger eval set** (~20 items) as JSON — a mix of should-trigger and
-tricky should-*not*-trigger near-misses:
+> **Why not "did it trigger?"** We tried that first and it was the wrong signal.
+> In headless `claude -p` a capable main model just *does* a substantive task
+> itself rather than spontaneously delegating to one injected agent (~0 trigger
+> rate, unmovable by wording). The fix: inject **all** sibling agents as
+> competitors, condition on delegation-sought ("Delegate this to the most
+> appropriate specialist: …"), and score **which** agent is picked. Measured
+> that way, the current descriptions route correctly **~19/21** with perfect
+> precision; the only misses are queries the model handled directly, which a
+> description can't fix. Translation: these descriptions are already well-tuned.
+
+**1. Write a routing eval set** — each query labeled with the agent that should
+own it (`"none"` = no sibling should). See `evals/routing-evals.json`:
 
 ```json
 [
-  {"query": "I've got a loyalty-program epic — break it into INVEST stories with acceptance criteria before Thursday's grooming.", "should_trigger": true},
-  {"query": "Fix the NullReferenceException in OrderService.Calculate when the cart is empty.", "should_trigger": false}
+  {"query": "Implement an idempotent POST /orders endpoint in C# with EF Core.", "expected_agent": "principal-dotnet-engineer"},
+  {"query": "Write ISTQB manual test cases for the password-reset flow.", "expected_agent": "qa-dotnet-engineer"},
+  {"query": "Our React cart re-renders on every keystroke — profile and fix it.", "expected_agent": "none"}
 ]
 ```
 
-> Queries must be **substantive, specialist-warranting tasks**. In `claude -p`
-> the main model handles trivial/handleable tasks itself instead of delegating,
-> so weak queries just add noise. (Confirmed empirically.)
+> Queries must be **substantive, specialist-warranting tasks** — trivial ones
+> won't delegate regardless of wording. (Confirmed empirically.)
 
-**2. Run the loop** (split → eval current desc → propose → re-eval → keep best by
-held-out test score):
+**2. Run the loop** — it injects the competitor field from `--agents-dir`,
+splits train/held-out, proposes a sharper description, and keeps the best by
+**test** score (not train) to avoid overfitting:
 
 ```bash
 python3 tools/agent-evals/scripts/optimize_description.py \
-  --agent-path .claude/agents/po-agent.md \
-  --eval-set my-trigger-evals.json \
+  --agent-path .claude/agents/principal-dotnet-engineer.md \
+  --agents-dir .claude/agents \
+  --eval-set tools/agent-evals/evals/routing-evals.json \
   --max-iterations 5 --runs-per-query 3 --model <model-id> --verbose \
-  --output po-desc-report.json
+  --output report.json
 ```
 
-Add `--apply` to write the winning description back into the agent's frontmatter.
-The winner is chosen by **test** score, not train, to avoid overfitting. You can
-also run a single eval pass without the loop via `trigger_eval.py`.
+Add `--apply` to write the winner back to the frontmatter. For a single pass
+(no optimization) use `trigger_eval.py` with the same args.
 
-### B) Body loop (objective agents only) — `improve_body.py` ⚠️ unverified end-to-end
+### B) Body loop (objective agents only) — `improve_body.py` ✅ validated end-to-end
 
 Improves the agent **body** against objective task evals, gated on a held-out set
 so it can't overfit. Only for agents with objectively checkable outputs — the
-.NET engineering agents, **not** `po-agent` (the script refuses evals without
-`expectations`). It runs the agent as the session (`claude --agent <name>`),
-grades, proposes a body edit, and **accepts it only if train improves and
-held-out test does not regress**.
+.NET engineering agents, **not** `po-agent`. Each eval run is seeded from
+`--project-template` (a fresh copy of a real repo), the agent runs as the session
+(`claude --agent <name>`) inside it, and grading is the deterministic
+`--verify-cmd` (exit 0 = pass). It proposes a body edit only on failure and
+**accepts it only if train improves and held-out test does not regress**.
 
 ```bash
 python3 tools/agent-evals/scripts/improve_body.py \
   --agent-path .claude/agents/principal-dotnet-engineer.md \
-  --eval-set dotnet-task-evals.json \
+  --eval-set tools/agent-evals/evals/dotnet-body-evals.json \
+  --project-template /path/to/cloned/CleanArchitecture \
+  --verify-cmd "dotnet test tests/Domain.UnitTests -c Debug" \
   --workspace /tmp/principal-body-loop \
-  --max-iterations 3 --model <model-id> --verbose --apply
+  --max-iterations 1 --model <model-id> --verbose
 ```
 
-> **Status:** CLI/imports validated; the full run/grade/gate cycle has not been
-> exercised end-to-end (it needs a real .NET project and many full-execution
-> `claude -p` calls). **Run it in a throwaway git worktree** — it edits the
-> agent `.md` and lets the agent execute tasks. Its trust ceiling is the
-> objectivity of your `expectations`; make them script-checkable (have the
-> grader run `dotnet build`/`dotnet test`). See `docs/improving-agents.md`.
+> **Status:** validated against [jasontaylordev/CleanArchitecture](https://github.com/jasontaylordev/CleanArchitecture)
+> (net8.0). The agent added two new colours to the `Colour` value object + NUnit
+> tests, and `dotnet test` confirmed it (5→6 passing) — a *genuine* pass, not a
+> green no-op. **Caveat:** the accept/reject **gate** path runs only on a failing
+> baseline; here the baseline passed, so propose→gate wasn't exercised by a real
+> failure. **Requires** the relevant SDK installed and a `--verify-cmd` that
+> truly builds/tests (an LLM grader is the fallback and the weak link). Runs
+> autonomous agents with `--permission-mode bypassPermissions` inside the
+> seeded copy — **use a throwaway dir.** See `docs/improving-agents.md`.
 
 ---
 
@@ -220,9 +236,11 @@ python3 tools/agent-evals/scripts/improve_body.py \
 
 - `scripts/aggregate_benchmark.py` — runs → `benchmark.json` + `benchmark.md`
 - `scripts/validate_agent.py` — fast advisory lint of an agent definition
-- `scripts/trigger_eval.py` — does a description cause Claude to delegate? (one pass)
-- `scripts/optimize_description.py` — autonomous description/triggering loop ✅
-- `scripts/improve_body.py` — autonomous body loop for objective agents ⚠️
+- `scripts/trigger_eval.py` — routing/discrimination eval: which sibling agent wins a query (one pass)
+- `scripts/optimize_description.py` — autonomous description/routing loop ✅
+- `scripts/improve_body.py` — autonomous body loop for objective agents ✅
 - `agents/grader.md` — how the grader judges expectations and critiques the eval set
 - `references/schemas.md` — exact JSON contracts
+- `evals/routing-evals.json` — labeled routing eval set ({query, expected_agent})
+- `evals/dotnet-body-evals.json` — objective .NET body evals (verify_cmd-graded)
 - `../../docs/improving-agents.md` — the improvement philosophy
