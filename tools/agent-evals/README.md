@@ -33,7 +33,8 @@ python3 tools/agent-evals/scripts/doctor.py --repo .
 
 It checks frontmatter validity, `name` ↔ location, **broken bundle references**
 (a ref is only an error if the file exists *nowhere* in the repo, so valid
-cross-skill pointers don't false-flag), weak descriptions, oversized bodies,
+cross-skill pointers don't false-flag), **references to non-existent subagents**
+(e.g. ones deleted in a reorg), weak descriptions, oversized bodies,
 rigid-directive overuse, **duplicate names**, and **cross-description overlap**
 (routing/trigger-conflict risk caught statically). Use `--warnings-as-errors`
 to fail CI on warnings too.
@@ -252,7 +253,7 @@ python3 tools/agent-evals/scripts/improve_body.py \
 
 - `scripts/aggregate_benchmark.py` — runs → `benchmark.json` + `benchmark.md`
 - `scripts/validate_agent.py` — fast advisory lint of a single agent definition
-- `scripts/doctor.py` — static health check across ALL agents + skills (frontmatter, broken refs, name↔location, duplicate names, description overlap); CI-ready
+- `scripts/doctor.py` — static health check across ALL agents + skills (frontmatter, broken refs, stale subagent refs, name↔location, duplicate names, description overlap); CI-ready
 - `scripts/trigger_eval.py` — routing/discrimination eval: which sibling agent wins a query (one pass)
 - `scripts/optimize_description.py` — autonomous description/routing loop ✅
 - `scripts/improve_body.py` — autonomous body loop for objective agents ✅
