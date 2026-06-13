@@ -35,6 +35,14 @@ RIGID = ("NEVER", "ALWAYS", "MUST")
 RIGID_LIMIT = 6
 REF_DIRS = ("references", "reference", "scripts", "assets")
 OVERLAP_THRESHOLD = 0.40
+# Agents that exist outside .claude/agents/ and so must not be flagged as stale.
+BUILTIN_AGENTS = {"general-purpose", "explore", "plan", "claude", "subagent",
+                  "statusline-setup", "output-style-setup"}
+# High-precision "this is an agent invocation" patterns; each captures the name.
+AGENT_REF_RE = re.compile(
+    r"`([a-z][a-z0-9-]{2,})`\s+(?:sub-?agents?|agents?)\b"
+    r"|spawn\s+(?:a|an)\s+`?([a-z][a-z0-9-]{2,})`?\s+(?:sub-?agents?|agents?)"
+    r"|subagent[_-]?type\s*[:=]\s*[\"'`]?([a-z][a-z0-9-]{2,})")
 STOPWORDS = set("""the a an and or of to for with when use used using this that
 these those your you user users it its on in at by as is are be will would can
 should from into about across via per each any all both new make sure want need
@@ -85,7 +93,7 @@ def build_file_index(repo: str) -> List[str]:
     return paths
 
 
-def check_item(repo: str, item: dict, file_index: List[str]) -> List[Finding]:
+def check_item(repo: str, item: dict, file_index: List[str], valid_agents: set) -> List[Finding]:
     out = []
     rel = _rel(repo, item["path"])
     name, desc, body = item["name"], item["desc"], item["body"]
@@ -121,6 +129,17 @@ def check_item(repo: str, item: dict, file_index: List[str]) -> List[Finding]:
         if not anywhere:
             out.append(Finding("ERROR", rel, "references a file that exists nowhere in the "
                                "repo: `{}`".format(ref)))
+
+    # references to agents that no longer exist (e.g. reorg-deleted subagents)
+    seen_agents = set()
+    for m in AGENT_REF_RE.finditer(body):
+        ref = (m.group(1) or m.group(2) or m.group(3) or "").lower()
+        if not ref or ref in seen_agents:
+            continue
+        seen_agents.add(ref)
+        if ref not in valid_agents:
+            out.append(Finding("WARN", rel, "references a subagent that doesn't exist in "
+                               ".claude/agents/: `{}`".format(ref)))
 
     # body length
     n = len([l for l in body.splitlines() if l.strip()])
@@ -186,9 +205,11 @@ def main() -> int:
         return 2
 
     file_index = build_file_index(repo)
+    valid_agents = BUILTIN_AGENTS | {it["name"].lower() for it in items
+                                     if it["kind"] == "agent" and it["name"]}
     findings: List[Finding] = []
     for it in items:
-        findings.extend(check_item(repo, it, file_index))
+        findings.extend(check_item(repo, it, file_index, valid_agents))
     findings.extend(cross_checks(repo, items))
 
     errors = [f for f in findings if f.level == "ERROR"]

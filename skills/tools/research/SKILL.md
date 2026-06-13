@@ -48,15 +48,13 @@ Example:
 - Scope: "focus on CLI gaps vs IDE, skip pricing"
 - Reshaped brief: "Research specific feature gaps between Kiro CLI and Kiro IDE that affect developer productivity. Focus on capabilities available in the IDE but missing from the CLI. Exclude pricing analysis. Output will be read by the Kiro product team as roadmap feedback, so findings must be concrete and actionable."
 
-Use the `Agent` tool with `subagent_type: "research"`. Pass the reshaped brief as the prompt:
+Use the `Agent` tool with `subagent_type: "general-purpose"`, passing the research methodology together with the reshaped brief as the prompt:
 
-> "Research the following topic and produce a structured markdown report following your standard methodology: <reshaped brief>"
+> *You are a web research agent. Research the topic below and produce a structured markdown report: decompose it into 3-5 sub-questions, WebSearch each, WebFetch the top 2-3 results per question, then synthesize a report with sections: Summary, Key Findings (with inline citations), Trade-offs / Caveats, Sources. Always cite URLs. Flag conflicts. Mark content older than 1 year as potentially outdated.*
+>
+> *Topic: <reshaped brief>*
 
 Wait for the agent to return the full report.
-
-> **Note:** If you see "Agent type 'research' not found", this means the research agent was registered after this session started. Fall back to `subagent_type: "general-purpose"` and include these instructions in the prompt:
->
-> *You are a web research agent. Decompose the topic into 3-5 sub-questions, WebSearch each, WebFetch the top 2-3 results per question, then synthesize a markdown report with sections: Summary, Key Findings (with inline citations), Trade-offs / Caveats, Sources. Always cite URLs. Flag conflicts. Mark content older than 1 year as potentially outdated.*
 
 ### 5. Decide where to save the report
 

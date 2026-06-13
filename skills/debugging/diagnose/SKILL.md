@@ -136,9 +136,9 @@ Required before declaring done:
 
 **Then ask: what would have prevented this bug?** If the answer involves architectural change (no good test seam, tangled callers, hidden coupling) hand off to the `/improve-codebase-architecture` skill with the specifics. Make the recommendation **after** the fix is in, not before — you have more information now than when you started.
 
-## Agent Integrations
+## Writing the regression test
 
 ### After Phase 5 (fix validated)
-Spawn a `test-writer` subagent to write regression tests at the seam identified in Phase 5. Pass it: the bug mechanism, the fix, and the seam.
+Write the regression test at the seam identified in Phase 5: turn the minimised repro into a failing test, watch it fail, apply the fix, watch it pass. Capture the bug mechanism, the fix, and the seam in the test's name or a comment so the next reader learns from it.
 
-> **Before spawning:** Skip if no correct seam exists (already flagged as a finding in Phase 5). If test-writer returns empty or errors, note it in the Phase 6 cleanup checklist — do not mark the regression test step complete.
+> **Before writing:** Skip if no correct seam exists (already flagged as a finding in Phase 5). If you can't write a meaningful test at the seam, note it in the Phase 6 cleanup checklist — do not mark the regression-test step complete.
