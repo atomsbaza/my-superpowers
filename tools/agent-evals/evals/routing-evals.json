@@ -20,6 +20,24 @@
   {"query": "Plan sprint 14: the sprint goal, which stories fit our velocity of 32 points, and the dependencies and risks.", "expected_agent": "po-agent"},
   {"query": "The 'export to CSV' story has no acceptance criteria. Write SMART Given/When/Then ACs covering happy path, empty data, large files, and unauthorized access.", "expected_agent": "po-agent"},
 
+  {"query": "Review this `@Observable` view model — I'm getting actor-isolation warnings and I'm not sure the Sendable conformance on the model I pass into a detached Task is correct under Swift 6 strict concurrency.", "expected_agent": "swift-reviewer"},
+  {"query": "Audit this image-cache class for retain cycles — the completion closures capture self strongly and I don't think ARC is ever releasing the cached entries.", "expected_agent": "swift-reviewer"},
+
+  {"query": "Review my SwiftUI settings screen against the iOS 26 HIG — the toolbar treatment, whether the Liquid Glass usage is right, and if the SF Symbols are the correct weights.", "expected_agent": "ui-reviewer"},
+  {"query": "Does this custom card layout reflow correctly at the largest Dynamic Type sizes, and is the spacing and control sizing HIG-compliant on macOS Tahoe?", "expected_agent": "ui-reviewer"},
+
+  {"query": "My App Store archive fails with 'no provisioning profile matches' for the distribution build — sort out the signing and the export options so I can ship it.", "expected_agent": "xcode-build"},
+  {"query": "Swift Package Manager won't resolve after I bumped a dependency — there's a version conflict and the build can't find the module. Fix the package resolution so it builds.", "expected_agent": "xcode-build"},
+
+  {"query": "I'm submitting to the App Store next week — audit my PrivacyInfo.xcprivacy and the privacy nutrition labels for completeness against what the app actually collects.", "expected_agent": "privacy-reviewer"},
+  {"query": "We're adding the Firebase Analytics SDK, which collects device identifiers — what privacy-manifest entries and NSUserTrackingUsageDescription changes do I need before release?", "expected_agent": "privacy-reviewer"},
+
+  {"query": "I just built the new onboarding flow — run it in the simulator and confirm each screen renders and the Continue button advances to the next step before I mark this done.", "expected_agent": "simulator-qa"},
+  {"query": "Check how the feed screen looks in the simulator for the empty state and the network-error state — take screenshots and confirm the UI is correct in both.", "expected_agent": "simulator-qa"},
+
+  {"query": "Run the full unit and integration test suite on the simulator and triage whatever fails so I know what's actually broken.", "expected_agent": "ios-test-runner"},
+  {"query": "I refactored the sync layer — run the tests on the simulator to confirm I didn't introduce regressions, and make sure the SwiftData model tests are using XCTestCase.", "expected_agent": "ios-test-runner"},
+
   {"query": "Our React + TypeScript cart re-renders on every keystroke. Profile it and fix the unnecessary re-renders.", "expected_agent": "none"},
   {"query": "I need a Python script that reads a folder of CSVs and loads them into Postgres with pandas.", "expected_agent": "none"},
   {"query": "Our Swift iOS app crashes on launch after the iOS 18 update — find out why and fix it.", "expected_agent": "none"}
