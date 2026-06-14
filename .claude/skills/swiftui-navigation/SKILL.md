@@ -152,6 +152,16 @@ Fine-tuning: `.fitted(horizontal:vertical:)` constrains fitting axes; `.sticky(h
 
 **Enum-driven sheet routing:** Define a `SheetDestination` enum that is `Identifiable`, store it on the router, and map it with a shared view modifier. This lets any child view present sheets without prop-drilling. See [references/sheets.md](references/sheets.md) for the full centralized sheet routing pattern.
 
+**Item-bound alerts and dialogs (iOS 27+, verified — WWDC 2026):** `.alert` and `.confirmationDialog` now support the same `item:` binding pattern as `.sheet`, so the presentation appears automatically when a bound optional is set — no separate `isPresented` Bool plus selected-value pair.
+
+```swift
+@State private var pendingDeletion: Item?
+
+.confirmationDialog("Delete?", item: $pendingDeletion) { item in
+    Button("Delete \(item.name)", role: .destructive) { delete(item) }
+}
+```
+
 ## Tab-Based Navigation
 
 Use the `Tab` API with a selection binding for scalable tab architecture. Each tab should wrap its content in an independent `NavigationStack`.
