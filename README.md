@@ -6,7 +6,7 @@ Personal collection of AI coding agent skills and agents for Claude Code.
 
 ```
 .claude/agents/  Claude Code agent definitions  (→ ~/.claude/agents/)
-.claude/skills/  Claude Code skills — .NET / QA / PO  (→ ~/.claude/skills/)
+.claude/skills/  Claude Code skills — .NET / QA / PO / Apple  (→ ~/.claude/skills/)
 skills/          Cross-platform skills           (→ ~/.claude/skills/)
 docs/            Research reports, session logs, and design specs
   research/
@@ -114,6 +114,18 @@ Claude Code agent definitions live in `.claude/agents/` (one flat `.md` each).
 | `qa-dotnet-engineer` | Full QA lifecycle: risk analysis, ISTQB manual test cases, Reqnroll BDD, Playwright E2E, NBomber performance, defect reports. |
 | `po-agent` | Language-agnostic Product Owner: vision, BRD, PRD, user stories, acceptance criteria, backlog prioritization (RICE/WSJF/MoSCoW/Kano), sprint plans, roadmaps, release notes. |
 
+#### Apple / iOS / macOS Agents
+> Focused, single-responsibility agents for Apple platform development (iOS 26, macOS 26, Swift 6.3). Prefer XcodeBuildMCP over shell.
+
+| Agent | What it does |
+|---|---|
+| `swift-reviewer` | Swift 6.3 review: concurrency safety, `@Observable` isolation, Sendable, ARC, Foundation/AppKit/SwiftUI API correctness. |
+| `ui-reviewer` | HIG, iOS 26 Liquid Glass, macOS Tahoe, SF Symbols 6, Dynamic Type, accessibility. |
+| `xcode-build` | Build failures, code signing, privacy manifests, SPM, archiving. |
+| `privacy-reviewer` | `PrivacyInfo.xcprivacy`, `NS*UsageDescription` quality, App Store privacy labels. |
+| `simulator-qa` | Verifies the running app via XcodeBuildMCP screenshot/snapshot_ui — golden path and edge states. |
+| `ios-test-runner` | Runs `test_sim`, triages results, enforces XCTestCase for SwiftData tests. |
+
 Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-evals/) — an A/B evaluation engine plus autonomous improvement loops.
 
 #### Principal .NET Engineer Skills (`.claude/skills/`)
@@ -154,6 +166,17 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 | `writing-roadmap` | Outcome-based Now/Next/Later or OKR roadmap with exclusions |
 | `writing-release-notes` | Customer-facing release notes from sprint deliverables or commit history |
 | `orchestrating-po-workflow` | Chains all 9 PO skills via .po-workflow-state.json |
+
+#### Apple / SwiftUI Skills (`.claude/skills/`)
+| Skill | What it does |
+|---|---|
+| `swift-concurrency-expert` | Swift 6.2+ concurrency review + remediation: Sendable, `@MainActor`, actor isolation, data-race fixes, completion-handler → async/await migration |
+| `swift-concurrency-pro` | Concurrency correctness, modern async/await API usage, and common pitfalls when reading/writing/reviewing Swift concurrency code |
+| `swiftui-patterns` | Modern MV architecture, `@Observable` ownership, `@State`/`@Bindable`/`@Environment` wiring, view decomposition, `.task` data loading |
+| `swiftui-navigation` | NavigationStack, NavigationSplitView, sheets, tabs, programmatic routing, deep linking, universal links, custom URL schemes |
+| `swiftui-layout-components` | Stacks, grids, lists, forms, `.searchable`, ViewThatFits, Layout protocol, Liquid Glass containers, adaptive multi-platform layouts |
+| `swiftui-performance` | Diagnose slow rendering, janky scroll, body-evaluation cost, identity churn, lazy loading, Instruments profiling guidance |
+| `swiftdata-pro` | Writes, reviews, and improves SwiftData code — modelling, queries, migrations, persistence — using modern APIs and best practices |
 
 ---
 
