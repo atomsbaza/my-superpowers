@@ -16,6 +16,7 @@ docs/            Research reports, session logs, and design specs
     ios/         iOS / Xcode / Swift research
     kiro/        Kiro CLI research (archived)
     mcp/         MCP server research
+    sonarqube/   SonarQube / .NET code-quality research
   sessions/      Work session summaries
   superpowers/   Plans and specs for this repo
 tools/           Repo tooling (not installed)
