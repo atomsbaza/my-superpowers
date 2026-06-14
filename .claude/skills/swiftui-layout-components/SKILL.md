@@ -374,6 +374,21 @@ FlowLayout(spacing: 8) {
 
 ---
 
+## iOS 27 Toolbar & Container Additions (verified — WWDC 2026)
+
+**Adaptive toolbars** — as horizontal space shrinks, control what survives instead of letting SwiftUI drop buttons arbitrarily:
+
+- **`.visibilityPriority(.high)`** — keeps key toolbar groups visible the longest.
+- **`.toolbarOverflowMenu`** — permanently routes lower-priority items into an overflow ("…") menu.
+- **`.topBarPinnedTrailing`** — pins a critical action (e.g. Share) to the trailing edge so it is never collapsed.
+- **`.toolbarMinimizeBehavior(_:)`** — collapses the navigation bar on scroll to maximize content area.
+
+**Swipe actions beyond `List`** — add **`.swipeActionsContainer`** to any `ScrollView` to enable `swipeActions` across that layout, not just in `List` rows.
+
+**Reorderable containers** — new reorderable container APIs let people drag to rearrange items in scroll containers (and now on watchOS). Apple's WWDC26 SwiftUI guide confirms the capability; the exact modifier names are not yet pinned in the official guide, so verify against the shipping SDK before hard-coding them.
+
+---
+
 ## Common Mistakes
 
 | Mistake | Impact | Fix |

@@ -291,6 +291,10 @@ Never create manual `Task` in `onAppear` unless you need to store a reference fo
 - **`@Animatable`** macro -- synthesizes `AnimatableData` conformance automatically (see `swiftui-animation` skill)
 - **`TextEditor`** -- now accepts `AttributedString` for rich text
 
+### iOS 27 additions (verified — WWDC 2026)
+
+- **`@State` is now a macro with lazy initialization** -- an `@Observable` class stored in `@State` is initialized **once per view lifetime**, not on every parent re-render. Removes the long-standing footgun where putting a model in `@State` re-ran its initializer on each parent update. Back-ported to iOS 17 / macOS 14, so `@State private var model = Model()` is now the safe default for view-owned models.
+
 ## Performance Guidelines
 
 - **Lazy stacks/grids:** Use `LazyVStack`, `LazyHStack`, `LazyVGrid`, `LazyHGrid` for large collections. Regular stacks render all children immediately.
