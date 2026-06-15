@@ -101,19 +101,34 @@ After `analyzing-requirements`, check:
 - **External APIs?** If requirements mention integrations: add contract tests in `writing-tests` step.
 - **Auth involved?** If requirements include authentication or authorization: add an ADR for the auth mechanism and flag to `reviewing-code` to check authorization on all endpoints.
 
+## Entry Modes
+
+### Manual (default)
+User describes requirements in conversation. Ask for the feature requirements if not already provided.
+
+### Handoff (from PO workflow)
+If `po-to-engineer-handoff.json` exists in the working directory:
+1. Read the file.
+2. Check `open_questions_resolved`. If `false`, stop and tell the user:
+   > "The PO workflow has unresolved open questions. Resolve them and set `open_questions_resolved: true` in `po-to-engineer-handoff.json` before continuing."
+3. If `true`, load requirements from `prd_path` and stories from `stories_path` (read those files from disk — do not paste content into the conversation).
+4. Set `feature` in `workflow-state.json` to `product_name` from the handoff file.
+5. Skip the manual requirements prompt — proceed directly to `analyzing-requirements` with the loaded PRD and stories as input.
+
 ## Running the Workflow
 
 When the user invokes this skill:
 
-1. Greet with the workflow overview and ask for the feature requirements if not already provided.
-2. Initialize `workflow-state.json`.
-3. Run each skill in sequence, waiting for completion before proceeding.
-4. At each stage transition, print a one-line status update to the conversation:
+1. Check for `po-to-engineer-handoff.json`. If found, use Handoff mode. Otherwise, use Manual mode.
+2. Greet with the workflow overview. In Manual mode, ask for the feature requirements if not already provided.
+3. Initialize `workflow-state.json`.
+4. Run each skill in sequence, waiting for completion before proceeding.
+5. At each stage transition, print a one-line status update to the conversation:
    ```
    ✅ Stage complete: requirements_analyzed — 3 bounded contexts, 12 FRs, 4 ADRs recommended
    ```
-5. If any stage produces a BLOCKER finding or an unanswerable open question, pause and surface it to the user before continuing.
-6. On completion, print a final summary:
+6. If any stage produces a BLOCKER finding or an unanswerable open question, pause and surface it to the user before continuing.
+7. On completion, print a final summary:
 
 ```markdown
 ## Workflow Complete
@@ -148,3 +163,5 @@ The workflow itself does not write code files — it orchestrates the skills tha
 - `workflow-state.json` (initialized and maintained throughout)
 - Stage transition status messages in the conversation
 - Final summary report
+
+In Handoff mode, `po-to-engineer-handoff.json` is consumed (read-only) as input. It is not modified by this workflow.

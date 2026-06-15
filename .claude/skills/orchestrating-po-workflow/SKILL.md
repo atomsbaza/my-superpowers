@@ -133,7 +133,27 @@ After `current_phase = "acceptance_criteria"`:
 After all stages:
 - Check `open_questions` in state — surface any unresolved questions to the user
 
-### Step 5 — Final Summary
+### Step 5 — Write Engineer Handoff File
+
+Before printing the final summary, write `po-to-engineer-handoff.json` to the working directory.
+Resolve the actual file paths from the artifacts produced during the workflow (read `.po-workflow-state.json` for `last_artifact` entries).
+
+```json
+{
+  "product_name": "<from state>",
+  "prd_path": "docs/requirements/prd-<product>-v<N>.md",
+  "stories_path": "docs/requirements/stories-<epic>-<date>.md",
+  "backlog_path": "docs/product/backlog-prioritization-<date>.md",
+  "business_goals": ["<from state.business_goals>"],
+  "open_questions_resolved": false,
+  "handoff_at": "<ISO timestamp>"
+}
+```
+
+Set `open_questions_resolved` to `true` only if `state.open_questions` is empty.
+If open questions remain, set it to `false` — the engineer workflow will gate on this field.
+
+### Step 6 — Final Summary
 
 After all stages complete, print:
 
@@ -152,15 +172,15 @@ After all stages complete, print:
 | Backlog Prioritization | ✅ | docs/product/backlog-prioritization-*.md |
 | Sprint Plan | ✅ / ⏭ Skipped | docs/sprints/sprint-N-plan.md |
 | Roadmap | ✅ | docs/product/roadmap-*.md |
+| Engineer Handoff | ✅ | po-to-engineer-handoff.json |
 
 ### Open Questions (Resolve Before Dev Starts)
 [List from state.open_questions]
 
 ### Recommended Next Steps
 1. Resolve open questions listed above
-2. Share PRD with engineering for feasibility review
-3. Run sprint planning session with the team
-4. Demo vision and roadmap to stakeholders
+2. Update `open_questions_resolved: true` in `po-to-engineer-handoff.json`
+3. Run the engineer workflow — it will read `po-to-engineer-handoff.json` automatically
 ```
 
 ## Error Handling Policy
