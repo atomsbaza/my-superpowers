@@ -67,6 +67,7 @@ The script symlinks agents and skills into place.
 | Skill | What it does |
 |---|---|
 | `scrutinize` | Outsider sanity check — "should this exist and does it do what it claims?" |
+| `ponytail` | Force the laziest solution that works — YAGNI, stdlib over custom, native over deps (lite/full/ultra) |
 | `requesting-code-review` | Two-stage review: spec compliance first, then code quality |
 | `receiving-code-review` | Handle review feedback rigorously, not blindly |
 | `improve-codebase-architecture` | Find refactoring and architecture opportunities |
