@@ -49,6 +49,7 @@ The script symlinks agents and skills into place.
 | Skill | What it does |
 |---|---|
 | `brainstorming` | Explore intent and design before implementation |
+| `spec-writer` | Spec-first: feature request → structured spec + ACs + test skeletons, gates code until approved |
 | `writing-plans` | Turn a spec into a step-by-step implementation plan |
 | `spike` | Time-boxed investigation to answer "can we do X?" |
 | `prototype` | Build throwaway prototypes to explore designs |
@@ -60,6 +61,7 @@ The script symlinks agents and skills into place.
 |---|---|
 | `executing-plans` | Inline plan execution with checkpoints and status protocol |
 | `loop` | Engineering loop: implement → verify (Stop-hook checker) → repeat until tests pass or cap hit |
+| `tdd-loop` | TDD with automated loop verification: write failing test → implement → loop until green |
 | `subagent-driven-development` | Execute plans task-by-task with fresh subagents + 2-stage review |
 | `dispatching-parallel-agents` | Run independent tasks in parallel |
 
@@ -69,6 +71,7 @@ The script symlinks agents and skills into place.
 |---|---|
 | `scrutinize` | Outsider sanity check — "should this exist and does it do what it claims?" |
 | `ponytail` | Force the laziest solution that works — YAGNI, stdlib over custom, native over deps (lite/full/ultra) |
+| `verify-before-stop` | Always-on regression guard: runs tests on git-changed files before every session end |
 | `requesting-code-review` | Two-stage review: spec compliance first, then code quality |
 | `receiving-code-review` | Handle review feedback rigorously, not blindly |
 | `improve-codebase-architecture` | Find refactoring and architecture opportunities |

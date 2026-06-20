@@ -1,0 +1,15 @@
+{
+  "_comment": "spec-writer PreToolUse gate. Merge into .claude/settings.json or settings.local.json.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/skills/spec-writer/hooks/gate.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

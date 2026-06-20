@@ -1,0 +1,15 @@
+{
+  "_comment": "verify-before-stop Stop hook. Merge into .claude/settings.json or settings.local.json. Coexists safely with the loop skill's Stop hook.",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/skills/verify-before-stop/hooks/verify-changed.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
