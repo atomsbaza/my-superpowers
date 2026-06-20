@@ -59,6 +59,7 @@ The script symlinks agents and skills into place.
 | Skill | What it does |
 |---|---|
 | `executing-plans` | Inline plan execution with checkpoints and status protocol |
+| `loop` | Engineering loop: implement → verify (Stop-hook checker) → repeat until tests pass or cap hit |
 | `subagent-driven-development` | Execute plans task-by-task with fresh subagents + 2-stage review |
 | `dispatching-parallel-agents` | Run independent tasks in parallel |
 

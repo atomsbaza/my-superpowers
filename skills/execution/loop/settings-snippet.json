@@ -1,0 +1,15 @@
+{
+  "_comment": "Loop skill Stop hook. Merge this into your project's .claude/settings.json or settings.local.json.",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/skills/loop/hooks/verify.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
