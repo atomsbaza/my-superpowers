@@ -190,5 +190,17 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 
 ## Credits
 
-Several skills adapted from [obra/superpowers](https://github.com/obra/superpowers) by Jesse Vincent.
-Several skills adapted from [thananon/9arm-skills](https://github.com/thananon/9arm-skills) by Thananon.
+Several skills adapted from [obra/superpowers](https://github.com/obra/superpowers) by Jesse Vincent (MIT):
+`brainstorming`, `writing-plans`, `spike`, `prototype`, `adr`, `subagent-driven-development`,
+`executing-plans`, `dispatching-parallel-agents`, `requesting-code-review`, `receiving-code-review`,
+`verification-before-completion`, `using-git-worktrees`, `finishing-a-development-branch`,
+`writing-skills`, `find-skills`
+
+Several skills adapted from [thananon/9arm-skills](https://github.com/thananon/9arm-skills) by Thananon:
+`scrutinize`, `post-mortem`
+
+Skills created in this repo: `loop`, `tdd-loop`, `spec-writer`, `circuit-breaker`,
+`secrets-guardrail`, `verify-before-stop`, `session-promoter`, `ponytail`, `research`,
+`diagnose`, `improve-codebase-architecture`, `session-summary`, `handoff`, `management-talk`
+
+See [ATTRIBUTION.md](ATTRIBUTION.md) for full details.
