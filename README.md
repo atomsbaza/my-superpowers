@@ -72,6 +72,8 @@ The script symlinks agents and skills into place.
 | `scrutinize` | Outsider sanity check — "should this exist and does it do what it claims?" |
 | `ponytail` | Force the laziest solution that works — YAGNI, stdlib over custom, native over deps (lite/full/ultra) |
 | `verify-before-stop` | Always-on regression guard: runs tests on git-changed files before every session end |
+| `circuit-breaker` | Loop Stop hook with stuck-detection: escalates to human when the same error repeats N times |
+| `secrets-guardrail` | PostToolUse hook that redacts API keys, tokens, and passwords from all tool output |
 | `requesting-code-review` | Two-stage review: spec compliance first, then code quality |
 | `receiving-code-review` | Handle review feedback rigorously, not blindly |
 | `improve-codebase-architecture` | Find refactoring and architecture opportunities |
@@ -104,6 +106,7 @@ The script symlinks agents and skills into place.
 | Skill | What it does |
 |---|---|
 | `research` | Web research — audience/goal/scope interview, then searches, fetches, and synthesizes a cited report saved to `docs/research/<topic>/` |
+| `session-promoter` | End-of-session learning extractor: promotes corrections, decisions, and project facts into persistent memory |
 | `find-skills` | Discover and install new skills |
 | `writing-skills` | TDD-based guide for creating new skills |
 

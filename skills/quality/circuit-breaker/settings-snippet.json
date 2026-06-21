@@ -1,0 +1,15 @@
+{
+  "_comment": "circuit-breaker Stop hook — drop-in replacement for loop/hooks/verify.sh. Use one OR the other, not both.",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/skills/circuit-breaker/hooks/circuit-breaker.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

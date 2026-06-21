@@ -1,0 +1,15 @@
+{
+  "_comment": "secrets-guardrail PostToolUse hook. Merge into .claude/settings.json or settings.local.json. Safe to combine with other PostToolUse hooks.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/skills/secrets-guardrail/hooks/redact.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
