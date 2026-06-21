@@ -41,6 +41,11 @@ by Thananon:
 **skills/debugging/**
 - `post-mortem`
 
+## DietrichGebert/ponytail
+
+`skills/quality/ponytail/` was adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail),
+licensed under MIT. Pinned at v4.2.0 (June 2026).
+
 ## Original work
 
 The following were created independently in this repo:
@@ -48,13 +53,11 @@ The following were created independently in this repo:
 - `skills/tools/research/` — custom web research skill
 - `skills/tools/session-promoter/` — end-of-session memory promotion
 - `skills/quality/improve-codebase-architecture/`
-- `skills/quality/ponytail/` — YAGNI-first minimalism skill
-- `skills/quality/loop/` — engineering loop with Stop-hook maker-checker
 - `skills/quality/circuit-breaker/` — stuck-detection wrapper for the loop hook
 - `skills/quality/secrets-guardrail/` — PostToolUse credential redaction hook
 - `skills/quality/verify-before-stop/` — always-on regression guard
 - `skills/planning/spec-writer/` — spec-first development with PreToolUse gate
-- `skills/execution/loop/` — engineering iteration loop
+- `skills/execution/loop/` — engineering loop with Stop-hook maker-checker
 - `skills/execution/tdd-loop/` — TDD with automated loop verification
 - `skills/communication/` — session-summary, handoff, management-talk
 - `skills/debugging/diagnose/`
