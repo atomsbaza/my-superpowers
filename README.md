@@ -54,6 +54,10 @@ The script symlinks agents and skills into place.
 | `spike` | Time-boxed investigation to answer "can we do X?" |
 | `prototype` | Build throwaway prototypes to explore designs |
 | `adr` | Capture architecture decisions as ADR documents |
+| `codebase-design` | Deep module design vocabulary — seams, interfaces, testability heuristics |
+| `domain-modeling` | Build/sharpen ubiquitous language; writes `CONTEXT.md` and ADRs as you design |
+| `grill-with-docs` | Relentless design interview that also writes ADRs and glossary entries as it goes |
+| `to-issues` | Break a PRD into independently-grabbable vertical-slice GitHub Issues |
 
 ### Execution
 
@@ -109,6 +113,7 @@ The script symlinks agents and skills into place.
 | `session-promoter` | End-of-session learning extractor: promotes corrections, decisions, and project facts into persistent memory |
 | `find-skills` | Discover and install new skills |
 | `writing-skills` | TDD-based guide for creating new skills |
+| `writing-great-skills` | Reference vocabulary and principles for writing predictable, well-structured skills |
 
 ---
 
@@ -198,6 +203,9 @@ Several skills adapted from [obra/superpowers](https://github.com/obra/superpowe
 
 Several skills adapted from [thananon/9arm-skills](https://github.com/thananon/9arm-skills) by Thananon:
 `scrutinize`, `post-mortem`
+
+Several skills adapted from [mattpocock/skills](https://github.com/mattpocock/skills) by Matt Pocock:
+`codebase-design`, `domain-modeling`, `grill-with-docs`, `to-issues`, `writing-great-skills`
 
 Skills created in this repo: `loop`, `tdd-loop`, `spec-writer`, `circuit-breaker`,
 `secrets-guardrail`, `verify-before-stop`, `session-promoter`, `ponytail`, `research`,

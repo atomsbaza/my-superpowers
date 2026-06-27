@@ -41,6 +41,20 @@ by Thananon:
 **skills/debugging/**
 - `post-mortem`
 
+## mattpocock/skills
+
+The following skills were adapted from [mattpocock/skills](https://github.com/mattpocock/skills)
+by Matt Pocock:
+
+**skills/planning/**
+- `codebase-design`
+- `domain-modeling`
+- `grill-with-docs`
+- `to-issues`
+
+**skills/tools/**
+- `writing-great-skills`
+
 ## DietrichGebert/ponytail
 
 `skills/quality/ponytail/` was adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail),
