@@ -58,6 +58,8 @@ The script symlinks agents and skills into place.
 | `domain-modeling` | Build/sharpen ubiquitous language; writes `CONTEXT.md` and ADRs as you design |
 | `grill-with-docs` | Relentless design interview that also writes ADRs and glossary entries as it goes |
 | `to-issues` | Break a PRD into independently-grabbable vertical-slice GitHub Issues |
+| `scale-audit` | Score an architecture proposal against the Order of Magnitude Playbook — flags premature complexity and names the load trigger for the next tier |
+| `quarterly-evolution` | Turn "we need to fix X" into a fundable quarterly proposal: entropy audit, business outcome, deferral cost, and success condition |
 
 ### Execution
 
@@ -68,6 +70,7 @@ The script symlinks agents and skills into place.
 | `tdd-loop` | TDD with automated loop verification: write failing test → implement → loop until green |
 | `subagent-driven-development` | Execute plans task-by-task with fresh subagents + 2-stage review |
 | `dispatching-parallel-agents` | Run independent tasks in parallel |
+| `benchmark-sprint` | Parallel agent fleet tests N architectural variants simultaneously and returns a comparison report — 3 days of manual benchmarking in 20 minutes |
 
 ### Quality & Review
 
@@ -82,6 +85,8 @@ The script symlinks agents and skills into place.
 | `receiving-code-review` | Handle review feedback rigorously, not blindly |
 | `improve-codebase-architecture` | Find refactoring and architecture opportunities |
 | `verification-before-completion` | Run checks before claiming work is done |
+| `good-enough` | Detects the Esthetics Trap — finds the value ceiling, audits remaining effort as VALUE vs AESTHETICS, and recommends ship/defer |
+| `pragmatic-review` | Scores a proposal against the Engineering Diagnostic Matrix (scale strategy, tech choice, quality definition, reaction to AI) and outputs concrete adjustments |
 
 ### Debugging
 
@@ -104,6 +109,7 @@ The script symlinks agents and skills into place.
 | `session-summary` | Summary of current work session from git + context |
 | `handoff` | Compact conversation for another agent to pick up |
 | `management-talk` | Rewrite technical content for leadership audiences |
+| `business-impact` | Translate a technical proposal into quantified business terms: revenue at risk, churn %, uptime hours, cost per hour of downtime |
 
 ### Tools
 
@@ -209,6 +215,8 @@ Several skills adapted from [mattpocock/skills](https://github.com/mattpocock/sk
 
 Skills created in this repo: `loop`, `tdd-loop`, `spec-writer`, `circuit-breaker`,
 `secrets-guardrail`, `verify-before-stop`, `session-promoter`, `ponytail`, `research`,
-`diagnose`, `improve-codebase-architecture`, `session-summary`, `handoff`, `management-talk`
+`diagnose`, `improve-codebase-architecture`, `session-summary`, `handoff`, `management-talk`,
+`scale-audit`, `quarterly-evolution`, `good-enough`, `pragmatic-review`, `business-impact`,
+`benchmark-sprint`
 
 See [ATTRIBUTION.md](ATTRIBUTION.md) for full details.
