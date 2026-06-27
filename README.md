@@ -60,6 +60,7 @@ The script symlinks agents and skills into place.
 | `to-issues` | Break a PRD into independently-grabbable vertical-slice GitHub Issues |
 | `scale-audit` | Score an architecture proposal against the Order of Magnitude Playbook — flags premature complexity and names the load trigger for the next tier |
 | `quarterly-evolution` | Turn "we need to fix X" into a fundable quarterly proposal: entropy audit, business outcome, deferral cost, and success condition |
+| `loop-architect` | Design phase before running a loop: read project structure, verify scope, break into tasks, generate a complete four-component Loop Prompt ready for `/loop` |
 
 ### Execution
 
@@ -218,6 +219,9 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 
 **Derived from *The Pragmatic Engineering Playbook*** by Bassem Dghaidi (NotebookLM, 2024):
 `scale-audit`, `quarterly-evolution`, `good-enough`, `pragmatic-review`, `business-impact`, `benchmark-sprint`
+
+**Derived from *Loop Engineering*** by Bassem Dghaidi (NotebookLM, 2025):
+`loop-architect`
 
 **Original work in this repo:**
 `loop`, `tdd-loop`, `spec-writer`, `circuit-breaker`, `secrets-guardrail`, `verify-before-stop`,

@@ -60,6 +60,13 @@ by Matt Pocock:
 `skills/quality/ponytail/` was adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail),
 licensed under MIT. Pinned at v4.2.0 (June 2026).
 
+## Original work — Loop Engineering
+
+The following skill was created in this repo, derived from concepts in
+*Loop Engineering* (NotebookLM, 2025) by Bassem Dghaidi:
+
+- `skills/planning/loop-architect/` — Loop Prompt design: project read → scope verification → task breakdown → four-component Loop Prompt generation
+
 ## Original work — The Pragmatic Engineering Playbook
 
 The following six skills were created in this repo, derived from concepts in
