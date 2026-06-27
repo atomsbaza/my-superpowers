@@ -60,6 +60,18 @@ by Matt Pocock:
 `skills/quality/ponytail/` was adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail),
 licensed under MIT. Pinned at v4.2.0 (June 2026).
 
+## Original work — The Pragmatic Engineering Playbook
+
+The following six skills were created in this repo, derived from concepts in
+*The Pragmatic Engineering Playbook* (NotebookLM, 2024) by Bassem Dghaidi:
+
+- `skills/planning/scale-audit/` — Order of Magnitude Playbook enforcement
+- `skills/planning/quarterly-evolution/` — quarterly tech investment framing
+- `skills/quality/good-enough/` — Esthetics Trap detection
+- `skills/quality/pragmatic-review/` — Engineering Diagnostic Matrix scoring
+- `skills/communication/business-impact/` — business consequence translation
+- `skills/execution/benchmark-sprint/` — parallel architectural benchmarking harness
+
 ## Original work
 
 The following were created independently in this repo:
@@ -73,7 +85,12 @@ The following were created independently in this repo:
 - `skills/planning/spec-writer/` — spec-first development with PreToolUse gate
 - `skills/execution/loop/` — engineering loop with Stop-hook maker-checker
 - `skills/execution/tdd-loop/` — TDD with automated loop verification
-- `skills/communication/` — session-summary, handoff, management-talk
+- `skills/communication/` — session-summary, handoff, management-talk, business-impact
+- `skills/planning/scale-audit/` — Order of Magnitude Playbook enforcement
+- `skills/planning/quarterly-evolution/` — quarterly tech investment framing
+- `skills/quality/good-enough/` — Esthetics Trap detection
+- `skills/quality/pragmatic-review/` — Engineering Diagnostic Matrix scoring
+- `skills/execution/benchmark-sprint/` — parallel architectural benchmarking harness
 - `skills/debugging/diagnose/`
 - `.claude/agents/` — all agent definitions
 - `.claude/skills/` — .NET / QA / Product Owner skills
