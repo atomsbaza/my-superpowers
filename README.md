@@ -201,22 +201,27 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 
 ## Credits
 
-Several skills adapted from [obra/superpowers](https://github.com/obra/superpowers) by Jesse Vincent (MIT):
+**Adapted from [obra/superpowers](https://github.com/obra/superpowers)** by Jesse Vincent (MIT):
 `brainstorming`, `writing-plans`, `spike`, `prototype`, `adr`, `subagent-driven-development`,
 `executing-plans`, `dispatching-parallel-agents`, `requesting-code-review`, `receiving-code-review`,
 `verification-before-completion`, `using-git-worktrees`, `finishing-a-development-branch`,
 `writing-skills`, `find-skills`
 
-Several skills adapted from [thananon/9arm-skills](https://github.com/thananon/9arm-skills) by Thananon:
+**Adapted from [thananon/9arm-skills](https://github.com/thananon/9arm-skills)** by Thananon:
 `scrutinize`, `post-mortem`
 
-Several skills adapted from [mattpocock/skills](https://github.com/mattpocock/skills) by Matt Pocock:
+**Adapted from [mattpocock/skills](https://github.com/mattpocock/skills)** by Matt Pocock:
 `codebase-design`, `domain-modeling`, `grill-with-docs`, `to-issues`, `writing-great-skills`
 
-Skills created in this repo: `loop`, `tdd-loop`, `spec-writer`, `circuit-breaker`,
-`secrets-guardrail`, `verify-before-stop`, `session-promoter`, `ponytail`, `research`,
-`diagnose`, `improve-codebase-architecture`, `session-summary`, `handoff`, `management-talk`,
-`scale-audit`, `quarterly-evolution`, `good-enough`, `pragmatic-review`, `business-impact`,
-`benchmark-sprint`
+**Adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)** (MIT):
+`ponytail`
+
+**Derived from *The Pragmatic Engineering Playbook*** by Bassem Dghaidi (NotebookLM, 2024):
+`scale-audit`, `quarterly-evolution`, `good-enough`, `pragmatic-review`, `business-impact`, `benchmark-sprint`
+
+**Original work in this repo:**
+`loop`, `tdd-loop`, `spec-writer`, `circuit-breaker`, `secrets-guardrail`, `verify-before-stop`,
+`session-promoter`, `research`, `diagnose`, `improve-codebase-architecture`, `session-summary`,
+`handoff`, `management-talk`
 
 See [ATTRIBUTION.md](ATTRIBUTION.md) for full details.
