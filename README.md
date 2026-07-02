@@ -117,6 +117,7 @@ The script symlinks agents and skills into place.
 | Skill | What it does |
 |---|---|
 | `research` | Web research — audience/goal/scope interview, then searches, fetches, and synthesizes a cited report saved to `docs/research/<topic>/` |
+| `teach` | Structured learning framework: manage MISSION, build reference materials, produce beautiful HTML lessons grounded in research, capture learning records |
 | `session-promoter` | End-of-session learning extractor: promotes corrections, decisions, and project facts into persistent memory |
 | `find-skills` | Discover and install new skills |
 | `writing-skills` | TDD-based guide for creating new skills |
