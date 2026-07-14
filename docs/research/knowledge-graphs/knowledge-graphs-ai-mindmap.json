@@ -1,0 +1,172 @@
+{
+  "name": "RAG and GraphRAG for Advanced AI Systems",
+  "children": [
+    {
+      "name": "Core Paradigms",
+      "children": [
+        {
+          "name": "Retrieval-Augmented Generation (RAG)",
+          "children": [
+            {
+              "name": "External knowledge grounding"
+            },
+            {
+              "name": "Dense semantic similarity"
+            },
+            {
+              "name": "Static one-shot retrieval"
+            }
+          ]
+        },
+        {
+          "name": "GraphRAG",
+          "children": [
+            {
+              "name": "Explicit relational structure"
+            },
+            {
+              "name": "Hierarchical organization"
+            },
+            {
+              "name": "Multi-hop reasoning chains"
+            }
+          ]
+        },
+        {
+          "name": "Neuro-Symbolic AI",
+          "children": [
+            {
+              "name": "Neural pattern learning"
+            },
+            {
+              "name": "Symbolic logic and rules"
+            },
+            {
+              "name": "Differentiable reasoning"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Agentic Search Systems",
+      "children": [
+        {
+          "name": "Training-Free Pipelines",
+          "children": [
+            {
+              "name": "Reasoning-driven (Search-o1)"
+            },
+            {
+              "name": "Orchestrated workflows (GraphSearch)"
+            },
+            {
+              "name": "Heuristic control"
+            }
+          ]
+        },
+        {
+          "name": "RL-Based Training",
+          "children": [
+            {
+              "name": "Policy optimization"
+            },
+            {
+              "name": "Group Relative Policy Optimization (GRPO)"
+            },
+            {
+              "name": "Search-R1 and Graph-R1"
+            }
+          ]
+        },
+        {
+          "name": "Operational Modules",
+          "children": [
+            {
+              "name": "Query decomposition"
+            },
+            {
+              "name": "Evidence verification"
+            },
+            {
+              "name": "Knowledge refinement"
+            },
+            {
+              "name": "Iterative retrieval"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "GraphRAG Architectures",
+      "children": [
+        {
+          "name": "Tree-based (Microsoft GraphRAG, RAPTOR)"
+        },
+        {
+          "name": "Entity Graph-based (HippoRAG2)"
+        },
+        {
+          "name": "Hypergraph-based (HyperGraphRAG)"
+        },
+        {
+          "name": "Tri-Graph / Linear (LinearRAG)"
+        }
+      ]
+    },
+    {
+      "name": "Benchmarks and Findings",
+      "children": [
+        {
+          "name": "RAGSearch Benchmark",
+          "children": [
+            {
+              "name": "Agentic search narrowing performance gaps"
+            },
+            {
+              "name": "GraphRAG stability and robustness"
+            },
+            {
+              "name": "Amortized offline preprocessing costs"
+            }
+          ]
+        },
+        {
+          "name": "GraphRAG-Bench Tasks",
+          "children": [
+            {
+              "name": "Level 1: Fact Retrieval"
+            },
+            {
+              "name": "Level 2: Complex Reasoning"
+            },
+            {
+              "name": "Level 3: Contextual Summarization"
+            },
+            {
+              "name": "Level 4: Creative Generation"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Applications",
+      "children": [
+        {
+          "name": "Healthcare (Clinical diagnosis)"
+        },
+        {
+          "name": "Scientific Discovery (AlphaGeometry)"
+        },
+        {
+          "name": "Robotics (Task planning)"
+        },
+        {
+          "name": "Finance (Compliance and Fraud)"
+        }
+      ]
+    }
+  ]
+}
