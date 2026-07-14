@@ -43,6 +43,20 @@
             },
             {
               "name": "Differentiable reasoning"
+            },
+            {
+              "name": "Benchmarks",
+              "children": [
+                {
+                  "name": "AlphaGeometry: 25/30 IMO geometry problems solved"
+                },
+                {
+                  "name": "AlphaProof: silver-medal standard, 2024 IMO"
+                }
+              ]
+            },
+            {
+              "name": "Constraint-satisfaction verifiers for regulated domains (healthcare, finance, law)"
             }
           ]
         }
@@ -95,6 +109,9 @@
               "name": "Iterative retrieval"
             }
           ]
+        },
+        {
+          "name": "Implicit Structure Hypothesis: agentic iteration mimics graph multi-hop paths"
         }
       ]
     },
@@ -102,16 +119,16 @@
       "name": "GraphRAG Architectures",
       "children": [
         {
-          "name": "Tree-based (Microsoft GraphRAG, RAPTOR)"
+          "name": "Tree-based (Microsoft GraphRAG, RAPTOR): recursive-summary hierarchical tree"
         },
         {
-          "name": "Entity Graph-based (HippoRAG2)"
+          "name": "Entity Graph-based (HippoRAG2): hippocampal-inspired PageRank propagation"
         },
         {
-          "name": "Hypergraph-based (HyperGraphRAG)"
+          "name": "Hypergraph-based (HyperGraphRAG): n-ary hyperedges for higher-order facts"
         },
         {
-          "name": "Tri-Graph / Linear (LinearRAG)"
+          "name": "Tri-Graph / Linear (LinearRAG): relation-free entity linking, near-zero indexing cost"
         }
       ]
     },
@@ -146,8 +163,70 @@
             },
             {
               "name": "Level 4: Creative Generation"
+            },
+            {
+              "name": "ICLR 2026: 1,018 questions across 16 CS disciplines, 5 question formats"
             }
           ]
+        },
+        {
+          "name": "Multi-hop vs. single-hop lift",
+          "children": [
+            {
+              "name": "+27.23 pts multi-hop (HotpotQA, MuSiQue, 2WikiMultiHopQA)"
+            },
+            {
+              "name": "+0.47 pts single-hop (NQ, PopQA, TriviaQA)"
+            },
+            {
+              "name": "Agentic dense RAG narrows multi-hop gap to +26.59"
+            }
+          ]
+        },
+        {
+          "name": "Retrieval vs. reasoning errors",
+          "children": [
+            {
+              "name": "Gold answer present in context 77-91% of the time"
+            },
+            {
+              "name": "Final accuracy only 35-78%"
+            },
+            {
+              "name": "73-84% of errors are reasoning failures, not retrieval failures"
+            }
+          ]
+        },
+        {
+          "name": "Entity-density effects",
+          "children": [
+            {
+              "name": "Diffbot KG-LM: GraphRAG 56.2% vs. vector RAG 16.7% on enterprise KPI queries"
+            },
+            {
+              "name": "Vector RAG collapses to 0% beyond 5 entities"
+            },
+            {
+              "name": "GraphRAG stays stable through 10+ entities"
+            }
+          ]
+        },
+        {
+          "name": "Cost and latency",
+          "children": [
+            {
+              "name": "GraphRAG adds 2.3x average latency overhead"
+            },
+            {
+              "name": "Average latency 7.37-9.03s, often underreported in vendor claims"
+            },
+            {
+              "name": "GraphRAG on NQ: $13.19 per 1M tokens vs. $0 for LinearRAG"
+            }
+          ]
+        },
+        {
+          "name": "Counterpoint: 'When to Use Graphs in RAG' finds GraphRAG often underperforms on real-world tasks"
         }
       ]
     },
@@ -165,6 +244,232 @@
         },
         {
           "name": "Finance (Compliance and Fraud)"
+        }
+      ]
+    },
+    {
+      "name": "Tooling Ecosystem",
+      "children": [
+        {
+          "name": "Graph Databases",
+          "children": [
+            {
+              "name": "Neo4j: market leader, default backing store for most GraphRAG frameworks"
+            },
+            {
+              "name": "FalkorDB: up to 496x faster p50 latency, 6x better memory efficiency; GraphRAG-SDK"
+            },
+            {
+              "name": "Memgraph: in-memory-first, BSL 1.1 license (~$25k/yr commercial), reported stability issues"
+            },
+            {
+              "name": "Kuzu: acquired by Apple, archived Oct 2025 \u2014 risky long-term bet despite community forks"
+            },
+            {
+              "name": "NebulaGraph: little recent development activity"
+            }
+          ]
+        },
+        {
+          "name": "Frameworks",
+          "children": [
+            {
+              "name": "Microsoft GraphRAG (~29.8k stars): entity/relation extraction + Leiden communities"
+            },
+            {
+              "name": "Query modes",
+              "children": [
+                {
+                  "name": "Global (community summaries)"
+                },
+                {
+                  "name": "Local (entity-level)"
+                },
+                {
+                  "name": "DRIFT (hybrid)"
+                }
+              ]
+            },
+            {
+              "name": "GraphRAG 1.0 (Dec 2024): 74x faster startup, 43% less storage"
+            },
+            {
+              "name": "LightRAG (Oct 2024): ~10x fewer tokens than GraphRAG via dual-level retrieval"
+            },
+            {
+              "name": "LazyGraphRAG (Jun 2025): indexing cost ~0.1% of full GraphRAG, defers construction to query time"
+            },
+            {
+              "name": "Graphiti (Zep AI): temporal KG layer on Neo4j, P95 300ms, no query-time LLM call"
+            },
+            {
+              "name": "Cognee: production-oriented, 30+ connectors, FalkorDB/Neo4j/NetworkX backends"
+            },
+            {
+              "name": "LangChain / LlamaIndex: orchestration glue, not standalone GraphRAG systems"
+            },
+            {
+              "name": "nano-graphrag: lightweight prototyping reimplementation, thin docs"
+            }
+          ]
+        },
+        {
+          "name": "Managed Offerings",
+          "children": [
+            {
+              "name": "Microsoft Discovery (Azure)"
+            },
+            {
+              "name": "Zep hosted offering"
+            },
+            {
+              "name": "Fluree"
+            },
+            {
+              "name": "Amazon Neptune (AWS-native)"
+            },
+            {
+              "name": "Self-hosted OSS on managed graph DB: FalkorDB Cloud, Neo4j AuraDB, Memgraph Cloud"
+            }
+          ]
+        },
+        {
+          "name": "Caveats",
+          "children": [
+            {
+              "name": "Kuzu's archival makes it a poor new choice regardless of technical merit"
+            },
+            {
+              "name": "Memgraph licensing needs legal review before commercial use"
+            },
+            {
+              "name": "GraphRAG vs. LightRAG is a workload trade-off, not a strict upgrade path"
+            },
+            {
+              "name": "Graphiti's temporal features are coupled to Neo4j, no backend-agnostic version"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "KGs as Agent Memory",
+      "children": [
+        {
+          "name": "Temporal / Bi-Temporal Model",
+          "children": [
+            {
+              "name": "t_valid / t_invalid: when a fact was true in the world"
+            },
+            {
+              "name": "t_created / t_expired: when the system learned about it"
+            },
+            {
+              "name": "Resolves contradictions without overwriting earlier facts"
+            }
+          ]
+        },
+        {
+          "name": "Episodic vs. Semantic Memory",
+          "children": [
+            {
+              "name": "Episodic buffer: last ~10 raw conversation turns"
+            },
+            {
+              "name": "Semantic (neocortical) memory: consolidates slowly, ~3 tokens/message growth"
+            },
+            {
+              "name": "Mirrors complementary-learning-systems theory from cognitive science"
+            }
+          ]
+        },
+        {
+          "name": "Consolidation Pipeline",
+          "children": [
+            {
+              "name": "Stage 1: LLM extraction plus contradiction detection"
+            },
+            {
+              "name": "Stage 2: conflict resolution via temporal precedence"
+            },
+            {
+              "name": "Stage 3: incremental entity/user profile update, not full rebuild"
+            }
+          ]
+        },
+        {
+          "name": "Entity Resolution",
+          "children": [
+            {
+              "name": "Multi-layer matching: embedding similarity, fuzzy strings, type constraints"
+            },
+            {
+              "name": "Mid-confidence matches create a SAME_AS edge flagged for human review"
+            },
+            {
+              "name": "Avoids silent identity-merging errors"
+            }
+          ]
+        },
+        {
+          "name": "Forgetting",
+          "children": [
+            {
+              "name": "Pruning and selective retention"
+            },
+            {
+              "name": "Mitigation of catastrophic forgetting"
+            },
+            {
+              "name": "'Forgetting-by-design' as a resource-optimization technique, not a failure mode"
+            }
+          ]
+        },
+        {
+          "name": "Benchmarks",
+          "children": [
+            {
+              "name": "Zep DMR: 94.8% vs. MemGPT 93.4%"
+            },
+            {
+              "name": "LongMemEval: Zep 63.8% vs. Mem0 (vector) 49.0%"
+            },
+            {
+              "name": "Context reduction: ~115k tokens down to ~1.6k"
+            },
+            {
+              "name": "LongMemEval: +18.5% accuracy, 90% latency reduction vs. baseline"
+            },
+            {
+              "name": "Caveat: vendor-sourced numbers merit independent replication"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Decision Guide",
+      "children": [
+        {
+          "name": "Single-hop facts, cost-sensitive, high volume \u2192 Dense RAG with strong (32B+) LLM"
+        },
+        {
+          "name": "Multi-hop or entity-dense domains (medical, legal) \u2192 GraphRAG (e.g. HippoRAG2)"
+        },
+        {
+          "name": "Specialized domain schemas, need logic-level accuracy \u2192 KAG (Knowledge-Augmented Generation)"
+        },
+        {
+          "name": "High-stakes / regulated tasks (healthcare, finance, law) \u2192 Neuro-Symbolic verifiers"
+        },
+        {
+          "name": "Task requires decomposition into sub-goals \u2192 training-free agentic workflow (GraphSearch style)"
+        },
+        {
+          "name": "Training a custom search agent \u2192 GRPO as the favorable optimization paradigm"
+        },
+        {
+          "name": "Conversational agent memory with evolving facts \u2192 temporal KG (Graphiti/Zep) over vector-only memory"
         }
       ]
     }
