@@ -126,6 +126,10 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 | `find-skills` | Discover and install new skills |
 | `writing-skills` | TDD-based guide for creating new skills |
 | `writing-great-skills` | Reference vocabulary and principles for writing predictable, well-structured skills |
+| `mediumlm` | Research a topic on Medium using the user's own logged-in session — search, fetch full article text, save a research note |
+| `notebooklm` | Full programmatic access to Google NotebookLM — create notebooks, add sources, generate podcasts/mind maps/study guides |
+| `oss-contribute` | End-to-end OSS contribution workflow — fork, orient, implement, scrutinize, open a PR |
+| `xcodebuildmcp-cli` | Reference for driving XcodeBuildMCP from the CLI for Apple platform builds |
 
 ---
 
@@ -138,6 +142,28 @@ Claude Code agent definitions live in `.claude/agents/` (one flat `.md` each).
 | `principal-dotnet-engineer` | Solo full-SDLC agent for C# .NET 8/10: requirements → design → implementation → tests → review. OceanBase, EF Core, MediatR, Serilog, xUnit, Testcontainers. |
 | `qa-dotnet-engineer` | Full QA lifecycle: risk analysis, ISTQB manual test cases, Reqnroll BDD, Playwright E2E, NBomber performance, defect reports. |
 | `po-agent` | Language-agnostic Product Owner: vision, BRD, PRD, user stories, acceptance criteria, backlog prioritization (RICE/WSJF/MoSCoW/Kano), sprint plans, roadmaps, release notes. |
+
+#### General Development Agents
+> Language- and platform-agnostic agents for everyday coding work.
+
+| Agent | What it does |
+|---|---|
+| `code-reviewer` | Reviews code changes for bugs, logic errors, edge cases, and security issues. |
+| `debugger` | Investigates bugs and unexpected behavior, root cause analysis. |
+| `dependency-auditor` | Audits a new dependency before it's added: security, maintenance health, license, alternatives. |
+| `doc-updater` | Keeps project documentation aligned with implementation after feature/architecture changes. |
+| `docs-writer` | Writes READMEs, API docs, inline comments, and changelogs. |
+| `pr-description` | Writes a pull request title and description from git diff and commit history. |
+| `refactor` | Refactors code for clarity, maintainability, or performance. |
+| `release-checklist` | Runs a pre-release checklist — iOS App Store, web app, or general. |
+| `research` | Web research agent — structured markdown report with cited sources. |
+| `silent-failure-hunter` | Finds silent failures, swallowed errors, unsafe fallbacks, misleading success states. |
+| `sonnet-writer` | Implements all code and file changes — the delegate for an orchestrator-only main model. |
+| `test-writer` | Writes unit/integration tests and edge case coverage for existing code. |
+| `wiki-updater` | Updates the Logseq project wiki after significant work. |
+
+The Apple/iOS/macOS agents below are platform-specific; the general development
+agents above (plus `sonnet-writer`) are available in every project alongside them.
 
 #### Apple / iOS / macOS Agents
 > Focused, single-responsibility agents for Apple platform development (iOS 26, macOS 26, Swift 6.3). Prefer XcodeBuildMCP over shell.
