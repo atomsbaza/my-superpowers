@@ -166,3 +166,10 @@ plus description/triggering evals only.
 - This repo has **no package manager, no lockfile, no CI build**. The only
   executable code is shell hooks (`skills/**/hooks/*.sh`) and the Python tooling in
   `tools/agent-evals/scripts/` (Python 3.9, stdlib only — keep it dependency-free).
+
+## Knowledge Graph Playbook
+
+Before improving, querying, or restructuring any knowledge base (markdown notes,
+Obsidian/Logseq vault, vector store, graphify output), read
+`docs/research/knowledge-graphs/knowledge-graphs-ai-playbook.md` and apply its
+decision rules and recipes.
