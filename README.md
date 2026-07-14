@@ -39,6 +39,10 @@ The script symlinks agents and skills into place.
 | Claude Code | `~/.claude/skills/` | `~/.claude/agents/` |
 | Codex CLI | `~/.agents/skills/` | — |
 
+### Orchestrator-only setup (optional)
+
+For a portable Claude Code configuration where the expensive main model (Fable) is hook-enforced to orchestrate only — thinking, planning, and reviewing, but never touching files directly — see [`docs/orchestrator-only-setup.md`](docs/orchestrator-only-setup.md). All edits are delegated to a `sonnet-writer` subagent; the guide covers install steps, verification tests, and a model-tier policy (Fable/Opus/Sonnet/Haiku).
+
 ---
 
 ## Skills (cross-platform)
