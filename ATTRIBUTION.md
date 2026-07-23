@@ -90,6 +90,17 @@ A Code of Conduct for Professional Programmers* by Robert C. Martin:
   smells, TDD, professionalism, estimation, craftsmanship), generated via the
   `book-to-skill` converter
 
+## Original work — Learning Domain-Driven Design
+
+The following skill was created in this repo, derived from concepts in
+*Learning Domain-Driven Design* by Vlad Khononov (O'Reilly):
+
+- `.claude/skills/khononov-ddd/` — extracted frameworks, principles, and
+  techniques from the book (subdomains, bounded contexts, context mapping,
+  tactical business-logic patterns, architectural patterns, communication
+  patterns, design heuristics, EventStorming, microservices, event-driven
+  architecture, data mesh), generated via the `book-to-skill` converter
+
 ## Original work
 
 The following were created independently in this repo:

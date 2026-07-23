@@ -131,6 +131,7 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 | `oss-contribute` | End-to-end OSS contribution workflow — fork, orient, implement, scrutinize, open a PR |
 | `xcodebuildmcp-cli` | Reference for driving XcodeBuildMCP from the CLI for Apple platform builds |
 | `martin-clean-code` | Knowledge base from *Clean Code* and *The Clean Coder* by Robert C. Martin — naming, functions, testing, refactoring, code smells, TDD, professionalism, estimation, craftsmanship |
+| `khononov-ddd` | Knowledge base from *Learning Domain-Driven Design* by Vlad Khononov — subdomains, bounded contexts, context mapping, tactical patterns (Domain Model, Event Sourcing), architectural patterns, EventStorming, microservices |
 
 ---
 
