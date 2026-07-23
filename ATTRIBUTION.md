@@ -101,6 +101,15 @@ The following skill was created in this repo, derived from concepts in
   patterns, design heuristics, EventStorming, microservices, event-driven
   architecture, data mesh), generated via the `book-to-skill` converter
 
+## Original work — TDD Knowledge Base
+
+`.claude/skills/tdd-knowledge-base/` was synthesized from a NotebookLM deep
+web research pass (89 sources) on Test-Driven Development, not from a single
+book. It attributes named techniques and quotes to their original
+practitioners (Kent Beck, Martin Fowler, Robert C. Martin, Steve Freeman &
+Nat Pryce, David Heinemeier Hansson) where the research identifies them, and
+flags the few gaps the research left unverified.
+
 ## Original work
 
 The following were created independently in this repo:
