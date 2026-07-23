@@ -130,6 +130,7 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 | `notebooklm` | Full programmatic access to Google NotebookLM — create notebooks, add sources, generate podcasts/mind maps/study guides |
 | `oss-contribute` | End-to-end OSS contribution workflow — fork, orient, implement, scrutinize, open a PR |
 | `xcodebuildmcp-cli` | Reference for driving XcodeBuildMCP from the CLI for Apple platform builds |
+| `martin-clean-code` | Knowledge base from *Clean Code* and *The Clean Coder* by Robert C. Martin — naming, functions, testing, refactoring, code smells, TDD, professionalism, estimation, craftsmanship |
 
 ---
 

@@ -79,6 +79,17 @@ The following six skills were created in this repo, derived from concepts in
 - `skills/communication/business-impact/` — business consequence translation
 - `skills/execution/benchmark-sprint/` — parallel architectural benchmarking harness
 
+## Original work — Clean Code & The Clean Coder
+
+The following skill was created in this repo, derived from concepts in
+*Clean Code: A Handbook of Agile Software Craftsmanship* and *The Clean Coder:
+A Code of Conduct for Professional Programmers* by Robert C. Martin:
+
+- `.claude/skills/martin-clean-code/` — extracted frameworks, principles, and
+  techniques from both books (naming, functions, testing, refactoring, code
+  smells, TDD, professionalism, estimation, craftsmanship), generated via the
+  `book-to-skill` converter
+
 ## Original work
 
 The following were created independently in this repo:

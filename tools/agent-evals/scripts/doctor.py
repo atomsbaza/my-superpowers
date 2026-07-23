@@ -184,7 +184,7 @@ def cross_checks(repo: str, items: List[dict]) -> List[Finding]:
             jac = len(ta & tb) / len(ta | tb)
             if jac >= OVERLAP_THRESHOLD:
                 pairs.append((jac, a, b, ta & tb))
-    for jac, a, b, shared in sorted(pairs, reverse=True)[:12]:
+    for jac, a, b, shared in sorted(pairs, key=lambda p: p[0], reverse=True)[:12]:
         out.append(Finding("WARN", "overlap", "{} ~ {} (Jaccard {:.2f}; shared: {})".format(
             a["name"] or _rel(repo, a["path"]), b["name"] or _rel(repo, b["path"]), jac,
             ", ".join(sorted(shared)[:6]))))
