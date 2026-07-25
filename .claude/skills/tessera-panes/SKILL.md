@@ -28,8 +28,12 @@ for candidate in \
 done
 ```
 
-Every example below assumes `$TESSERA_CTL` resolves. If none of the candidates exist, the app
-needs building (`cargo build [--release]` from `tessera/src-tauri/`) before any of this works.
+`$TESSERA_CTL` only lives in the shell that ran the loop above. Each Bash tool call in an agent
+session is a fresh shell with no env carry-over, so run the loop once, note the resolved
+absolute path it prints/assigns, and substitute that literal path into every subsequent command
+below instead of relying on `$TESSERA_CTL` still being set (or re-run the loop at the top of
+every command block that needs it). If none of the candidates exist, the app needs building
+(`cargo build [--release]` from `tessera/src-tauri/`) before any of this works.
 
 ## Discovering panes
 
@@ -61,20 +65,33 @@ other terminator before assuming something else is wrong.
 
 There's no acknowledgement for a PTY write -- `send_text` returning `ok:true` only means the
 bytes were queued, not that the target program has processed them yet. To know a command has
-actually landed and produced output, send a unique marker and poll for it:
+actually landed and produced output, send a unique marker and poll for it.
+
+**Shell panes (bash/zsh/sh):** `read_output` returns the RENDERED screen, which already
+contains the echoed input line -- if you poll for the same marker text you just sent, the
+first poll matches on the echo before the command has done anything. Search for a token that
+only appears in the command's *output*, not in the typed text:
 
 ```bash
 marker="agent-bridge-$$-$RANDOM"
-"$TESSERA_CTL" send_text "{\"sessionId\":$SESSION_ID,\"text\":\"echo $marker\r\"}"
+"$TESSERA_CTL" send_text "{\"sessionId\":$SESSION_ID,\"text\":\"m=$marker; echo \\\"done-\$m\\\"\r\"}"
 
-for i in 1 2 3 4 5 6 7 8; do
+for d in 0.2 0.4 0.6 0.8 1.0 1.2 1.4 1.6; do
   resp="$("$TESSERA_CTL" read_output "{\"sessionId\":$SESSION_ID}")"
-  if echo "$resp" | grep -q "$marker"; then
+  if echo "$resp" | grep -q "done-$marker"; then
     break
   fi
-  sleep "0.$((i * 2))" # simple backoff: 0.2s, 0.4s, 0.6s, ...
+  sleep "$d" # backoff: 0.2s, 0.4s, 0.6s, ... up to ~7.2s total
 done
 ```
+
+**TUI agent panes (Claude Code, Codex, or any other full-screen prompt-box program):** the
+marker-poll above does NOT transfer -- you cannot send a shell variable assignment to a chat
+input box, and there's no echo/output distinction to exploit. Instead, capture the rendered
+screen from `read_output` before sending, then poll `read_output` again and compare: wait for
+the screen to CHANGE from that baseline (new text appended, a spinner replaced by a reply,
+etc.), using the same backoff. A screen identical to the baseline means nothing has happened
+yet, not that the pane is done.
 
 This is the reliable building block underneath anything more elaborate ("wait for this
 command to finish", "confirm the other agent saw my message") -- always prefer it over a fixed
@@ -82,17 +99,64 @@ sleep.
 
 ## Signal vs text: `subscribe_output` + `read_output` together
 
-`subscribe_output {sessionId}` opens a long-lived connection that streams raw PTY bytes
-(ANSI escapes included) the moment they're written -- it's a good *signal* ("something just
-happened in that pane") but a poor source of clean text, since it's not rendered and can split
-multi-byte characters or ANSI sequences across chunks. The reliable pattern is:
+`tessera-ctl` cannot be used for `subscribe_output`: it reads exactly one response line and
+exits (that's fine for `send_text`/`read_output`/`list_sessions`, which are one-shot
+request/response, but `subscribe_output` needs the connection held open to receive the stream
+that follows the initial ack). Running `"$TESSERA_CTL" subscribe_output '{"sessionId":N}'`
+gets you `{"ok":true,"result":{"subscribed":N}}` and then nothing -- the process has already
+exited, which looks exactly like "the pane produced no output" but isn't.
 
-1. Use `subscribe_output` as a wake-up: something changed.
-2. Then call `read_output {sessionId, lines?}` to get the CURRENT rendered screen as plain
-   text (default 100 lines, capped at 1000) -- this is what the pane actually looks like right
-   now, ANSI-free, because it reads xterm's rendered buffer rather than the raw byte stream.
+To actually consume `subscribe_output`, connect to the Unix socket directly (default
+`~/.tessera/control.sock`) and keep reading:
 
-Don't try to parse the `subscribe_output` stream directly as if it were clean text; it isn't.
+```python
+import base64, json, socket, sys
+
+sock_path, session_id = sys.argv[1], int(sys.argv[2])
+s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+s.connect(sock_path)
+s.sendall(('{"id":1,"method":"subscribe_output","params":{"sessionId":%d}}\n' % session_id).encode())
+
+buf = bytearray()
+f = s.makefile("rb")
+line = f.readline()  # the {"id":1,"ok":true,...} ack
+while True:
+    line = f.readline()
+    if not line:
+        break
+    obj = json.loads(line)
+    if obj.get("event") == "closed":
+        break
+    if obj.get("event") == "output":
+        buf += base64.b64decode(obj["data"])  # data is base64 -- decode before searching
+```
+
+Each streamed frame looks like:
+
+```
+{"event":"output","sessionId":<id>,"data":"<base64 of the raw PTY chunk bytes>"}
+```
+
+and on session exit the server sends one final frame and closes the connection:
+
+```
+{"event":"closed","sessionId":<id>}
+```
+
+`data` is base64-encoded raw PTY bytes (ANSI escapes included, not rendered) -- grepping the
+raw JSONL lines for a marker will never match, because the marker text only exists after
+base64-decoding. Decode and concatenate `data` across events before searching for anything.
+Because chunks are forwarded as soon as they're read (no cross-read buffering), a multi-byte
+character or ANSI sequence can also land split across two chunks, so treat the stream as a
+signal that bytes arrived and reassemble fully before treating it as text.
+
+Given that, the reliable pattern is:
+
+1. Use the socket reader above as a wake-up: something changed.
+2. Then call `"$TESSERA_CTL" read_output '{"sessionId":N,"lines":?}'` to get the CURRENT
+   rendered screen as plain text (default 100 lines, capped at 1000) -- this is what the pane
+   actually looks like right now, ANSI-free, because it reads xterm's rendered buffer rather
+   than the raw byte stream.
 
 ## Etiquette
 
@@ -107,8 +171,10 @@ changes what another agent or the user is doing.
 - `read_output` shows the pane's full rendered screen exactly as it looks -- prompts, borders,
   status lines, and any other TUI chrome are all included; there's no way to ask for "just the
   agent's reply" if the pane is running something with its own UI frame.
-- `subscribe_output`'s stream is raw: ANSI escape sequences included, no server-side stripping.
-  It is a signal channel, not a clean-text feed -- see the pattern above.
+- `subscribe_output`'s stream is raw and base64-encoded (ANSI escape sequences included, no
+  server-side stripping), and `tessera-ctl` cannot hold the connection open to receive it. It
+  is a signal channel, not a clean-text feed, and needs the direct-socket reader -- see the
+  pattern above.
 - Local sessions only: `subscribe_output` on a remote (`tessera-remoted`) or collab-viewer pane
   returns `"not a local session"`. `read_output` has no such restriction (it reads the local
   render regardless of what's behind the pane).
