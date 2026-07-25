@@ -26,6 +26,8 @@ for candidate in \
     break
   fi
 done
+echo "$TESSERA_CTL"
+[ -n "$TESSERA_CTL" ] || { echo "tessera-ctl not found - build src-tauri first" >&2; exit 1; }
 ```
 
 `$TESSERA_CTL` only lives in the shell that ran the loop above. Each Bash tool call in an agent
@@ -162,12 +164,17 @@ while True:
     if obj.get("event") == "closed":
         break
     if obj.get("event") == "output":
-        buf += base64.b64decode(obj["data"])  # data is base64 -- decode before searching
+        chunk = base64.b64decode(obj["data"])  # data is base64 -- decode before writing
+        sys.stdout.buffer.write(chunk)
+        sys.stdout.flush()
 ```
 
-Run it in the background against a fixed output file (e.g. `python3 subscribe.py "$SOCK"
+Run it in the background against a fixed output file (e.g. `python3 -u subscribe.py "$SOCK"
 "$SESSION_ID" 30 > /tmp/sub-out.log &`) and poll that file, rather than calling it as a
 blocking foreground command that ties up the Bash tool for the whole subscription window.
+Both the explicit `flush()` in the loop and `-u` matter: redirecting stdout to a file makes it
+block-buffered (~8 KiB), so without them the file stays empty until that buffer fills or the
+process exits, even though bytes are being written.
 
 Each streamed frame looks like:
 
