@@ -76,22 +76,34 @@ only appears in the command's *output*, not in the typed text:
 marker="agent-bridge-$$-$RANDOM"
 "$TESSERA_CTL" send_text "{\"sessionId\":$SESSION_ID,\"text\":\"m=$marker; echo \\\"done-\$m\\\"\r\"}"
 
+found=0
 for d in 0.2 0.4 0.6 0.8 1.0 1.2 1.4 1.6; do
   resp="$("$TESSERA_CTL" read_output "{\"sessionId\":$SESSION_ID}")"
   if echo "$resp" | grep -q "done-$marker"; then
+    found=1
     break
   fi
   sleep "$d" # backoff: 0.2s, 0.4s, 0.6s, ... up to ~7.2s total
 done
+[ "$found" = 1 ] || { echo "marker $marker not seen after ~7.2s" >&2; exit 1; }
 ```
 
 **TUI agent panes (Claude Code, Codex, or any other full-screen prompt-box program):** the
 marker-poll above does NOT transfer -- you cannot send a shell variable assignment to a chat
-input box, and there's no echo/output distinction to exploit. Instead, capture the rendered
-screen from `read_output` before sending, then poll `read_output` again and compare: wait for
-the screen to CHANGE from that baseline (new text appended, a spinner replaced by a reply,
-etc.), using the same backoff. A screen identical to the baseline means nothing has happened
-yet, not that the pane is done.
+input box, and there's no echo/output distinction to exploit. Instead this splits into two
+separate questions, each needing its own check:
+
+- **Did my input land?** Capture the rendered screen from `read_output` before sending, then
+  poll `read_output` again and compare: wait for the screen to CHANGE from that baseline (new
+  text appended, a spinner replaced by a reply, etc.), using the same backoff. A screen
+  identical to the baseline means nothing has happened yet, not that the input landed.
+- **Is the target agent done responding?** First-change detection does NOT answer this --
+  sending into a TUI prompt box changes the screen immediately (the input box clears, a
+  spinner/thinking indicator appears), so the very first poll already differs from the
+  baseline while the target agent is still working. Instead poll for STABILITY: keep calling
+  `read_output` on the same backoff and compare each response to the previous one (e.g. hash
+  the last N lines); only declare the pane idle once the screen is identical across 2-3
+  consecutive polls in a row. A single differing poll just means something is still changing.
 
 This is the reliable building block underneath anything more elaborate ("wait for this
 command to finish", "confirm the other agent saw my message") -- always prefer it over a fixed
@@ -107,21 +119,43 @@ gets you `{"ok":true,"result":{"subscribed":N}}` and then nothing -- the process
 exited, which looks exactly like "the pane produced no output" but isn't.
 
 To actually consume `subscribe_output`, connect to the Unix socket directly (default
-`~/.tessera/control.sock`) and keep reading:
+`~/.tessera/control.sock`) and keep reading. The ack is not automatically a success: on any
+error (`"not a local session"`, `"subscriber limit reached for session {id}"`, `"no such
+session: {id}"`) the server writes that one line as the ack and then closes the socket
+immediately -- if the ack is discarded unread, the next read just returns EOF, which looks
+exactly like "the pane produced no output" but isn't. Always check `ok` on the ack before
+looping. On the success path, a idle pane may never send another frame, so also set a socket
+timeout and an overall deadline rather than blocking forever -- and since this reads in a
+loop, run it as a bounded background process writing to a file rather than as a blocking
+foreground call, or it wedges the calling agent's own Bash tool:
 
 ```python
-import base64, json, socket, sys
+import base64, json, socket, sys, time
 
-sock_path, session_id = sys.argv[1], int(sys.argv[2])
+sock_path, session_id, deadline_s = sys.argv[1], int(sys.argv[2]), float(sys.argv[3])
 s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 s.connect(sock_path)
 s.sendall(('{"id":1,"method":"subscribe_output","params":{"sessionId":%d}}\n' % session_id).encode())
 
-buf = bytearray()
 f = s.makefile("rb")
-line = f.readline()  # the {"id":1,"ok":true,...} ack
+ack = json.loads(f.readline())
+if not ack.get("ok"):
+    print("subscribe_output failed: %s" % ack.get("error"), file=sys.stderr)
+    sys.exit(1)
+
+buf = bytearray()
+deadline = time.monotonic() + deadline_s
 while True:
-    line = f.readline()
+    remaining = deadline - time.monotonic()
+    if remaining <= 0:
+        print("subscribe_output: deadline reached, no closed event", file=sys.stderr)
+        break
+    s.settimeout(remaining)
+    try:
+        line = f.readline()
+    except socket.timeout:
+        print("subscribe_output: read timed out", file=sys.stderr)
+        break
     if not line:
         break
     obj = json.loads(line)
@@ -130,6 +164,10 @@ while True:
     if obj.get("event") == "output":
         buf += base64.b64decode(obj["data"])  # data is base64 -- decode before searching
 ```
+
+Run it in the background against a fixed output file (e.g. `python3 subscribe.py "$SOCK"
+"$SESSION_ID" 30 > /tmp/sub-out.log &`) and poll that file, rather than calling it as a
+blocking foreground command that ties up the Bash tool for the whole subscription window.
 
 Each streamed frame looks like:
 
