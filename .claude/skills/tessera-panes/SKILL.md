@@ -17,6 +17,7 @@ Prefer the release bundle path; fall back to a debug/release cargo build if the 
 been packaged yet:
 
 ```bash
+TESSERA_CTL=""
 for candidate in \
   "/Applications/Tessera.app/Contents/MacOS/tessera-ctl" \
   "$HOME/Work/tessera/src-tauri/target/release/tessera-ctl" \
@@ -29,6 +30,10 @@ done
 echo "$TESSERA_CTL"
 [ -n "$TESSERA_CTL" ] || { echo "tessera-ctl not found - build src-tauri first" >&2; exit 1; }
 ```
+
+On Windows, `tessera-ctl` talks to a named pipe (`tessera-control`) instead of a Unix socket --
+see the `cfg(windows)` branch in `tessera_ctl.rs` -- but the request/response JSON and every
+command in this skill are otherwise identical.
 
 `$TESSERA_CTL` only lives in the shell that ran the loop above. Each Bash tool call in an agent
 session is a fresh shell with no env carry-over, so run the loop once, note the resolved
@@ -63,6 +68,10 @@ When unsure which kind of pane you're driving, check `command` from `list_sessio
 submitted-looking command visibly doesn't run (confirmed via `read_output`), retry with the
 other terminator before assuming something else is wrong.
 
+If genuinely unsure, `\r` is the safer default for either kind of pane -- the PTY line
+discipline maps a carriage return to a newline for plain shells too, so the marker-poll
+example below uses `\r` throughout rather than contradicting the `\n` guidance above.
+
 ## The marker-poll pattern
 
 There's no acknowledgement for a PTY write -- `send_text` returning `ok:true` only means the
@@ -79,15 +88,19 @@ marker="agent-bridge-$$-$RANDOM"
 resp="$("$TESSERA_CTL" send_text "{\"sessionId\":$SESSION_ID,\"text\":\"m=$marker; echo \\\"done-\$m\\\"\r\"}")" || { echo "send_text failed: $resp" >&2; exit 1; }
 
 found=0
-for d in 0.2 0.4 0.6 0.8 1.0 1.2 1.4 1.6; do
-  resp="$("$TESSERA_CTL" read_output "{\"sessionId\":$SESSION_ID}")"
+deltas="0.2 0.4 0.6 0.8 1.0 1.2 1.4 1.6"
+last="1.6"
+for d in $deltas; do
+  resp="$("$TESSERA_CTL" read_output "{\"sessionId\":$SESSION_ID}")" || { echo "read_output failed: $resp" >&2; exit 1; }
   if echo "$resp" | grep -q "done-$marker"; then
     found=1
     break
   fi
-  sleep "$d" # backoff: 0.2s, 0.4s, 0.6s, ... up to ~7.2s total
+  # backoff between reads: 0.2s, 0.4s, 0.6s, ... skip sleeping after the last read
+  # (nothing would read the result), so the honest total wait is ~5.6s, not 7.2s
+  [ "$d" = "$last" ] || sleep "$d"
 done
-[ "$found" = 1 ] || { echo "marker $marker not seen after ~7.2s" >&2; exit 1; }
+[ "$found" = 1 ] || { echo "marker $marker not seen after ~5.6s" >&2; exit 1; }
 ```
 
 **TUI agent panes (Claude Code, Codex, or any other full-screen prompt-box program):** the
@@ -95,8 +108,11 @@ marker-poll above does NOT transfer -- you cannot send a shell variable assignme
 input box, and there's no echo/output distinction to exploit. Instead this splits into two
 separate questions, each needing its own check:
 
-- **Did my input land?** Capture the rendered screen from `read_output` before sending, then
-  poll `read_output` again and compare: wait for the screen to CHANGE from that baseline (new
+- **Did my input land?** Capture the rendered screen from `read_output` before sending -- check
+  that this baseline call actually succeeded (exit status, or the response's `ok` field) and
+  abort if it didn't; an errored baseline must not silently be treated as "empty," or the first
+  successful poll afterward will look like a change and be misread as "input landed." Then poll
+  `read_output` again and compare: wait for the screen to CHANGE from that baseline (new
   text appended, a spinner replaced by a reply, etc.), using the same backoff. A screen
   identical to the baseline means nothing has happened yet, not that the input landed.
 - **Is the target agent done responding?** First-change detection does NOT answer this --
@@ -136,17 +152,26 @@ import base64, json, socket, sys, time
 
 sock_path, session_id, deadline_s = sys.argv[1], int(sys.argv[2]), float(sys.argv[3])
 s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-s.connect(sock_path)
+try:
+    s.connect(sock_path)
+except OSError as e:
+    print("subscribe_output: connect to %s failed: %s" % (sock_path, e), file=sys.stderr)
+    sys.exit(1)
 s.sendall(('{"id":1,"method":"subscribe_output","params":{"sessionId":%d}}\n' % session_id).encode())
 
+deadline = time.monotonic() + deadline_s
+s.settimeout(deadline_s)  # bound the ack read too, not just the streaming loop below
 f = s.makefile("rb")
-ack = json.loads(f.readline())
+ack_line = f.readline()
+if not ack_line:
+    print("subscribe_output: connection closed before ack", file=sys.stderr)
+    sys.exit(1)
+ack = json.loads(ack_line)
 if not ack.get("ok"):
     print("subscribe_output failed: %s" % ack.get("error"), file=sys.stderr)
     sys.exit(1)
 
 buf = bytearray()
-deadline = time.monotonic() + deadline_s
 while True:
     remaining = deadline - time.monotonic()
     if remaining <= 0:
@@ -170,8 +195,10 @@ while True:
 ```
 
 Run it in the background against a fixed output file (e.g. `python3 -u subscribe.py "$SOCK"
-"$SESSION_ID" 30 > /tmp/sub-out.log &`) and poll that file, rather than calling it as a
+"$SESSION_ID" 30 > /tmp/sub-out.log 2>&1 &`) and poll that file, rather than calling it as a
 blocking foreground command that ties up the Bash tool for the whole subscription window.
+Redirect stderr into the same log (or a separate `2> /tmp/sub-out.err` path) too -- the
+connect/ack/timeout diagnostics above are only useful if they survive being backgrounded.
 Both the explicit `flush()` in the loop and `-u` matter: redirecting stdout to a file makes it
 block-buffered (~8 KiB), so without them the file stays empty until that buffer fills or the
 process exits, even though bytes are being written.
@@ -225,3 +252,7 @@ changes what another agent or the user is doing.
   render regardless of what's behind the pane).
 - A session allows at most 5 simultaneous `subscribe_output`/share taps; a 6th attempt errors
   with `"subscriber limit reached for session {id}"`.
+
+The hardcoded numbers and error strings throughout this skill (100/1000-line `read_output`
+defaults, the 5-tap subscriber cap, the exact error text) mirror CONTRACT.md v5 as of this
+writing -- if the two disagree, CONTRACT.md is the source of truth and wins.
