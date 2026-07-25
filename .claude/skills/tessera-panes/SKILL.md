@@ -76,7 +76,7 @@ only appears in the command's *output*, not in the typed text:
 
 ```bash
 marker="agent-bridge-$$-$RANDOM"
-"$TESSERA_CTL" send_text "{\"sessionId\":$SESSION_ID,\"text\":\"m=$marker; echo \\\"done-\$m\\\"\r\"}"
+resp="$("$TESSERA_CTL" send_text "{\"sessionId\":$SESSION_ID,\"text\":\"m=$marker; echo \\\"done-\$m\\\"\r\"}")" || { echo "send_text failed: $resp" >&2; exit 1; }
 
 found=0
 for d in 0.2 0.4 0.6 0.8 1.0 1.2 1.4 1.6; do
