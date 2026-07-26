@@ -39,6 +39,8 @@ The script symlinks agents and skills into place.
 | Claude Code | `~/.claude/skills/` | `~/.claude/agents/` |
 | Codex CLI | `~/.agents/skills/` | — |
 
+Repo-level instructions for both tools live in [`CLAUDE.md`](CLAUDE.md); `AGENTS.md` is a symlink to it so Codex CLI picks up the same guidance.
+
 ### Orchestrator-only setup (optional)
 
 For a portable Claude Code configuration where the expensive main model (Fable) is hook-enforced to orchestrate only — thinking, planning, and reviewing, but never touching files directly — see [`docs/orchestrator-only-setup.md`](docs/orchestrator-only-setup.md). All edits are delegated to a `sonnet-writer` subagent; the guide covers install steps, verification tests, and a model-tier policy (Fable/Opus/Sonnet/Haiku).
@@ -131,6 +133,7 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 | `oss-contribute` | End-to-end OSS contribution workflow — fork, orient, implement, scrutinize, open a PR |
 | `xcodebuildmcp-cli` | Reference for driving XcodeBuildMCP from the CLI for Apple platform builds |
 | `martin-clean-code` | Knowledge base from *Clean Code* and *The Clean Coder* by Robert C. Martin — naming, functions, testing, refactoring, code smells, TDD, professionalism, estimation, craftsmanship |
+| `martin-clean-architecture` | Knowledge base from *Clean Architecture* by Robert C. Martin — SOLID, component cohesion/coupling principles, the Dependency Rule, boundaries, use cases and entities |
 | `khononov-ddd` | Knowledge base from *Learning Domain-Driven Design* by Vlad Khononov — subdomains, bounded contexts, context mapping, tactical patterns (Domain Model, Event Sourcing), architectural patterns, EventStorming, microservices |
 | `tdd-knowledge-base` | Research-synthesized knowledge base on Test-Driven Development (NotebookLM deep research, 89 sources) — Detroit/classicist vs London/mockist styles, testing pyramid, anti-patterns, Transformation Priority Premise, the "Is TDD Dead?" debate |
 

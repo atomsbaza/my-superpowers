@@ -90,6 +90,17 @@ A Code of Conduct for Professional Programmers* by Robert C. Martin:
   smells, TDD, professionalism, estimation, craftsmanship), generated via the
   `book-to-skill` converter
 
+## Original work — Clean Architecture
+
+The following skill was created in this repo, derived from concepts in
+*Clean Architecture: A Craftsman's Guide to Software Structure and Design* by
+Robert C. Martin:
+
+- `.claude/skills/martin-clean-architecture/` — extracted frameworks, principles,
+  and techniques from the book (SOLID, component cohesion/coupling principles,
+  the Dependency Rule, architecture boundaries, use cases and entities, package
+  organization strategies), generated via the `book-to-skill` converter
+
 ## Original work — Learning Domain-Driven Design
 
 The following skill was created in this repo, derived from concepts in
