@@ -132,7 +132,7 @@ def _summ(results: List[dict]) -> dict:
 def main() -> int:
     ap = argparse.ArgumentParser(description="Optimize an agent description for correct routing.")
     ap.add_argument("--agent-path", required=True)
-    ap.add_argument("--agents-dir", default=".claude/agents", help="Competitor agent pool")
+    ap.add_argument("--agents-dir", default="agents", help="Competitor agent pool")
     ap.add_argument("--eval-set", required=True, help="JSON: [{query, expected_agent}]")
     ap.add_argument("--max-iterations", type=int, default=5)
     ap.add_argument("--holdout", type=float, default=0.4)

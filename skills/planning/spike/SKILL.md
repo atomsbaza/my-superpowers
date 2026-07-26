@@ -32,7 +32,7 @@ A spike answers one specific technical question so you can make an informed impl
 
 7. **Present the recommendation** — state clearly: go / no-go / needs more investigation.
 
-8. **Update Logseq wiki** if the spike resolves a key unknown in the project page.
+8. **Update the Obsidian vault** if the spike resolves a key unknown in the project note.
 
 ## Spike report template
 
@@ -98,8 +98,8 @@ What decision does this unblock? What happens if we don't answer it?
 ## Agent Integrations
 
 ### After saving the spike report (Step 6)
-Check if `~/Documents/Project Docs/pages/Projects___<ProjectName>.md` exists and the spike Status is `🟢 Complete` before spawning. If both conditions hold, spawn `wiki-updater`. Pass it: the spike file path, the project name, the question answered, and the GO/NO-GO recommendation.
+Check if `~/Documents/Obsidian Vault/Projects/<ProjectName>.md` exists and the spike Status is `🟢 Complete` before spawning. If both conditions hold, spawn `wiki-updater`. Pass it: the spike file path, the project name, the question answered, and the GO/NO-GO recommendation.
 
-Skip if Status is still `🟡 In Progress` or the page doesn't exist.
+Skip if Status is still `🟡 In Progress` or the note doesn't exist.
 
 > **Before spawning:** If wiki-updater returns empty or errors, note it — the spike report file is the authoritative record regardless.

@@ -5,9 +5,14 @@ Personal collection of AI coding agent skills and agents for Claude Code.
 ## Structure
 
 ```
-.claude/agents/  Claude Code agent definitions  (→ ~/.claude/agents/)
-.claude/skills/  Claude Code skills — .NET / QA / PO / Apple  (→ ~/.claude/skills/)
-skills/          Cross-platform skills           (→ ~/.claude/skills/)
+agents/          Claude Code agent definitions  (→ ~/.claude/agents/)
+skills/          All skills, grouped by category (→ ~/.claude/skills/)
+  qa/            .NET QA engineer skills
+  product-owner/ Product Owner skills
+  dotnet/        .NET implementation skills
+  apple/         Swift/SwiftUI/XcodeBuildMCP skills
+  knowledge-base/ Book/research-derived knowledge bases
+  (plus planning/ execution/ quality/ debugging/ git/ communication/ tools/ design/)
 docs/            Research reports, session logs, and design specs
   research/
     claude-code/ Claude Code research
@@ -23,7 +28,7 @@ tools/           Repo tooling (not installed)
   agent-evals/   Measure & improve agent definitions (A/B vs baseline, benchmark)
 ```
 
-Skills use the open [AgentSkills](https://agentskills.io/specification) standard. Agent definitions are flat `.md` files in `.claude/agents/`.
+Skills use the open [AgentSkills](https://agentskills.io/specification) standard. Agent definitions are flat `.md` files in `agents/`.
 
 ## Install
 
@@ -141,7 +146,7 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 
 ## Agents
 
-Claude Code agent definitions live in `.claude/agents/` (one flat `.md` each).
+Claude Code agent definitions live in `agents/` (one flat `.md` each).
 
 | Agent | What it does |
 |---|---|
@@ -159,6 +164,7 @@ Claude Code agent definitions live in `.claude/agents/` (one flat `.md` each).
 | `dependency-auditor` | Audits a new dependency before it's added: security, maintenance health, license, alternatives. |
 | `doc-updater` | Keeps project documentation aligned with implementation after feature/architecture changes. |
 | `docs-writer` | Writes READMEs, API docs, inline comments, and changelogs. |
+| `nextjs-reviewer` | Reviews Next.js App Router code — server/client boundaries, API routes, middleware, data fetching. |
 | `pr-description` | Writes a pull request title and description from git diff and commit history. |
 | `refactor` | Refactors code for clarity, maintainability, or performance. |
 | `release-checklist` | Runs a pre-release checklist — iOS App Store, web app, or general. |
@@ -166,7 +172,7 @@ Claude Code agent definitions live in `.claude/agents/` (one flat `.md` each).
 | `silent-failure-hunter` | Finds silent failures, swallowed errors, unsafe fallbacks, misleading success states. |
 | `sonnet-writer` | Implements all code and file changes — the delegate for an orchestrator-only main model. |
 | `test-writer` | Writes unit/integration tests and edge case coverage for existing code. |
-| `wiki-updater` | Updates the Logseq project wiki after significant work. |
+| `wiki-updater` | Updates the Obsidian project vault after significant work. |
 
 The Apple/iOS/macOS agents below are platform-specific; the general development
 agents above (plus `sonnet-writer`) are available in every project alongside them.
@@ -185,7 +191,7 @@ agents above (plus `sonnet-writer`) are available in every project alongside the
 
 Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-evals/) — an A/B evaluation engine plus autonomous improvement loops.
 
-#### Principal .NET Engineer Skills (`.claude/skills/`)
+#### Principal .NET Engineer Skills (`skills/dotnet/`, `skills/planning/`, `skills/quality/`, `skills/tools/`)
 | Skill | What it does |
 |---|---|
 | `analyzing-requirements` | BRD/PRD → bounded contexts, FRs, NFRs, open questions, recommended ADRs |
@@ -197,7 +203,7 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 | `reviewing-code` | 3-Golden-Rules review: correctness, security, observability, rollback assessment |
 | `orchestrating-workflow` | Chains all 7 principal engineer skills via workflow-state.json |
 
-#### QA .NET Engineer Skills (`.claude/skills/`)
+#### QA .NET Engineer Skills (`skills/qa/`)
 | Skill | What it does |
 |---|---|
 | `analyzing-requirements-for-qa` | BRD/PRD → risk-scored testable inventory (SFDIPOT + EP/BVA, P0/P1/P2) |
@@ -210,7 +216,7 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 | `reporting-test-results` | ISTQB defect reports, executive summary, Go/No-Go recommendation |
 | `orchestrating-qa-workflow` | Chains all 8 QA skills via .qa-workflow-state.json |
 
-#### Product Owner Skills (`.claude/skills/`)
+#### Product Owner Skills (`skills/product-owner/`)
 | Skill | What it does |
 |---|---|
 | `writing-product-vision` | Vision board, Geoffrey Moore positioning statement, JTBD, north star themes |
@@ -224,7 +230,7 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 | `writing-release-notes` | Customer-facing release notes from sprint deliverables or commit history |
 | `orchestrating-po-workflow` | Chains all 9 PO skills via .po-workflow-state.json |
 
-#### Apple / SwiftUI Skills (`.claude/skills/`)
+#### Apple / SwiftUI Skills (`skills/apple/`)
 | Skill | What it does |
 |---|---|
 | `swift-concurrency-expert` | Swift 6.2+ concurrency review + remediation: Sendable, `@MainActor`, actor isolation, data-race fixes, completion-handler → async/await migration |

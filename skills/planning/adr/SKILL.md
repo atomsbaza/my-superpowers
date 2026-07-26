@@ -26,7 +26,7 @@ Capture architectural decisions as they happen. Decisions made during coding sho
 7. **Present the draft** for user review before writing any file
 8. **Write only after approval** → `docs/adr/NNNN-decision-title.md`
 9. **Update the index** → append to `docs/adr/README.md`
-10. **Update Logseq wiki** → add to the project's `~/Documents/Project Docs/pages/Projects___<ProjectName>.md` under a `## Decisions Log` section: `YYYY-MM-DD: [one-line summary]`
+10. **Update the Obsidian vault** → add to the project's `~/Documents/Obsidian Vault/Projects/<ProjectName>.md` under a `## Decisions Log` section: `YYYY-MM-DD: [one-line summary]`
 
 ## ADR format
 
@@ -100,8 +100,8 @@ When user asks "why did we choose X?":
 ## Agent Integrations
 
 ### After writing the ADR file and updating the index (Steps 8–9)
-Check if `~/Documents/Project Docs/pages/Projects___<ProjectName>.md` exists before spawning. If it exists, spawn `wiki-updater`. Pass it: the ADR file path, the project name, and the one-line decision summary. It appends to the `## Decisions Log` section.
+Check if `~/Documents/Obsidian Vault/Projects/<ProjectName>.md` exists before spawning. If it exists, spawn `wiki-updater`. Pass it: the ADR file path, the project name, and the one-line decision summary. It appends to the `## Decisions Log` section.
 
-If the page does not exist, the ADR file itself is the record — skip the spawn.
+If the note does not exist, the ADR file itself is the record — skip the spawn.
 
 > **Before spawning:** Skip if the user rejected the draft (no file was written). If wiki-updater returns empty or errors, note it — the ADR index is still the authoritative record.

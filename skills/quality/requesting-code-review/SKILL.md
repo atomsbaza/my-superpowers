@@ -29,21 +29,31 @@ BASE_SHA=$(git rev-parse HEAD~1)  # or origin/main
 HEAD_SHA=$(git rev-parse HEAD)
 ```
 
-**2. Dispatch code reviewer subagent:**
+**2. Stage 1 — Spec compliance (run first):**
+
+Use Task tool with `general-purpose` type, fill template at `spec-reviewer.md`
+
+The spec reviewer only checks: "did they build what was asked, nothing more, nothing less?" It does NOT review code quality.
+
+- **FAIL** → fix compliance gaps, re-run Stage 1 before proceeding
+- **PASS** → proceed to Stage 2
+
+**3. Stage 2 — Code quality (only after Stage 1 passes):**
 
 Use Task tool with `general-purpose` type, fill template at `code-reviewer.md`
 
-**Placeholders:**
+**Placeholders (both stages):**
 - `{DESCRIPTION}` - Brief summary of what you built
 - `{PLAN_OR_REQUIREMENTS}` - What it should do
 - `{BASE_SHA}` - Starting commit
 - `{HEAD_SHA}` - Ending commit
 
-**3. Act on feedback:**
+**4. Act on feedback:**
 - Fix Critical issues immediately
 - Fix Important issues before proceeding
 - Note Minor issues for later
 - Push back if reviewer is wrong (with reasoning)
+- If fixes are made after Stage 2, re-run Stage 2 before merging
 
 ## Example
 
@@ -100,4 +110,6 @@ You: [Fix progress indicators]
 - Show code/tests that prove it works
 - Request clarification
 
-See template at: requesting-code-review/code-reviewer.md
+Templates:
+- Stage 1 spec compliance: `requesting-code-review/spec-reviewer.md`
+- Stage 2 code quality: `requesting-code-review/code-reviewer.md`

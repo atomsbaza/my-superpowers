@@ -23,11 +23,20 @@ Load plan, review critically, execute all tasks, report when complete.
 
 ### Step 2: Execute Tasks
 
+Maintain a **Discoveries Block** throughout execution — a running list of facts learned during implementation that were not in the plan (e.g., "this API returns errors wrapped in a custom type", "SwiftData migration requires explicit version"). Inject it into each subsequent subagent's context so nothing is re-learned from scratch.
+
 For each task:
 1. Mark as in_progress
-2. Follow each step exactly (plan has bite-sized steps)
-3. Run verifications as specified
-4. Mark as completed
+2. Inject current Discoveries Block into subagent context (if non-empty)
+3. Follow each step exactly (plan has bite-sized steps)
+4. Run verifications as specified
+5. Update Discoveries Block with any new findings from this task
+6. Report task status using one of these four states:
+   - **DONE** — task complete, all verifications pass, no concerns
+   - **DONE_WITH_CONCERNS** — task complete but something worth flagging (note it)
+   - **BLOCKED** — cannot proceed without help; stop and ask
+   - **NEEDS_CONTEXT** — missing information that prevents correct implementation; stop and ask
+7. Mark as completed (unless BLOCKED or NEEDS_CONTEXT)
 
 ### Step 3: Complete Development
 

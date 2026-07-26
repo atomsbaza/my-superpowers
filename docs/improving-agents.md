@@ -3,7 +3,7 @@
 How to turn evaluation results (`tools/agent-evals/`) into a better agent
 definition. The mechanics measure *whether* a change helped; this is *how* to
 decide what to change. Adapted from the "heart of the loop" in Anthropic's
-skill-creator, applied to the agent definitions in `.claude/agents/`.
+skill-creator, applied to the agent definitions in `agents/`.
 
 The premise: an agent definition will run thousands of times across prompts you
 will never see. You iterate on a handful of test cases because they're fast to

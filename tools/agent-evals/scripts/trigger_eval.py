@@ -208,7 +208,7 @@ def run_eval(eval_set: List[dict], target_name: str, agents_spec: Dict[str, dict
 def main() -> int:
     ap = argparse.ArgumentParser(description="Routing/discrimination eval for an agent.")
     ap.add_argument("--agent-path", required=True, help="Target agent .md")
-    ap.add_argument("--agents-dir", default=".claude/agents", help="Dir of competitor agents")
+    ap.add_argument("--agents-dir", default="agents", help="Dir of competitor agents")
     ap.add_argument("--eval-set", required=True, help="JSON: [{query, expected_agent}]")
     ap.add_argument("--description", default=None, help="Override target description to test")
     ap.add_argument("--num-workers", type=int, default=6)
