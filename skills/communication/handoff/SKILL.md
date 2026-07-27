@@ -16,8 +16,8 @@ If the user passed arguments, treat them as a description of what the next sessi
 ## Agent Integrations
 
 ### After saving the handoff document
-Check if `~/Documents/Project Docs/pages/Projects___<ProjectName>.md` exists before spawning. If it exists, spawn `wiki-updater`. Pass it: the handoff file path, the project name, and a one-line summary of what was accomplished and what the next session picks up.
+Check if `~/Documents/Obsidian Vault/Projects/<ProjectName>.md` exists before spawning. If it exists, spawn `wiki-updater`. Pass it: the handoff file path, the project name, and a one-line summary of what was accomplished and what the next session picks up.
 
-If the page does not exist, add a note under Notes in the handoff doc: "No Logseq page found for `<ProjectName>` — wiki not updated." Skip the spawn.
+If the note does not exist, add a note under Notes in the handoff doc: "No Obsidian note found for `<ProjectName>` — vault not updated." Skip the spawn.
 
 > **Before spawning:** If wiki-updater returns empty or reports no update, surface that explicitly — a missing wiki entry means the next agent starts cold.

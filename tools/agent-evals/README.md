@@ -1,7 +1,7 @@
 # agent-evals
 
 A rigorous loop for measuring and improving the agent definitions in
-`.claude/agents/`. It is the agent analogue of Anthropic's
+`agents/`. It is the agent analogue of Anthropic's
 [`skill-creator`](https://github.com/anthropics/skills/tree/main/skills/skill-creator):
 instead of asking "does this prompt *feel* better?", it runs the agent **with
 vs. without** its definition on realistic tasks and measures the difference.
@@ -58,7 +58,7 @@ Lint the definition first (cheap, deterministic — catches smells before you
 spend tokens):
 
 ```bash
-python3 tools/agent-evals/scripts/validate_agent.py .claude/agents/<agent>.md
+python3 tools/agent-evals/scripts/validate_agent.py agents/<agent>.md
 ```
 
 Then write 2–3 realistic prompts — the kind of task a real user would actually
@@ -85,14 +85,14 @@ and the comparison is apples-to-apples. The baseline isolates what the
 *definition* buys you: if `with_agent` doesn't beat `general-purpose`, the
 definition is dead weight.
 
-> **No subagents (Claude.ai)?** Fall back to reading `.claude/agents/<agent>.md`
+> **No subagents (Claude.ai)?** Fall back to reading `agents/<agent>.md`
 > and adopting it yourself for the with_agent run, and skip the baseline — same
 > environment branch skill-creator uses. Lower fidelity (no real tool/model
 > enforcement), but a useful sanity check.
 >
 > **Editing an existing agent** rather than creating one? You're measuring
 > new-vs-old, so make the baseline the previous version: snapshot it first
-> (`cp .claude/agents/<agent>.md /tmp/<agent>.snapshot.md`) and run that as the
+> (`cp agents/<agent>.md /tmp/<agent>.snapshot.md`) and run that as the
 > baseline instead of `general-purpose`.
 
 The Agent tool returns a `<usage>` block with `subagent_tokens`, `tool_uses`,
@@ -207,8 +207,8 @@ splits train/held-out, proposes a sharper description, and keeps the best by
 
 ```bash
 python3 tools/agent-evals/scripts/optimize_description.py \
-  --agent-path .claude/agents/principal-dotnet-engineer.md \
-  --agents-dir .claude/agents \
+  --agent-path agents/principal-dotnet-engineer.md \
+  --agents-dir agents \
   --eval-set tools/agent-evals/evals/routing-evals.json \
   --max-iterations 5 --runs-per-query 3 --model <model-id> --verbose \
   --output report.json
@@ -229,7 +229,7 @@ so it can't overfit. Only for agents with objectively checkable outputs — the
 
 ```bash
 python3 tools/agent-evals/scripts/improve_body.py \
-  --agent-path .claude/agents/principal-dotnet-engineer.md \
+  --agent-path agents/principal-dotnet-engineer.md \
   --eval-set tools/agent-evals/evals/dotnet-body-evals.json \
   --project-template /path/to/cloned/CleanArchitecture \
   --verify-cmd "dotnet test tests/Domain.UnitTests -c Debug" \

@@ -1,7 +1,7 @@
 ---
 model: sonnet
 name: session-summary
-description: Generates a summary of the current work session from git history, changed files, and conversation context. Use at the end of a work session, when returning to a project after a break, or when you want to know "where did I leave off?". Updates the Logseq wiki with progress.
+description: Generates a summary of the current work session from git history, changed files, and conversation context. Use at the end of a work session, when returning to a project after a break, or when you want to know "where did I leave off?". Updates the Obsidian vault with progress.
 ---
 
 # Session Summary
@@ -34,8 +34,8 @@ Generate a concise summary of what happened in this work session so you can pick
 
 6. **Save** to `docs/sessions/YYYY-MM-DD-session.md` (create directory if needed)
 
-7. **Update Logseq wiki** — add a journal entry or update the project page:
-   - Open `~/Documents/Project Docs/pages/Projects___<ProjectName>.md`
+7. **Update the Obsidian vault** — add a progress entry to the project note:
+   - Open `~/Documents/Obsidian Vault/Projects/<ProjectName>.md`
    - Add to `## Implementation Progress`: `- YYYY-MM-DD: [one-line summary of what was done]`
 
 ## Summary template
@@ -75,13 +75,13 @@ Generate a concise summary of what happened in this work session so you can pick
 - **Current state must be honest** — "half-implemented, doesn't compile" is useful; "good progress" is not
 - **Keep it under 1 page** — if it's longer, you're journaling, not summarizing
 - **Save the file** — a summary that exists only in the terminal is useless next session
-- **Update the wiki** — the Logseq project page is the long-term record; session files are the short-term scratchpad
+- **Update the vault** — the Obsidian project note is the long-term record; session files are the short-term scratchpad
 
 ## Agent Integrations
 
 ### After saving the session summary file (Step 6)
-Check if `~/Documents/Project Docs/pages/Projects___<ProjectName>.md` exists before spawning. If it exists, spawn `wiki-updater`. Pass it: the session summary file path, the project name, and the one-line summary of what was done.
+Check if `~/Documents/Obsidian Vault/Projects/<ProjectName>.md` exists before spawning. If it exists, spawn `wiki-updater`. Pass it: the session summary file path, the project name, and the one-line summary of what was done.
 
-If the page does not exist, add a note under **Notes** in the summary: "No Logseq page found for `<ProjectName>` — wiki not updated." Skip the spawn.
+If the note does not exist, add a note under **Notes** in the summary: "No Obsidian note found for `<ProjectName>` — vault not updated." Skip the spawn.
 
 > **Before spawning:** Skip for throwaway / exploration sessions with no meaningful commits or changes. If wiki-updater returns empty or reports no update made, surface that explicitly — the session is not fully recorded.

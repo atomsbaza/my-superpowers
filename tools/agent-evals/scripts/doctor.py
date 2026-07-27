@@ -35,7 +35,7 @@ RIGID = ("NEVER", "ALWAYS", "MUST")
 RIGID_LIMIT = 6
 REF_DIRS = ("references", "reference", "scripts", "assets")
 OVERLAP_THRESHOLD = 0.40
-# Agents that exist outside .claude/agents/ and so must not be flagged as stale.
+# Agents that exist outside agents/ and so must not be flagged as stale.
 BUILTIN_AGENTS = {"general-purpose", "explore", "plan", "claude", "subagent",
                   "statusline-setup", "output-style-setup"}
 # High-precision "this is an agent invocation" patterns; each captures the name.
@@ -58,7 +58,7 @@ class Finding:
 
 def discover(repo: str) -> List[dict]:
     items = []
-    agents_dir = os.path.join(repo, ".claude", "agents")
+    agents_dir = os.path.join(repo, "agents")
     if os.path.isdir(agents_dir):
         for fn in sorted(os.listdir(agents_dir)):
             if fn.endswith(".md"):
@@ -66,9 +66,8 @@ def discover(repo: str) -> List[dict]:
                 name, desc, body = parse_agent_md(path)
                 items.append({"kind": "agent", "path": path, "dir": agents_dir,
                               "loc_name": fn[:-3], "name": name, "desc": desc, "body": body})
-    for root in (os.path.join(repo, ".claude", "skills"), os.path.join(repo, "skills")):
-        if not os.path.isdir(root):
-            continue
+    root = os.path.join(repo, "skills")
+    if os.path.isdir(root):
         for dirpath, _, files in os.walk(root):
             if "SKILL.md" in files:
                 path = os.path.join(dirpath, "SKILL.md")
@@ -139,7 +138,7 @@ def check_item(repo: str, item: dict, file_index: List[str], valid_agents: set) 
         seen_agents.add(ref)
         if ref not in valid_agents:
             out.append(Finding("WARN", rel, "references a subagent that doesn't exist in "
-                               ".claude/agents/: `{}`".format(ref)))
+                               "agents/: `{}`".format(ref)))
 
     # body length
     n = len([l for l in body.splitlines() if l.strip()])

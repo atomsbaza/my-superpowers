@@ -85,7 +85,7 @@ The following skill was created in this repo, derived from concepts in
 *Clean Code: A Handbook of Agile Software Craftsmanship* and *The Clean Coder:
 A Code of Conduct for Professional Programmers* by Robert C. Martin:
 
-- `.claude/skills/martin-clean-code/` — extracted frameworks, principles, and
+- `skills/knowledge-base/martin-clean-code/` — extracted frameworks, principles, and
   techniques from both books (naming, functions, testing, refactoring, code
   smells, TDD, professionalism, estimation, craftsmanship), generated via the
   `book-to-skill` converter
@@ -96,7 +96,7 @@ The following skill was created in this repo, derived from concepts in
 *Clean Architecture: A Craftsman's Guide to Software Structure and Design* by
 Robert C. Martin:
 
-- `.claude/skills/martin-clean-architecture/` — extracted frameworks, principles,
+- `skills/knowledge-base/martin-clean-architecture/` — extracted frameworks, principles,
   and techniques from the book (SOLID, component cohesion/coupling principles,
   the Dependency Rule, architecture boundaries, use cases and entities, package
   organization strategies), generated via the `book-to-skill` converter
@@ -106,7 +106,7 @@ Robert C. Martin:
 The following skill was created in this repo, derived from concepts in
 *Learning Domain-Driven Design* by Vlad Khononov (O'Reilly):
 
-- `.claude/skills/khononov-ddd/` — extracted frameworks, principles, and
+- `skills/knowledge-base/khononov-ddd/` — extracted frameworks, principles, and
   techniques from the book (subdomains, bounded contexts, context mapping,
   tactical business-logic patterns, architectural patterns, communication
   patterns, design heuristics, EventStorming, microservices, event-driven
@@ -114,7 +114,7 @@ The following skill was created in this repo, derived from concepts in
 
 ## Original work — TDD Knowledge Base
 
-`.claude/skills/tdd-knowledge-base/` was synthesized from a NotebookLM deep
+`skills/knowledge-base/tdd-knowledge-base/` was synthesized from a NotebookLM deep
 web research pass (89 sources) on Test-Driven Development, not from a single
 book. It attributes named techniques and quotes to their original
 practitioners (Kent Beck, Martin Fowler, Robert C. Martin, Steve Freeman &
@@ -141,7 +141,8 @@ The following were created independently in this repo:
 - `skills/quality/pragmatic-review/` — Engineering Diagnostic Matrix scoring
 - `skills/execution/benchmark-sprint/` — parallel architectural benchmarking harness
 - `skills/debugging/diagnose/`
-- `.claude/agents/` — all agent definitions
-- `.claude/skills/` — .NET / QA / Product Owner skills
+- `agents/` — all agent definitions
+- `skills/dotnet/`, `skills/qa/`, `skills/product-owner/`, `skills/apple/` — originally
+  built as .NET / QA / Product Owner / Apple skill sets
 - `tools/agent-evals/` — agent evaluation engine and improvement loops
 - `install.sh` — install script

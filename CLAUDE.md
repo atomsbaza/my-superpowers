@@ -18,10 +18,8 @@ so the skills/agents are usable from any project on the machine.
 ## Repository layout
 
 ```
-.claude/
-  agents/          Flat agent definitions, one *.md each  (→ ~/.claude/agents/)
-  skills/          .NET / QA / Product-Owner / Apple skills (→ ~/.claude/skills/)
-skills/            Cross-platform skills, grouped by category (→ ~/.claude/skills/)
+agents/            Flat agent definitions, one *.md each  (→ ~/.claude/agents/)
+skills/            All skills, grouped by category         (→ ~/.claude/skills/)
   planning/        brainstorming, writing-plans, spec-writer, adr, spike, …
   execution/       loop, tdd-loop, executing-plans, subagent-driven-development, …
   quality/         scrutinize, ponytail, verify-before-stop, circuit-breaker, …
@@ -29,6 +27,12 @@ skills/            Cross-platform skills, grouped by category (→ ~/.claude/ski
   git/             using-git-worktrees, finishing-a-development-branch
   communication/   session-summary, handoff, management-talk, business-impact
   tools/           research, teach, find-skills, writing-skills, writing-great-skills, …
+  qa/              analyzing-requirements-for-qa, creating-test-plan, generating-bdd-scenarios, …
+  product-owner/   orchestrating-po-workflow, writing-prd, writing-user-stories, …
+  dotnet/          implementing-dotnet, designing-database-schema
+  apple/           swift-concurrency-pro, swiftui-patterns, xcodebuildmcp-cli, …
+  knowledge-base/  martin-clean-code, khononov-ddd, tdd-knowledge-base, …
+  design/          frontend-design
 docs/              Research reports, session logs, design specs (reference material)
   research/<topic>/   Cited research output (claude-code, dotnet, ios, mcp, …)
   superpowers/        Plans and specs for this repo itself
@@ -40,10 +44,9 @@ install.sh         Symlinks agents + skills into place
 ATTRIBUTION.md     Provenance for every skill (adapted vs. original)
 ```
 
-Both skill roots (`.claude/skills/` and `skills/`) are discovered the same way —
-by finding `SKILL.md` — so the flat and category-nested layouts both install. The
-category folders under `skills/` are organizational only; they are flattened at
-install time.
+Skills are discovered by finding `SKILL.md` anywhere under `skills/`. The category
+folders are organizational only; they are flattened at install time — `name` in a
+skill's frontmatter (not its category) determines the installed link name.
 
 ## File format conventions
 
@@ -63,7 +66,7 @@ argument-hint: "…"             # optional
 ```
 
 - **`name` must equal the directory basename.** Install links by basename, so a
-  mismatch (or a duplicate name across roots) silently clobbers another skill.
+  mismatch (or a duplicate name across categories) silently clobbers another skill.
 - **`description` is the trigger**, not a summary. Write it so an agent knows
   *when* to reach for the skill ("Use when…", "…before writing any code").
 - Keep the body lean — push long detail into bundled `references/`, `scripts/`,
@@ -82,7 +85,7 @@ Examples: `secrets-guardrail`, `verify-before-stop`, `circuit-breaker`,
 `spec-writer` (PreToolUse gate), `loop` (Stop-hook checker). When editing these,
 keep the hook script and its `settings-snippet.json` in sync.
 
-### Agents (`.claude/agents/*.md`)
+### Agents (`agents/*.md`)
 
 One flat Markdown file per agent. Frontmatter then the system prompt as body:
 
@@ -135,9 +138,9 @@ plus description/triggering evals only.
 
 ## Development workflow
 
-1. **Add or edit** a skill (`skills/<category>/<name>/SKILL.md` or
-   `.claude/skills/<name>/SKILL.md`) or an agent (`.claude/agents/<name>.md`).
-   Match the existing structure and frontmatter conventions exactly.
+1. **Add or edit** a skill (`skills/<category>/<name>/SKILL.md`) or an agent
+   (`agents/<name>.md`). Match the existing structure and frontmatter conventions
+   exactly.
 2. **Run the doctor** (`doctor.py --repo .`) and fix ERRORs.
 3. **Update `README.md`** — every skill/agent is listed in a table there. Keep the
    table in sync when adding, removing, or renaming.
@@ -152,7 +155,7 @@ plus description/triggering evals only.
 
 - **Keep three files in agreement** when the skill/agent set changes: the file
   itself, the `README.md` table, and `ATTRIBUTION.md`. Drift between them is a bug.
-- **Never introduce a duplicate `name`** across `.claude/skills/` and `skills/` —
+- **Never introduce a duplicate `name`** across categories under `skills/` —
   install collides on basename. The doctor catches this.
 - **Descriptions are routing triggers.** When two skills' descriptions overlap
   heavily, agents route ambiguously; the doctor flags overlap as a WARN — resolve it.

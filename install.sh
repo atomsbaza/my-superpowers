@@ -2,12 +2,11 @@
 # install.sh — sets up skills and agents for Claude Code (and Codex CLI)
 #
 # Structure:
-#   .claude/agents/*.md        → ~/.claude/agents/        (flat agent definitions)
-#   .claude/skills/<name>/     → ~/.claude/skills/         (Claude Code skills)
-#   skills/<category>/<name>/  → ~/.claude/skills/         (cross-platform skills)
+#   agents/*.md                → ~/.claude/agents/         (flat agent definitions)
+#   skills/<category>/<name>/  → ~/.claude/skills/         (skills, organized by category)
 #
-# Skills are discovered by their SKILL.md, so both the flat (.claude/skills)
-# and category-nested (skills/) layouts are picked up automatically.
+# Skills are discovered by their SKILL.md — the category folders under skills/
+# are organizational only and are flattened at install time.
 #
 # Usage:
 #   ./install.sh           — link new items, skip existing
@@ -45,7 +44,7 @@ link_or_skip() {
 }
 
 install_agents() {
-  local src_root="$1"   # e.g. REPO_DIR/.claude/agents (flat *.md)
+  local src_root="$1"   # e.g. REPO_DIR/agents (flat *.md)
   local dest_dir="$2"   # e.g. ~/.claude/agents
   [ -d "$src_root" ] || return 0
   mkdir -p "$dest_dir"
@@ -59,16 +58,14 @@ install_agents() {
 install_skills() {
   local dest_dir="$1"   # e.g. ~/.claude/skills
   mkdir -p "$dest_dir"
-  # A skill is any directory containing a SKILL.md. Scan both skill roots so
-  # the flat (.claude/skills) and category-nested (skills/) layouts both work.
-  for root in "$REPO_DIR/.claude/skills" "$REPO_DIR/skills"; do
-    [ -d "$root" ] || continue
-    while IFS= read -r skill_md; do
-      skill_dir="$(dirname "$skill_md")"
-      name="$(basename "$skill_dir")"
-      link_or_skip "$skill_dir" "$dest_dir/$name" "$name"
-    done < <(find "$root" -name SKILL.md)
-  done
+  # A skill is any directory containing a SKILL.md, discovered under skills/.
+  local root="$REPO_DIR/skills"
+  [ -d "$root" ] || return 0
+  while IFS= read -r skill_md; do
+    skill_dir="$(dirname "$skill_md")"
+    name="$(basename "$skill_dir")"
+    link_or_skip "$skill_dir" "$dest_dir/$name" "$name"
+  done < <(find "$root" -name SKILL.md)
 }
 
 echo "=== my-superpowers install ==="
@@ -78,7 +75,7 @@ echo ""
 # ── Claude Code ──────────────────────────────────────────────
 echo "Claude Code:"
 echo "  agents → ~/.claude/agents/"
-install_agents "$REPO_DIR/.claude/agents" "$HOME/.claude/agents"
+install_agents "$REPO_DIR/agents" "$HOME/.claude/agents"
 echo "  skills → ~/.claude/skills/"
 install_skills "$HOME/.claude/skills"
 echo ""
