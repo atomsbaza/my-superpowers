@@ -14,6 +14,7 @@ Welcome to the centralized KYC Research Knowledge Base. All research reports, te
 | **04** | **[04-complete-dotnet-ai-kyc-system-upgrade-guide.md](./04-complete-dotnet-ai-kyc-system-upgrade-guide.md)** | Complete implementation guide: Docker Compose, C# DTOs, MRZ checksum math, EF Core PostgreSQL/SQL Server migrations, and DI setup. | Senior .NET Developers & DevOps Engineers |
 | **05** | **[05-agentic-ai-for-kyc-system.md](./05-agentic-ai-for-kyc-system.md)** | Agentic AI Multi-Agent Architecture for KYC: Role-based sub-agents, parallel fan-out/fan-in, C# `KycAgentState`, and audit lineage. | Principal AI & Software Architects |
 | **06** | **[06-advanced-agentic-kyc-patterns-and-evals.md](./06-advanced-agentic-kyc-patterns-and-evals.md)** | Advanced Agentic Patterns: Self-healing loops, indirect prompt injection defense, C# guardrail filters, and continuous eval benchmarks. | Security Engineers, Lead Architects & QA |
+| **07** | **[07-advanced-kyc-topics-ppfl-ubo-regulatory.md](./07-advanced-kyc-topics-ppfl-ubo-regulatory.md)** | Next-Level KYC: Privacy-Preserving Federated Learning, UBO Graph Mining, and Multi-Jurisdictional Regulatory Matrix Automation. | Data Scientists, Compliance Officers & Architects |
 
 ---
 

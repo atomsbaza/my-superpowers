@@ -27,6 +27,9 @@ docs/research/
 * **[02-next-gen-kyc-system-innovations.md](./kyc/02-next-gen-kyc-system-innovations.md):** 6 Pillars: ZK-KYC, rPPG Liveness, Perpetual pKYC, On-prem SLM with AMD SEV TEEs, Agentic SARs, and Adaptive UX.
 * **[03-dotnet-ai-kyc-integration.md](./kyc/03-dotnet-ai-kyc-integration.md):** C# .NET Hybrid Integration Architecture (On-prem SLM + Cloud LLM Fallback).
 * **[04-complete-dotnet-ai-kyc-system-upgrade-guide.md](./kyc/04-complete-dotnet-ai-kyc-system-upgrade-guide.md):** Implementation Guide: Docker Compose, C# DTOs, MRZ Checksums, and EF Core SQL migrations.
+* **[05-agentic-ai-for-kyc-system.md](./kyc/05-agentic-ai-for-kyc-system.md):** Agentic AI Multi-Agent Architecture for KYC.
+* **[06-advanced-agentic-kyc-patterns-and-evals.md](./kyc/06-advanced-agentic-kyc-patterns-and-evals.md):** Advanced Agentic Patterns & Continuous Evals.
+* **[07-advanced-kyc-topics-ppfl-ubo-regulatory.md](./kyc/07-advanced-kyc-topics-ppfl-ubo-regulatory.md):** PPFL, UBO Graph Mining, and Multi-Jurisdictional Regulatory Automation.
 * **[kyc/README.md](./kyc/README.md):** Centralized Master Index for all KYC research.
 
 ---
