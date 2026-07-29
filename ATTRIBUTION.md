@@ -121,6 +121,15 @@ practitioners (Kent Beck, Martin Fowler, Robert C. Martin, Steve Freeman &
 Nat Pryce, David Heinemeier Hansson) where the research identifies them, and
 flags the few gaps the research left unverified.
 
+## Original work — EF Core Knowledge Base
+
+`skills/dotnet/efcore-knowledge-base/` was synthesized from a NotebookLM deep
+web research pass (98 sources) on EF Core performance and data-access
+architecture, not from a single source. It flags an explicit coverage gap
+where the research crawler's fetch of OceanBase's official docs (24 pages)
+and 2 StackOverflow pages failed, and marks OceanBase-specific claims beyond
+basic Pomelo/MySQL-mode compatibility as unverified pending a follow-up pass.
+
 ## Original work
 
 The following were created independently in this repo:

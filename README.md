@@ -202,6 +202,7 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 | `writing-tests` | xUnit unit tests, Testcontainers integration, WebApplicationFactory API tests, Bogus |
 | `reviewing-code` | 3-Golden-Rules review: correctness, security, observability, rollback assessment |
 | `orchestrating-workflow` | Chains all 7 principal engineer skills via workflow-state.json |
+| `efcore-knowledge-base` | Research-synthesized knowledge base on EF Core performance (NotebookLM deep research, 98 sources) — single vs split query, ExecuteUpdate/ExecuteDelete, Dapper vs EF Core benchmarks, database-agnostic architecture, Hangfire connection-pool exhaustion, Pomelo/OceanBase provider notes |
 
 #### QA .NET Engineer Skills (`skills/qa/`)
 | Skill | What it does |
