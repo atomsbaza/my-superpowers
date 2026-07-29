@@ -13,6 +13,7 @@ Welcome to the centralized KYC Research Knowledge Base. All research reports, te
 | **03** | **[03-dotnet-ai-kyc-integration.md](./03-dotnet-ai-kyc-integration.md)** | C# .NET 8 / 10 Hybrid Integration Architecture (On-prem SLM + Cloud LLM Fallback) with Polly resilience policies. | Software Engineers & .NET Developers |
 | **04** | **[04-complete-dotnet-ai-kyc-system-upgrade-guide.md](./04-complete-dotnet-ai-kyc-system-upgrade-guide.md)** | Complete implementation guide: Docker Compose, C# DTOs, MRZ checksum math, EF Core PostgreSQL/SQL Server migrations, and DI setup. | Senior .NET Developers & DevOps Engineers |
 | **05** | **[05-agentic-ai-for-kyc-system.md](./05-agentic-ai-for-kyc-system.md)** | Agentic AI Multi-Agent Architecture for KYC: Role-based sub-agents, parallel fan-out/fan-in, C# `KycAgentState`, and audit lineage. | Principal AI & Software Architects |
+| **06** | **[06-advanced-agentic-kyc-patterns-and-evals.md](./06-advanced-agentic-kyc-patterns-and-evals.md)** | Advanced Agentic Patterns: Self-healing loops, indirect prompt injection defense, C# guardrail filters, and continuous eval benchmarks. | Security Engineers, Lead Architects & QA |
 
 ---
 
