@@ -1,0 +1,29 @@
+# Glossary — C# Concurrency & Asynchronous Programming
+
+- **AggregateException** — An exception that consolidates multiple exception instances thrown by concurrent tasks into a single object (Ch 3, Ch 12).
+- **Async/Await** — C# language keywords that synthesize compiler-generated state machines to perform non-blocking asynchronous operations (Ch 1, Ch 2, Ch 3).
+- **AsyncLocal<T>** — Ambient storage mechanism that preserves and flows data across `await` points and asynchronous execution contexts (Ch 5).
+- **AsyncTaskMethodBuilder** — Compiler-generated helper struct that manages state machine execution and task completion (Ch 2).
+- **Atomic Operation** — An operation that completes in a single indivisible step, preventing race conditions without traditional lock contention (Ch 7).
+- **Backpressure** — A flow control mechanism in producer-consumer pipelines that prevents producers from exceeding consumer capacity (Ch 8).
+- **BlockingCollection<T>** — Thread-safe bounded collection wrapper providing blocking consumption and backpressure capabilities (Ch 13).
+- **CancellationToken** — Struct passed into asynchronous methods to observe and respond to cancellation requests (Ch 9).
+- **CancellationTokenSource** — Producer object that signals cancellation requests to associated `CancellationToken` instances (Ch 9).
+- **Channel<T>** — High-performance, lock-free producer-consumer queue optimized for async data pipelines (Ch 8).
+- **ConfigureAwait** — Method configuring whether an `await` continuation should resume on the captured `SynchronizationContext` (Ch 3, Ch 11).
+- **Context Switch** — OS process of saving the execution state of one thread and restoring another, incurring CPU overhead (Ch 4).
+- **Deadlock** — A condition where two or more threads wait indefinitely for locks held by each other (Ch 7).
+- **FrozenCollection** — Highly optimized read-only lookup collection initialized once at application startup (.NET 8+) (Ch 13).
+- **IAsyncEnumerable<T>** — C# 8+ interface for streaming data asynchronously item-by-item using `await foreach` (Ch 14).
+- **IAsyncStateMachine** — Compiler interface implemented by generated async state machine structs (Ch 2).
+- **I/O Completion Port (IOCP)** — OS kernel mechanism notifying .NET when hardware I/O requests finish without holding a thread (Ch 1).
+- **ImmutableCollection** — Thread-safe collection where modifications return new instances while sharing underlying nodes (Ch 13).
+- **Interlocked** — Static class providing atomic hardware operations (increment, decrement, exchange) for primitive types (Ch 7).
+- **Parallel.ForEachAsync** — .NET 6+ API executing async operations across a collection with bounded concurrency (Ch 8).
+- **Race Condition** — Flaw where concurrent thread access to shared mutable data results in unpredictable behavior (Ch 7).
+- **SemaphoreSlim** — Lightweight synchronization primitive supporting asynchronous locking via `WaitAsync()` (Ch 7).
+- **SynchronizationContext** — Abstraction controlling thread affinity and continuation dispatching (e.g. UI main thread) (Ch 11).
+- **Task** — Object representing an ongoing or completed asynchronous operation (Ch 3).
+- **TaskCompletionSource<T>** — Manual producer object for creating and fulfilling custom `Task<T>` instances (Ch 3, Ch 10).
+- **ThreadPool** — Managed pool of worker threads maintained by .NET runtime for executing queued tasks efficiently (Ch 4).
+- **ValueTask<T>** — Struct wrapper eliminating heap allocation when async operations complete synchronously (Ch 3).
