@@ -131,4 +131,8 @@ This book's C# code targets roughly C# 6/7 (2018). Pattern *intent and structure
 
 ## Scope & Limits
 
-This skill covers the book's 2018-era content plus a supplementary 2025/26 modernization pass (see modern-csharp-notes.md). The book's C# code is preserved faithfully in each chapter — it is NOT rewritten to modern idiom, since the book's own syntax is what a reader following along would see. For current framework-specific guidance (exact .NET version APIs, current MediatR/DI syntax), verify against current Microsoft docs — the modernization notes summarize direction and status, not a full modern reimplementation of each pattern.
+This skill now spans two sources plus a modernization pass, each with a distinct job:
+- **GoF 1994 (ch01-ch23's Canonical GoF Reference sections, ch31, ch32)** — the timeless, language-agnostic Intent, Applicability, Participants, and Consequences of each pattern, and the original design reasoning (the Lexi case study). This is the ground truth for "what does this pattern actually mean" and "when does GoF itself say to use it," independent of any programming language or era.
+- **Sarcar 2018 (ch01-ch30's C# treatment)** — runnable C# code demonstrating each pattern, preserved faithfully as written (roughly C# 6/7 syntax) since that's what a reader following along would see; it is NOT rewritten to modern idiom in place.
+- **modern-csharp-notes.md** — the 2025/26 freshness layer: what current C#/.NET features or libraries now replace or simplify each pattern's 2018-era implementation.
+For current framework-specific guidance (exact .NET version APIs, current MediatR/DI syntax), verify against current Microsoft docs — the modernization notes summarize direction and status, not a full modern reimplementation of each pattern.
