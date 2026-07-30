@@ -130,6 +130,90 @@ where the research crawler's fetch of OceanBase's official docs (24 pages)
 and 2 StackOverflow pages failed, and marks OceanBase-specific claims beyond
 basic Pomelo/MySQL-mode compatibility as unverified pending a follow-up pass.
 
+## Original work — Design Patterns in C#
+
+The following skill was created in this repo, synthesized from two books:
+*Design Patterns: Elements of Reusable Object-Oriented Software* by Erich
+Gamma, Richard Helm, Ralph Johnson, and John Vlissides (Addison-Wesley, 1994)
+supplies the canonical pattern definitions (Intent, Applicability,
+Consequences, Known Uses, Related Patterns), folded into each pattern chapter
+and two dedicated chapters on GoF foundations and case studies. *Design Patterns
+in C#: A Hands-on Guide with Real-World Examples* by Vaskaran Sarcar (Apress,
+2018) supplies the C# implementations and worked examples.
+
+- `skills/knowledge-base/design-patterns-csharp/` — 23 Gang of Four patterns
+  with canonical definitions folded in, C# code examples, plus Simple Factory,
+  Null Object, MVC, pattern criticisms, anti-patterns, memory-leak hardening;
+  two dedicated chapters on GoF foundations and the Lexi case study; modern C#
+  modernization notes (sourced from public Medium articles and web research,
+  2025–26) flagging patterns absorbed into dependency injection frameworks or
+  language features in modern C#, generated via the `book-to-skill` converter
+
+## Original work — C# Concurrency
+
+The following skill was created in this repo, derived from concepts in
+*C# Concurrency: Asynchronous and Multithreaded Programming* by Nir Dobovizki:
+
+- `skills/knowledge-base/dobovizki-csharp-concurrency/` — extracted frameworks
+  and patterns for compiler state machine transformation, thread safety
+  primitives, SynchronizationContext, async/await execution models, concurrent
+  collections, and async streams, generated via the `book-to-skill` converter
+
+## Original work — Refactoring
+
+The following skill was created in this repo, derived from concepts in
+*Refactoring: Improving the Design of Existing Code* by Martin Fowler:
+
+- `skills/knowledge-base/fowler-refactoring/` — extracted code smell
+  identification, refactoring mechanics, the Two Hats principle, the Rule of
+  Three, small-step refactoring discipline, composing methods, organizing data,
+  and simplifying conditional expressions, generated via the `book-to-skill`
+  converter
+
+## Original work — A Philosophy of Software Design
+
+The following skill was created in this repo, derived from concepts in
+*A Philosophy of Software Design* by John Ousterhout:
+
+- `skills/knowledge-base/ousterhout-software-design/` — extracted frameworks for
+  deep vs shallow modules, information hiding, complexity analysis, tactical vs
+  strategic programming trade-offs, error handling semantics, comment-driven
+  design, and cohesion principles, generated via the `book-to-skill` converter
+
+## Original work — The Pragmatic Programmer
+
+The following skill was created in this repo, derived from concepts in
+*The Pragmatic Programmer: From Journeyman to Master* by Andrew Hunt and David
+Thomas (Addison-Wesley, 1999):
+
+- `skills/knowledge-base/pragmatic-programmer/` — extracted core principles
+  including DRY, orthogonality, tracer bullets, reversibility, Design by
+  Contract, Law of Demeter, programming by coincidence avoidance, and broken
+  windows theory, generated via the `book-to-skill` converter
+
+## Original work — Pro Asynchronous Programming with .NET
+
+The following skill was created in this repo, derived from concepts in
+*Pro Asynchronous Programming with .NET* by Richard Blewett and Andrew Clymer:
+
+- `skills/knowledge-base/pro-async-dotnet/` — extracted the asynchrony matrix
+  (CPU vs I/O), Task Parallel Library (TPL) fundamentals, SynchronizationContext
+  semantics, ConfigureAwait discipline, concurrent collections, PLINQ, and
+  synchronization primitives, generated via the `book-to-skill` converter
+
+## Original work — Web Application Security
+
+The following skill was created in this repo, synthesized from concepts in two
+books: *Grokking Web Application Security* by Malcolm McDonald (Manning, 2024)
+and *Web Application Security: Exploitation and Countermeasures for Modern Web
+Applications* by Andrew Hoffman (O'Reilly, 2nd ed., 2024):
+
+- `skills/knowledge-base/webappsec-defense/` — extracted and cross-referenced
+  attack vectors (XSS, CSRF, injection, XXE) and defensive patterns
+  (authentication/authorization, session design, threat modeling, CVSS,
+  Zero Trust, dependency vulnerability scanning), generated via the
+  `book-to-skill` converter
+
 ## Original work
 
 The following were created independently in this repo:

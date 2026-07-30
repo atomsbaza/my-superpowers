@@ -58,3 +58,27 @@
 - **A repository class whose methods just forward to `DbContext` calls with no added logic** → Repository anti-pattern; EF Core's `DbContext` already provides the abstraction — only keep a repository if it protects invariants or coordinates complex persistence. (modern-csharp-notes.md)
 - **Manual subscriber-list management (`Attach`/`Detach`/`Notify`) written by hand in application code** → reinventing what C# `event`/`delegate` (or a message bus) already provides — a red flag in 2025/26 code review. (Ch14)
 - **A class doing "everything" for a feature — data access, validation, business rules, and presentation formatting all in one place** → God class anti-pattern; look for where a Facade, Mediator, or clearer layering should have split responsibilities. (Ch28)
+
+## GoF Pattern Classification (Purpose × Scope)
+
+All 23 patterns, GoF's Table 1.1 (Section 1.5). Note **Adapter is the only pattern that spans both scopes** — a class-scope version (via inheritance) and an object-scope version (via composition).
+
+| Scope | Creational | Structural | Behavioral |
+|---|---|---|---|
+| **Class** | Factory Method | Adapter (class) | Interpreter, Template Method |
+| **Object** | Abstract Factory, Builder, Prototype, Singleton | Adapter (object), Bridge, Composite, Decorator, Facade, Flyweight, Proxy | Chain of Responsibility, Command, Iterator, Mediator, Memento, Observer, State, Strategy, Visitor |
+
+(ch31-gof-introduction.md)
+
+## GoF's Own Pattern-Selection Procedure
+
+GoF's actual recommended steps for choosing a pattern (Section 1.7, "How to Select a Design Pattern"):
+
+1. **Consider how design patterns solve design problems** — start from the "cause of redesign" you're facing (e.g., algorithmic dependencies, tight coupling to a concrete class) and note which patterns are documented as addressing that specific cause.
+2. **Scan each candidate's Intent section** — the one- or two-sentence Intent is often enough to rule a pattern in or out for your specific problem.
+3. **Study how patterns interrelate** — several patterns are commonly used together or are natural alternatives to each other; understanding the relationships (see each chapter's Related Patterns / Connects To) prevents picking one in isolation when a pair is the better fit.
+4. **Study patterns of like purpose** — compare all patterns within the same Creational/Structural/Behavioral group side by side, since the right answer is often "which one of these three" rather than "is it this pattern at all."
+5. **Examine a cause of redesign** — use the "aspects that vary" framing (Table 1.2) as the prescriptive counterpart to step 1's diagnostic framing: if you already know what needs to vary, find the pattern whose row names exactly that aspect.
+6. **Consider what should be variable in your design** — the general design-for-change question underlying the whole exercise: identify the concept most likely to change, and let that drive which pattern (if any) is worth the added indirection.
+
+(ch31-gof-introduction.md)

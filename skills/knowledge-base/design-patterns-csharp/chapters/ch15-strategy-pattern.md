@@ -8,6 +8,42 @@ Define a family of algorithms, encapsulate each one, and make them interchangeab
   - When to use: You need to select an algorithm's behavior dynamically at runtime, and hard-wiring the choice via inheritance would create the kind of interface bloat and rigid deadlocks described in the Q&A below.
   - How: A `Context` class holds a reference to a `IChoice` (strategy) object and delegates the actual behavior to it via a setter (`SetChoice`); client code swaps which concrete strategy (`FirstChoice`, `SecondChoice`) the context holds, changing behavior without changing the context's own code.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: "Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it."
+
+**Also Known As**: Policy
+
+**Applicability** — GoF says use this pattern when:
+- Many related classes differ only in their behavior; Strategy lets you configure a class with one of many behaviors.
+- You need different variants of an algorithm, e.g. reflecting different space/time trade-offs.
+- An algorithm uses data that clients shouldn't know about — Strategy avoids exposing complex, algorithm-specific data structures.
+- A class defines many behaviors that show up as multiple conditional statements in its operations; move each conditional branch into its own Strategy class instead.
+
+**Participants**:
+- **Strategy** (Compositor) — declares an interface common to all supported algorithms; Context calls the algorithm through this interface.
+- **ConcreteStrategy** (SimpleCompositor, TeXCompositor, ArrayCompositor) — implements the algorithm using the Strategy interface.
+- **Context** (Composition) — is configured with a ConcreteStrategy object, maintains a reference to it, and may define an interface letting the Strategy access its data.
+
+**Consequences**:
+1. Families of related algorithms — Strategy hierarchies let inheritance factor out common functionality among algorithm variants.
+2. An alternative to subclassing Context directly — subclassing hard-wires one behavior into Context and prevents varying it dynamically; encapsulating the algorithm in separate Strategy classes lets it vary independently of the context.
+3. Strategies eliminate conditional statements for selecting behavior, replacing a `switch`/case dispatch with delegation to a Strategy object.
+4. A choice of implementations — clients can pick among strategies with different time/space trade-offs.
+5. Clients must be aware of different strategies — a potential drawback, since the client must understand how strategies differ before choosing; use Strategy only when that variation is relevant to clients.
+6. Communication overhead between Strategy and Context — the shared interface must serve all ConcreteStrategies, so simple ones may ignore data the Context prepared for them.
+7. Increased number of objects — mitigated by implementing strategies as shareable, stateless objects (see Flyweight).
+
+**Implementation notes**:
+- Two ways to give a ConcreteStrategy access to Context data: pass it as parameters ("take the data to the strategy," keeps them decoupled) or pass the Context itself so the strategy can pull what it needs (tighter coupling, less waste).
+- In C++, Strategy can be a compile-time template parameter on Context when the strategy never needs to change at runtime, avoiding a separate abstract Strategy class.
+- Context can make the Strategy object optional, falling back to default behavior when none is set, so clients only deal with Strategy objects if they want non-default behavior.
+
+**Known Uses (1994-era)**: ET++ and Interviews (linebreaking compositors, the Motivation example); the RTL compiler-optimization system (register allocation and instruction scheduling strategies); ET++SwapsManager (financial instrument/yield-curve calculation strategies); the Booch components (memory allocation strategies as template arguments); RApp (IC layout routing strategies); Borland ObjectWindows (dialog field validation strategies).
+
+**Related Patterns (per GoF)**: Flyweight (195) — Strategy objects often make good flyweights when they can be shared statelessly across contexts. Template Method (325) — Template Method uses inheritance to vary part of an algorithm, while Strategy uses delegation to vary the entire algorithm; the two are GoF's canonical inheritance-vs-composition contrast for behavior variation.
+
 ## Key Concepts
 - **Context**: The class that holds a reference to the current strategy and delegates work to it (`Context`, holding an `IChoice`).
 - **Strategy interface**: The common contract implemented by every interchangeable algorithm (`IChoice.MyChoice()`).
@@ -87,3 +123,4 @@ The Q&A section extends this with a variant (Q&A #3): renaming `MyChoice()` to `
 - **Ch 16 (Template Method)**: Both patterns vary an algorithm, but Template Method fixes the algorithm's skeleton in a base class and lets subclasses override specific steps, while Strategy delegates the entire algorithm to a swappable, composed object — a common point of confusion the book addresses across both chapters.
 - **Ch 3 (Builder, referenced in Q&A #4)**: The book points back to its Builder-pattern Q&A for a fuller discussion of when to prefer an abstract class over an interface for the strategy contract.
 - **GoF 1994 catalog**: Strategy is one of the original eleven Behavioral patterns and is frequently implemented in modern languages using first-class functions/delegates instead of a full class hierarchy.
+- **GoF 1994 canonical entry**: GoF's own Related Patterns note that Template Method varies an algorithm via inheritance while Strategy varies it via delegation — the precise mechanical distinction underlying this chapter's Ch 16 comparison.

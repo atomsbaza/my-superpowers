@@ -8,6 +8,34 @@ Define an object that encapsulates how a set of objects interact, promoting loos
   - When to use: A group of objects needs to communicate, but direct references among all of them would create a tangled many-to-many web of dependencies that is hard to change or extend.
   - How: A `Mediator` interface defines the communication contract; a `ConcreteMediator` maintains the list of `Colleague` objects and coordinates their interaction; each `Colleague` talks only to the mediator, never directly to another colleague.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: "Define an object that encapsulates how a set of objects interact. Mediator promotes loose coupling by keeping objects from referring to each other explicitly, and it lets you vary their interaction independently."
+
+**Applicability** — GoF says use this pattern when:
+- A set of objects communicate in well-defined but complex ways, producing interdependencies that are unstructured and hard to understand.
+- Reusing an object is difficult because it refers to and communicates with many other objects.
+- A behavior distributed between several classes should be customizable without a lot of subclassing.
+
+**Participants**:
+- **Mediator** (`DialogDirector`) — defines an interface for communicating with Colleague objects.
+- **ConcreteMediator** (`FontDialogDirector`) — implements cooperative behavior by coordinating Colleagues; knows and maintains its colleagues.
+- **Colleague classes** (`ListBox`, `EntryField`) — each knows its Mediator and talks to it rather than to another colleague directly.
+
+**Consequences**:
+1. It limits subclassing — behavior changes require subclassing only Mediator; Colleague classes can be reused as is.
+2. It decouples colleagues — Colleague and Mediator classes can vary and be reused independently.
+3. It simplifies object protocols — many-to-many interactions become one-to-many, which is easier to understand, maintain, and extend.
+4. It abstracts how objects cooperate — encapsulating mediation as its own concept clarifies how objects interact apart from their individual behavior.
+5. It centralizes control — this trades complexity of interaction for complexity in the mediator itself, which can grow into a monolith that's hard to maintain.
+
+**Implementation notes**: (1) Omitting the abstract Mediator class is fine when colleagues only ever work with one concrete mediator. (2) Colleague-Mediator communication can be implemented via Observer (colleagues as Subjects notifying the mediator), or via a specialized notification interface where a colleague passes itself as an argument so the mediator can identify the sender (the approach GoF's own sample code uses).
+
+**Known Uses (1994-era)**: ET++ and THINK C's director-like dialog objects; Smalltalk/V for Windows' `ViewManager`-as-Mediator architecture coordinating `Pane` objects via an event mechanism; the `ChangeManager` in Observer's own discussion, mediating subject/observer updates; Unidraw's `CSolver`, mediating connectivity constraints between connectors.
+
+**Related Patterns (per GoF)**: **Facade** differs in that it abstracts a subsystem behind a unidirectional interface (subsystem never calls back); Mediator's protocol is multidirectional and enables cooperative behavior colleagues couldn't provide alone. Colleagues can communicate with the mediator using the **Observer** pattern.
+
 ## Key Concepts
 - **Mediator**: The interface that defines how communication among colleague objects happens.
 - **ConcreteMediator**: Knows and maintains the list of colleague objects, implements the `Mediator` interface, and coordinates communication among them.
@@ -108,3 +136,4 @@ Three friends — Amit, Sohel, and Raghu (the boss) — register with a `Concret
 - **Ch 14 (Observer)**: The book explicitly contrasts the two — in Observer, all registered subscribers are notified in parallel and independently, whereas in Mediator, the mediator actively coordinates and controls the interaction (e.g., checking online status) rather than merely broadcasting.
 - **Facade (not covered in these chapters but referenced)**: Mediator is described as a "multiplexed Facade" — the same idea of hiding subsystem complexity behind one entry point, but applied to peer-to-peer interaction rather than a single subsystem.
 - **GoF 1994 catalog**: Mediator is one of the Behavioral patterns in the original Gang of Four catalog.
+- **GoF 1994 canonical entry**: GoF's "Discussion of Behavioral Patterns" frames Mediator vs. Observer as competing answers to "should communication be encapsulated or distributed?" — Observer's finer-grained, independently reusable Subject/Observer pairs are easier to make reusable but harder to trace, while Mediator centralizes and is easier to follow but risks becoming a monolith; the same discussion notes Command, Observer, Mediator, and Chain of Responsibility all decouple senders from receivers, just with different coupling trade-offs.

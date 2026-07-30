@@ -8,6 +8,42 @@ Encapsulate a request as an object, thereby letting you parameterize clients wit
   - When to use: When you need to decouple the object that issues a request from the object that performs it, especially to support undo/redo, macros (sequences of commands), queuing, or logging of requests.
   - How: Four roles participate — `client` (holds invoker and command objects, decides which command to run), `invoker` (holds a command and calls its execute method without knowing implementation details), `command` (an object, typically implementing an `ICommand` interface, that encapsulates a call to a specific receiver method), and `receiver` (the object that actually performs the work).
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: "Encapsulate a request as an object, thereby letting you parameterize clients with different requests, queue or log requests, and support undoable operations."
+
+**Also Known As**: Action, Transaction
+
+**Applicability** — GoF says use this pattern when you want to:
+- Parameterize objects by an action to perform (Command is the object-oriented replacement for a procedural callback function).
+- Specify, queue, and execute requests at different times, potentially with a lifetime independent of the original request (including across address spaces).
+- Support undo — Execute stores enough state to reverse itself, and a paired Unexecute/Undo traverses a history list backward and forward for unlimited undo/redo.
+- Support logging changes so they can be reapplied after a crash, by augmenting the Command interface with load/store operations.
+- Structure a system around high-level operations built on primitive operations, as with transactions in information systems.
+
+**Participants**:
+- **Command** — declares an interface for executing an operation.
+- **ConcreteCommand** (PasteCommand, OpenCommand) — binds a Receiver to an action and implements Execute by invoking the corresponding operation(s) on it.
+- **Client** (Application) — creates a ConcreteCommand and sets its receiver.
+- **Invoker** (MenuItem) — asks the command to carry out the request.
+- **Receiver** (Document, Application) — knows how to perform the operations needed to carry out the request; any class may serve as a Receiver.
+
+**Consequences**:
+1. Command decouples the object that invokes an operation from the object that knows how to perform it.
+2. Commands are first-class objects that can be manipulated and extended like any other object.
+3. Commands can be assembled into a composite command (GoF's **MacroCommand**, itself an instance of Composite) — a MacroCommand has no explicit receiver of its own, since each subcommand carries its own.
+4. New commands are easy to add without changing existing classes.
+
+**Implementation notes**:
+- A command can range from a thin receiver/action binding to one that implements the whole action itself with no receiver — useful when there's no natural receiver or the command knows its receiver implicitly.
+- Undo/redo requires storing the receiver, the operation's arguments, and any original receiver values that must be restored; multi-level undo needs a history list of executed commands, traversed backward (Unexecute) and forward (Execute) to cancel or replay effects. A command whose state varies per invocation must be **copied** onto the history list before re-use — such copyable commands act as a **Prototype**.
+- Errors can accumulate across repeated execute/unexecute/reexecute cycles ("hysteresis"); GoF suggests using **Memento** to store enough state in the command to restore objects reliably without exposing their internals.
+
+**Known Uses (1994-era)**: A paper by Lieberman is credited as the earliest example; MacApp popularized commands for undoable operations; ET++, Interviews (an `Action` class plus a parameterized `ActionCallback` template), and Unidraw (whose commands double as interpretable messages routed like Chain of Responsibility) also implement it; the THINK class library calls its commands "Tasks."
+
+**Related Patterns (per GoF)**: Composite (163) — can implement MacroCommand. Memento (283) — can keep the state a command needs to undo its effect. Prototype (117) — a command that must be copied before going on the history list acts as a Prototype.
+
 ## Key Concepts
 - **Invoker**: The object that triggers execution of a command (e.g., `ExecuteCommand()`) without needing to know what the command does internally.
 - **Receiver**: The object that contains the actual business logic the command ultimately invokes (e.g., `PerformUndo()`, `Add2WithNumber()`).
@@ -103,3 +139,4 @@ The Q&A extension generalizes this to multiple receivers via an `IReceiver` inte
 ## Connects To
 - **Ch 19 (Memento)**: Both support undo, but Command stores/replays discrete inverse actions while Memento stores full state snapshots; the GoF explicitly treats them as related patterns often used together.
 - **GoF 1994 catalog**: Command is one of the original 23 GoF behavioral patterns; the book also notes its real-world adoption in WPF's `ICommand` (`System.Windows.Input`) and Java Swing's `Action`.
+- **GoF 1994 canonical entry**: GoF's MacroCommand (a receiver-less Composite of subcommands, unwound in reverse order for undo) gives a concrete, canonical shape to the "macros/sequences of commands" benefit this chapter only gestures at.

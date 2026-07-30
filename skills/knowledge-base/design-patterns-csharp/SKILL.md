@@ -1,12 +1,12 @@
 ---
 name: design-patterns-csharp
-description: "Knowledge base from \"Design Patterns in C#: A Hands-on Guide with Real-World Examples\" (2018) by Vaskaran Sarcar. Use when applying GoF design patterns (Singleton, Factory, Strategy, Observer, Decorator, etc.) in C#/.NET, studying pattern intent/structure, or checking whether a 2018-era pattern implementation still matches 2025/26 idiomatic C#."
+description: "Knowledge base combining the original 1994 Gang of Four catalog (Gamma, Helm, Johnson, Vlissides) with Vaskaran Sarcar's \"Design Patterns in C#: A Hands-on Guide with Real-World Examples\" (2018). Use when applying GoF design patterns (Singleton, Factory, Strategy, Observer, Decorator, etc.) in C#/.NET, studying a pattern's canonical Intent/Applicability/Consequences, comparing patterns via GoF's purpose x scope classification, or checking whether a 2018-era pattern implementation still matches 2025/26 idiomatic C#."
 ---
 
 <!-- argument-hint: [pattern name, topic, or chapter number] -->
 
-# Design Patterns in C#: A Hands-on Guide with Real-World Examples
-**Author**: Vaskaran Sarcar | **Pages**: ~465 | **Chapters**: 30 (23 core GoF/common patterns + criticisms/anti-patterns/hardening/FAQ) | **Generated**: 2026-07-31
+# Design Patterns: GoF Canonical Catalog (1994) + C# Implementations (2018)
+**Sources**: Gamma/Helm/Johnson/Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (1994) + Vaskaran Sarcar, "Design Patterns in C#: A Hands-on Guide with Real-World Examples" (2018) | **Chapters**: 32 (23 core GoF patterns, each carrying both sources + 2 GoF foundations/case-study chapters + 7 non-GoF/discussion chapters) | **Generated**: 2026-07-31
 
 ## How to Use This Skill
 
@@ -14,6 +14,8 @@ description: "Knowledge base from \"Design Patterns in C#: A Hands-on Guide with
 - **With a pattern name** — ask about `Strategy`, `Observer`, `Adapter vs Decorator`, or another indexed topic; I find and read the relevant chapter
 - **With a chapter** — ask for `ch15` or `chapter 21`; I load that specific chapter file
 - **Freshness check** — ask "is this pattern still relevant" or "how would this look in modern C#"; I'll read [modern-csharp-notes.md](modern-csharp-notes.md), which summarizes 2025/26 research on what's changed since this book's 2018 publication
+- **Canonical vs. implementation** — for any of the 23 GoF patterns (ch01-ch23), each chapter carries BOTH Sarcar's C# treatment AND a `## Canonical GoF Reference (1994)` block with GoF's original verbatim Intent, Applicability, Participants, Consequences, Implementation notes, and Known Uses — ask for "the GoF definition of X" or "how GoF describes X" to get the canonical section specifically, or "the C# implementation of X" for the runnable code
+- **GoF foundations/case study** — ask about "what is a design pattern," the purpose × scope classification, or "program to an interface" to reach ch31; ask about the Lexi document-editor case study (Composite, Strategy, Decorator, Abstract Factory, Bridge, Command, Iterator+Visitor) to reach ch32
 - **Browse** — ask "what chapters do you have?" to see the full index
 
 This book's C# code targets roughly C# 6/7 (2018). Pattern *intent and structure* are timeless (they're the original 1994 GoF catalog plus a few common non-GoF idioms), but the *idiomatic implementation* has shifted — see [modern-csharp-notes.md](modern-csharp-notes.md) for a per-pattern rundown of what's changed, sourced from a 2025/26 Medium research pass.
@@ -24,7 +26,11 @@ This book's C# code targets roughly C# 6/7 (2018). Pattern *intent and structure
 
 **GoF's three pattern categories** — Creational (Singleton, Prototype, Builder, Factory Method, Abstract Factory, Simple Factory), Structural (Proxy, Decorator, Adapter, Facade, Flyweight, Composite, Bridge), Behavioral (Visitor, Observer, Strategy, Template Method, Command, Iterator, Memento, State, Mediator, Chain of Responsibility, Interpreter, Null Object). Category tells you *what kind* of problem a pattern solves — object creation, object composition, or object interaction. (Ch1-Ch25)
 
-**Class patterns vs. Object patterns** — GoF's own split: class patterns (Template Method) fix relationships at compile time via inheritance; object patterns (most of the catalog) use composition, so relationships can change at runtime. Prefer object patterns/composition when variation is expected. (Ch30)
+**Purpose × Scope classification (GoF Table 1.1)** — the canonical 23-pattern grid: purpose (Creational/Structural/Behavioral, same as above) crossed with scope (Class = fixed at compile time via inheritance; Object = changeable at run time via composition). Only Factory Method, Adapter(class), Interpreter, and Template Method are class-scoped — everything else is object-scoped. See cheatsheet.md for the full grid. (Ch31)
+
+**Class patterns vs. Object patterns** — GoF's own split: class patterns (Template Method) fix relationships at compile time via inheritance; object patterns (most of the catalog) use composition, so relationships can change at runtime. Prefer object patterns/composition when variation is expected. (Ch30, Ch31)
+
+**GoF's two foundational principles** — "Program to an interface, not an implementation" (commit to an abstract contract, not a concrete class, so client code stays unaware of which concrete type it's using) and "Favor object composition over class inheritance" (assemble behavior at run time from black-box composed objects rather than a compile-time class hierarchy, since inheritance breaks encapsulation). Nearly every pattern in the catalog applies one or both. (Ch31, patterns.md)
 
 **"Does the framework already give me this?"** — the single most important modern-day filter before applying any pattern here. DI containers absorb Singleton/Factory. `event`/`IObservable<T>` absorb Observer. `IEnumerable<T>`/LINQ absorb Iterator. ASP.NET Core middleware absorbs Chain of Responsibility. Ask this before writing a pattern class by hand. (modern-csharp-notes.md)
 
@@ -74,6 +80,8 @@ This book's C# code targets roughly C# 6/7 (2018). Pattern *intent and structure
 | [ch28](chapters/ch28-anti-patterns.md) | Anti-patterns | Discussion |
 | [ch29](chapters/ch29-sealing-the-leaks.md) | Sealing the Leaks in Your Applications | Practical hardening |
 | [ch30](chapters/ch30-faq.md) | FAQ | Cross-pattern Q&A digest |
+| [ch31](chapters/ch31-gof-introduction.md) | GoF Introduction — What Is a Design Pattern? | GoF foundations |
+| [ch32](chapters/ch32-gof-case-study-lexi.md) | GoF Case Study — Lexi Document Editor | GoF case study |
 
 ## Topic Index
 
@@ -84,8 +92,12 @@ This book's C# code targets roughly C# 6/7 (2018). Pattern *intent and structure
 - **Cross-platform / independent abstraction & implementation** → ch12 (Bridge)
 - **Event notification** → ch14 (Observer)
 - **Family-of-objects creation** → ch5 (Abstract Factory)
+- **Favor composition over inheritance** → ch31, patterns.md
+- **GoF classification (purpose × scope)** → ch31, cheatsheet.md
+- **How to select a pattern** → ch31 (GoF's own selection/usage procedure), cheatsheet.md
 - **Interface mismatch / legacy integration** → ch8 (Adapter)
 - **Memory efficiency at scale** → ch10 (Flyweight)
+- **Lexi case study (Composite/Strategy/Decorator/Abstract Factory/Bridge/Command/Iterator+Visitor)** → ch32
 - **Modern C# equivalents / freshness check** → [modern-csharp-notes.md](modern-csharp-notes.md)
 - **MVC / presentation architecture** → ch26
 - **Null handling without checks** → ch25 (Null Object)
@@ -93,6 +105,7 @@ This book's C# code targets roughly C# 6/7 (2018). Pattern *intent and structure
 - **Object creation (via copying)** → ch2 (Prototype)
 - **Object creation (via subclassing)** → ch4 (Factory Method)
 - **Object creation (via conditional)** → ch24 (Simple Factory)
+- **Program to an interface** → ch31, patterns.md
 - **Request encapsulation / undo-redo** → ch17 (Command), ch19 (Memento)
 - **State-dependent behavior** → ch20 (State)
 - **Step-by-step complex object construction** → ch3 (Builder)
@@ -105,6 +118,7 @@ This book's C# code targets roughly C# 6/7 (2018). Pattern *intent and structure
 - **Operations across a stable type hierarchy** → ch13 (Visitor)
 - **Robustness / memory leaks / GC** → ch29 (Sealing the Leaks)
 - **Cross-pattern Q&A** → ch30 (FAQ)
+- **White-box vs black-box reuse** → ch31, glossary.md
 
 ## Supporting Files
 

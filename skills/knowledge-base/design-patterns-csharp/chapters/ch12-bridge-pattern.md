@@ -8,6 +8,38 @@ Decouple an abstraction from its implementation so that the two can vary indepen
   - When to use: You have (or anticipate) two hierarchies that both need to grow — e.g., different products and different states/behaviors — and hard-wiring them together via subclassing would cause a combinatorial explosion of classes.
   - How: An abstract class (`Abstraction`, e.g. `ElectronicGoods`) holds a reference to an `Implementor` interface (e.g. `IState`) rather than implementing behavior itself. Concrete subclasses of the abstraction (`RefinedAbstraction`, e.g. `Television`, `VCD`) delegate the actual work to whatever concrete implementor (`ConcreteImplementor`, e.g. `OnState`, `OffState`) is currently assigned, and that assignment can change at runtime.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: "Decouple an abstraction from its implementation so that the two can vary independently."
+
+**Also Known As**: Handle/Body
+
+**Applicability** — GoF says use this pattern when:
+- You want to avoid a permanent binding between an abstraction and its implementation, e.g., when the implementation must be selected or switched at run-time.
+- Both the abstractions and their implementations should be extensible by subclassing independently.
+- Changes in the implementation of an abstraction should have no impact on clients — their code shouldn't need recompiling.
+- (C++) You want to hide an abstraction's implementation completely from clients.
+- You have a proliferation of classes (Rumbaugh's "nested generalizations"), indicating the need to split an object into two parts.
+- You want to share an implementation among multiple objects (perhaps via reference counting), hidden from the client.
+
+**Participants**:
+- **Abstraction** (`Window`) — defines the abstraction's interface and maintains a reference to an `Implementor`.
+- **RefinedAbstraction** (`IconWindow`) — extends the interface defined by Abstraction.
+- **Implementor** (`WindowImp`) — defines the interface for implementation classes; need not correspond exactly to Abstraction's interface — typically it exposes only primitive operations, while Abstraction builds higher-level operations on top of them.
+- **ConcreteImplementor** (`XWindowImp`, `PMWindowImp`) — implements the Implementor interface with a concrete, platform-specific implementation.
+
+**Consequences**:
+1. Decoupling interface and implementation — the implementation isn't bound permanently; it's configurable, even changeable, at run-time; eliminates compile-time dependencies, essential for binary compatibility across library versions.
+2. Improved extensibility — Abstraction and Implementor hierarchies extend independently.
+3. Hiding implementation details from clients — including details like implementor sharing and reference counting.
+
+**Implementation notes**: With only one Implementor, an abstract Implementor class is a degenerate but still useful case — Carolan's "Cheshire Cat" — because clients only need relinking, not recompiling, when the implementation changes; the Implementor's class interface can live in a private C++ header hidden from clients. Deciding which ConcreteImplementor to instantiate can be done in Abstraction's constructor (parameterized by e.g. collection size), chosen as a default and switched later based on usage, or delegated entirely to an Abstract Factory that encapsulates the platform-specifics. Multiple inheritance (public from Abstraction, private from a ConcreteImplementor) can combine an interface with an implementation in C++, but this is static and therefore not a true Bridge — it binds the implementation permanently.
+
+**Known Uses (1994-era)**: ET++'s Window/WindowPort (WindowPort keeps a back-reference to Window to notify it of platform events); libg++'s Set/LinkedSet/HashSet over LinkedList/HashTable (a degenerate bridge with no abstract Implementor); NeXT AppKit's NXImage/NXImageRep bridge for display-device-appropriate image rendering, notably capable of holding more than one NXImageRep implementation at once.
+
+**Related Patterns (per GoF)**: An Abstract Factory can create and configure a particular Bridge. Adapter is geared toward making unrelated, already-designed classes work together after the fact; Bridge is used up-front in a design to let abstractions and implementations vary independently — same wrap-and-forward structure, opposite point in the lifecycle.
+
 ## Key Concepts
 - **Abstraction**: The abstract class that defines the client-facing interface and holds a reference to an `Implementor` (`ElectronicGoods`).
 - **RefinedAbstraction**: A concrete subclass of the abstraction that extends its interface (`Television`, `VCD`).
@@ -98,3 +130,4 @@ The demo creates a `Television` and assigns it `IState presentState = new OnStat
 ## Connects To
 - **Ch 22 (State, referenced in Q&A)**: The book explicitly warns that Bridge's use of interchangeable "state" objects can look like the State pattern, but Bridge's intent is decoupling two hierarchies while State's intent is behavior change based on internal object state.
 - **GoF 1994 catalog**: Bridge is one of the seven original Structural patterns; it is frequently paired conceptually with Adapter because both wrap an interface, though for different reasons.
+- **GoF 1994 canonical entry**: GoF's discussion of structural patterns sharpens the Bridge-vs-Adapter distinction beyond "structurally similar" — Adapter resolves an *unforeseen* incompatibility discovered after two classes already exist, while Bridge is chosen *up front* because the designer already knows an abstraction will need multiple, independently evolving implementations; this is a lifecycle distinction, not a quality judgment on either pattern.

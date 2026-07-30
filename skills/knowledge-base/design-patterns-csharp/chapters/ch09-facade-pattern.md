@@ -8,6 +8,31 @@ Provide a unified interface to a set of interfaces in a subsystem. Facade define
   - When to use: A system has multiple subsystems that clients would otherwise need to coordinate directly, creating tight coupling and complex client code.
   - How: Build a facade class (`RobotFacade`) that holds references to each subsystem (`RobotColor`, `RobotHands`, `RobotBody`) and exposes simple, high-level operations (`ConstructMilanoRobot`, `DestroyMilanoRobot`) that internally call the subsystems in the correct sequence.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: "Provide a unified interface to a set of interfaces in a subsystem. Facade defines a higher-level interface that makes the subsystem easier to use."
+
+**Applicability** — GoF says use this pattern when:
+- You want to provide a simple interface to a complex subsystem, since subsystems tend to grow more complex (more, smaller classes) as they evolve and patterns are applied.
+- There are many dependencies between clients and the implementation classes of an abstraction — a facade decouples the subsystem from clients and other subsystems.
+- You want to layer your subsystems, using a facade as the entry point to each layer so dependent subsystems communicate only through their facades.
+
+**Participants**:
+- **Facade** (`Compiler`) — knows which subsystem classes handle a request and delegates client requests to them.
+- **Subsystem classes** (`Scanner`, `Parser`, `ProgramNode`, etc.) — implement subsystem functionality, handle work assigned by the Facade, and have no knowledge of the facade (they keep no reference to it).
+
+**Consequences**:
+1. Shields clients from subsystem components, reducing the number of objects clients must deal with and easing the subsystem's use.
+2. Promotes weak coupling between subsystem and clients — lets subsystem components vary without affecting clients, can eliminate complex/circular dependencies, and reduces compilation dependencies (important in large systems, and it eases porting since building one subsystem is less likely to force building all others).
+3. Doesn't prevent applications from using subsystem classes directly if needed — clients choose between ease-of-use (via the facade) and generality (via direct access).
+
+**Implementation notes**: Client-subsystem coupling can be reduced further by making Facade abstract with concrete subclasses per subsystem implementation, or by configuring a Facade instance with swappable subsystem objects instead of subclassing. GoF also draws a public/private-interface analogy for subsystems: the Facade is part of the public interface, but usually isn't the only public class (e.g. `Parser` and `Scanner` are public too) — few OO languages of the era (barring C++'s then-new namespaces) could enforce a private subsystem interface.
+
+**Known Uses (1994-era)**: A compiler subsystem facade (`Compiler`) inspired by the ObjectWorks\Smalltalk compiler system; ET++'s `ProgrammingEnvironment` facade for built-in object-browsing tools (with a null-object subclass, `ETProgrammingEnvironment`, providing the real browsing behavior); the Choices operating system's `FileSystemInterface` and `Domain` facades over its storage and address-space frameworks.
+
+**Related Patterns (per GoF)**: Abstract Factory — can pair with Facade to create subsystem objects in a subsystem-independent way, or serve as an alternative to Facade for hiding platform-specific classes. Mediator — similarly abstracts functionality of existing classes, but Mediator centralizes arbitrary communication *between* colleague objects that are aware of and talk to the mediator, whereas Facade merely simplifies the interface *to* subsystem objects that remain unaware of it and gain no new functionality. GoF notes Facade objects are usually Singletons, since only one is typically required.
+
 ## Key Concepts
 - **Subsystem**: An independent piece of a larger system (`RobotColor`, `RobotHands`, `RobotBody`), each with its own focused responsibility and API.
 - **Facade**: The single class (`RobotFacade`) that clients talk to; it composes and coordinates the subsystems on the client's behalf.
@@ -144,3 +169,4 @@ Facade vs. Adapter, from Q4 (the book states this distinction directly, not as a
 - **Ch 8 (Adapter)**: The book draws this line explicitly (Q4) — Adapter alters an interface so a client sees no difference between two interfaces; Facade simplifies a complex subsystem's interface rather than converting one type into another.
 - **Ch 6 (Proxy) / Ch 7 (Decorator)**: Unlike Proxy (controls access) and Decorator (adds responsibility), Facade's purpose is purely to reduce the surface area a client must interact with — it doesn't restrict access or add new behavior to individual objects, it aggregates and simplifies calls across several of them.
 - **GoF 1994 catalog**: Facade is one of the seven original Structural patterns.
+- **GoF 1994 canonical entry**: GoF's own "Discussion of Structural Patterns" section directly warns against conflating Facade with Adapter at the conceptual level: a facade might look like "an adapter to a set of other objects," but that overlooks that a facade *defines a new interface*, while an adapter *reuses an old one* to make two existing interfaces work together — Facade never has to match a pre-existing interface the way Adapter does.

@@ -8,6 +8,36 @@ Attach additional responsibilities to an object dynamically. Decorators provide 
   - When to use: You want to add functionality to a specific object instance (not the whole class), possibly combined in different ways, without touching the existing/underlying class.
   - How: Wrap a `Component` in an `AbstractDecorator` that also implements `Component`, holds a reference to the wrapped component, and delegates to it — then override the method in concrete decorators to run extra behavior before or after delegating.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: "Attach additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionality."
+
+**Also Known As**: Wrapper
+
+**Applicability** — GoF says use this pattern when:
+- You want to add responsibilities to individual objects dynamically and transparently, without affecting other objects.
+- The responsibilities need to be withdrawable later.
+- Extension by subclassing is impractical — too many independent extensions would cause a subclass explosion, or the class definition is unavailable for subclassing.
+
+**Participants**:
+- **Component** (`VisualComponent`) — defines the interface for objects that can have responsibilities added dynamically.
+- **ConcreteComponent** (`TextView`) — the object additional responsibilities can be attached to.
+- **Decorator** — maintains a reference to a Component and defines an interface conforming to Component's.
+- **ConcreteDecorator** (`BorderDecorator`, `ScrollDecorator`) — adds the actual responsibilities to the component.
+
+**Consequences**:
+1. More flexibility than static inheritance — responsibilities attach/detach at run time rather than requiring a new class per combination (e.g. `BorderedScrollableTextView`); decorators also make it trivial to add the same property twice (e.g. a double border), which is error-prone with inheritance.
+2. Avoids feature-laden classes high in the hierarchy — a pay-as-you-go model where a simple base class gains functionality incrementally, so an application doesn't pay for features it doesn't use.
+3. A decorator and its component aren't object-identical — a decorated component isn't identical to the wrapped one, so code shouldn't rely on object identity through a decorator.
+4. Lots of little objects — systems built from many similar-looking decorator objects, differing only in interconnection, are easy to customize but harder to learn and debug.
+
+**Implementation notes**: ConcreteDecorator classes must share a common ancestor for interface conformance (in C++). The abstract Decorator class can be omitted when only one responsibility is ever added. Keep the Component class lightweight (interface-focused, not data-heavy) so decorators stay cheap enough to use in quantity. GoF contrasts "changing the skin" (Decorator) with "changing the guts" (Strategy) — Strategy suits cases where Component is intrinsically heavyweight, making Decorator too costly.
+
+**Known Uses (1994-era)**: InterViews and ET++ UI toolkits (graphical embellishments on widgets); ObjectWorks\Smalltalk class library; InterViews' `DebuggingGlyph` (traces layout requests) and ParcPlace Smalltalk's `PassivityWrapper` (enables/disables interaction); ET++'s streaming classes (`CompressingStream`, `ASCII7Stream` decorating a `FileStream`); MacApp 3.0 and Bedrock (adorner/behavior objects on heavyweight "view" components, as an alternative Strategy-based approach).
+
+**Related Patterns (per GoF)**: Adapter — changes an object's interface entirely, whereas Decorator only changes responsibilities, keeping the interface intact. Composite — structurally similar (both use recursive composition), but Composite's focus is uniform treatment/representation of many objects, while Decorator's is embellishment without subclassing; a composite can be a Decorator's ConcreteComponent, and a decorator can be a Composite's Leaf. Strategy — lets you change an object's "guts" (behavior delegated to a swappable strategy object) versus Decorator's "skin" (wrapping from the outside).
+
 ## Key Concepts
 - **Component**: The abstract base type both the plain object and every decorator implement, so they're interchangeable to the client.
 - **ConcreteComponent**: The original, unmodified object whose core behavior stays untouched.
@@ -142,3 +172,4 @@ Running the demo: `decorator1` wraps `cc` (the plain `ConcreteComponent`) and ca
 - **Ch 6 (Proxy)**: Proxy and Decorator share the same wrap-and-implement-the-same-interface shape, which is why they're often confused. The distinguishing intent: Proxy controls *access* to the wrapped object; Decorator adds *responsibilities* to it. Adapter (Ch 8) differs from both by changing the interface itself rather than preserving it.
 - **Ch 8 (Adapter)**: Where Decorator keeps the same interface and adds behavior, Adapter changes the interface to make two otherwise-incompatible types work together.
 - **GoF 1994 catalog**: Decorator is one of the seven original Structural patterns.
+- **GoF 1994 canonical entry**: GoF's "Composite versus Decorator versus Proxy" discussion adds a structural reason beyond "adds responsibilities vs. controls access": Decorator's open-endedness (an object's total functionality can't conveniently be determined at compile time) is *why* recursive composition is essential to it, whereas Proxy's proxy-subject relationship is a single, static relationship expressible without recursion — the two patterns only look alike superficially because both keep a reference and forward requests.

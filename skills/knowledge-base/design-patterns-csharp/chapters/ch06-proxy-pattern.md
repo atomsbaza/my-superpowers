@@ -8,6 +8,36 @@ Provide a surrogate or placeholder for another object to control access to it. C
   - When to use: You cannot or should not let clients hold a direct reference to the real object — because it is expensive to create, lives on a remote machine, or requires access control.
   - How: Define a shared abstract type (`Subject`) implemented both by the real object (`ConcreteSubject`) and by a `Proxy` that holds a reference to it, forwards calls, and can add logic (lazy creation, access checks) before forwarding.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: "Provide a surrogate or placeholder for another object to control access to it."
+
+**Also Known As**: Surrogate
+
+**Applicability** — GoF says use this pattern when:
+- You need a remote proxy: a local representative for an object in a different address space (e.g. NEXTSTEP's `NXProxy`, Coplien's "Ambassador").
+- You need a virtual proxy: creates expensive objects on demand (the Motivation's `ImageProxy` for large raster images).
+- You need a protection proxy: controls access to the original object for callers with different access rights (e.g. Choices OS `KernelProxies`).
+- You need a smart reference: a bare-pointer replacement that performs extra actions on access — reference counting for auto-free ("smart pointers"), loading a persistent object into memory on first reference, or locking checks before access.
+
+**Participants**:
+- **Proxy** (`ImageProxy`) — maintains a reference to the real subject, provides an identical interface, controls creation/deletion/access; its extra responsibilities vary by kind (remote proxies encode/send requests; virtual proxies cache info like extent to postpone loading; protection proxies check permissions).
+- **Subject** (`Graphic`) — defines the common interface for RealSubject and Proxy so a Proxy can substitute for a RealSubject anywhere.
+- **RealSubject** (`Image`) — the real object the proxy represents.
+
+**Consequences**:
+1. A remote proxy can hide that an object resides in a different address space.
+2. A virtual proxy can perform optimizations such as creating an object on demand.
+3. Protection proxies and smart references allow additional housekeeping (access checks, bookkeeping) on each access.
+4. Copy-on-write: a proxy can postpone copying a large object until it's actually modified, using reference counting — reducing the cost of copying heavyweight subjects significantly.
+
+**Implementation notes**: In C++, overloading `operator->` lets a proxy behave like a pointer, but this only works when clients don't need to know exactly which operation was called (it fails for the Motivation's virtual proxy, where loading must happen precisely on `Draw`). Smalltalk's `doesNotUnderstand:` hook enables generic forwarding proxies, but it's slow and complicates object identity (`==`) semantics. A proxy doesn't always need to know its RealSubject's concrete type — unless it must instantiate it (virtual proxy), in which case it does. Proxies referring to a not-yet-instantiated subject need an address-space-independent identifier (GoF used a file name).
+
+**Known Uses (1994-era)**: ET++ text building-block classes (the Motivation's virtual `ImageProxy`); NEXTSTEP's `NXProxy` for distributed/remote objects; Choices operating system `KernelProxies` for protected OS-object access.
+
+**Related Patterns (per GoF)**: Adapter — provides a *different* interface to the object it adapts, whereas Proxy provides the *same* interface as its subject (though a protection proxy's interface may be an effective subset). Decorator — can be implemented similarly to Proxy but has a different purpose: Decorator adds responsibilities, Proxy controls access. Proxies vary in how decorator-like their implementation is: a protection proxy may look exactly like a decorator, while a remote proxy holds only an indirect reference (e.g. host ID) and a virtual proxy starts indirect (a file name) but eventually obtains a direct reference.
+
 ## Key Concepts
 - **Subject**: The abstract type both the real object and the proxy implement, so clients can't tell them apart.
 - **ConcreteSubject**: The real object that does the actual work the client wants.
@@ -111,3 +141,4 @@ The book then builds a protection-proxy variant to answer "when would you use a 
 - **Ch 7 (Decorator)**: Both Proxy and Decorator wrap an object behind the same interface, which is why they're easy to confuse. The distinguishing question is intent: Proxy controls *access* to an unchanged interface; Decorator adds *responsibilities* to an unchanged interface. Adapter (Ch 8), by contrast, changes the interface itself to make two incompatible types cooperate. Same shape (wrap + delegate), three different jobs: control access (Proxy), add behavior (Decorator), convert interface (Adapter).
 - **Ch 1 (Singleton)**: The thread-safety concerns around lazy instantiation in Proxy mirror the same concerns explored for lazy Singleton creation — the same remedies (locking, smart proxies) apply.
 - **GoF 1994 catalog**: Proxy is one of the seven original Structural patterns.
+- **GoF 1994 canonical entry**: GoF's own "Composite versus Decorator versus Proxy" discussion sharpens the distinction beyond intent alone — Proxy's proxy-subject relationship is inherently static and expressible at compile time (one fixed relationship), while Decorator is deliberately open-ended and recursive because a component's total functionality can't be known in advance; that structural difference, not just "access vs. responsibility," is why the two patterns aren't interchangeable even when their code looks alike.

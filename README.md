@@ -137,10 +137,17 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 | `notebooklm` | Full programmatic access to Google NotebookLM — create notebooks, add sources, generate podcasts/mind maps/study guides |
 | `oss-contribute` | End-to-end OSS contribution workflow — fork, orient, implement, scrutinize, open a PR |
 | `xcodebuildmcp-cli` | Reference for driving XcodeBuildMCP from the CLI for Apple platform builds |
-| `martin-clean-code` | Knowledge base from *Clean Code* and *The Clean Coder* by Robert C. Martin — naming, functions, testing, refactoring, code smells, TDD, professionalism, estimation, craftsmanship |
-| `martin-clean-architecture` | Knowledge base from *Clean Architecture* by Robert C. Martin — SOLID, component cohesion/coupling principles, the Dependency Rule, boundaries, use cases and entities |
+| `design-patterns-csharp` | Knowledge base from *Design Patterns* (Gang of Four, 1994) and *Design Patterns in C#* (Sarcar, 2018) — all 23 patterns with canonical definitions and C# implementations, Simple Factory/Null Object/MVC, pattern criticisms, anti-patterns, modern C# notes (2025–26) |
+| `dobovizki-csharp-concurrency` | Knowledge base from *C# Concurrency: Asynchronous and Multithreaded Programming* by Nir Dobovizki — async/await, compiler state machines, thread safety, SynchronizationContext, multithreading patterns, concurrent collections, async streams |
+| `fowler-refactoring` | Knowledge base from *Refactoring: Improving the Design of Existing Code* by Martin Fowler — code smells, refactoring mechanics, the Two Hats, the Rule of Three, small steps, composing methods, organizing data, simplifying conditionals |
 | `khononov-ddd` | Knowledge base from *Learning Domain-Driven Design* by Vlad Khononov — subdomains, bounded contexts, context mapping, tactical patterns (Domain Model, Event Sourcing), architectural patterns, EventStorming, microservices |
+| `martin-clean-architecture` | Knowledge base from *Clean Architecture* by Robert C. Martin — SOLID, component cohesion/coupling principles, the Dependency Rule, boundaries, use cases and entities |
+| `martin-clean-code` | Knowledge base from *Clean Code* and *The Clean Coder* by Robert C. Martin — naming, functions, testing, refactoring, code smells, TDD, professionalism, estimation, craftsmanship |
+| `ousterhout-software-design` | Knowledge base from *A Philosophy of Software Design* by John Ousterhout — deep vs shallow modules, information hiding, complexity, tactical vs strategic programming, error handling, comments, cohesion |
+| `pragmatic-programmer` | Knowledge base from *The Pragmatic Programmer: From Journeyman to Master* by Andrew Hunt and David Thomas — DRY, orthogonality, tracer bullets, reversibility, Design by Contract, Law of Demeter, programming by coincidence, broken windows |
+| `pro-async-dotnet` | Knowledge base from *Pro Asynchronous Programming with .NET* by Richard Blewett and Andrew Clymer — async/await, Task Parallel Library (TPL), SynchronizationContext, ConfigureAwait, concurrent collections, PLINQ, synchronization primitives |
 | `tdd-knowledge-base` | Research-synthesized knowledge base on Test-Driven Development (NotebookLM deep research, 89 sources) — Detroit/classicist vs London/mockist styles, testing pyramid, anti-patterns, Transformation Priority Premise, the "Is TDD Dead?" debate |
+| `webappsec-defense` | Knowledge base synthesized from *Grokking Web Application Security* by Malcolm McDonald (Manning, 2024) and *Web Application Security: Exploitation and Countermeasures for Modern Web Applications* by Andrew Hoffman (O'Reilly, 2nd ed., 2024) — XSS, CSRF, injection, XXE, authn/authz, session design, threat modeling, CVSS, Zero Trust, dependency security |
 
 ---
 

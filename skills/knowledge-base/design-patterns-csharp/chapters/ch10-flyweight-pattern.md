@@ -8,6 +8,36 @@ Use sharing to support large numbers of fine-grained objects efficiently. A flyw
   - When to use: You need many similar objects and creating a distinct instance for every one of them would be too memory-expensive, but the objects' core structure is the same across instances.
   - How: A factory (`RobotFactory`) keeps a `Dictionary` of already-created flyweight instances keyed by type; when a client requests a category it already has, the factory returns the existing shared instance instead of creating a new one; any per-instance data (color, in the modified example) is supplied by the client as extrinsic state.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: "Use sharing to support large numbers of fine-grained objects efficiently."
+
+**Applicability** — GoF says use this pattern when all of the following are true:
+- An application uses a large number of objects.
+- Storage costs are high because of the sheer quantity of objects.
+- Most object state can be made extrinsic.
+- Many groups of objects may be replaced by relatively few shared objects once extrinsic state is removed.
+- The application doesn't depend on object identity — since flyweights may be shared, identity tests will return true for conceptually distinct objects.
+
+**Participants**:
+- **Flyweight** (`Glyph`) — declares the interface through which flyweights receive and act on extrinsic state.
+- **ConcreteFlyweight** (`Character`) — implements Flyweight and adds storage for **intrinsic state**: independent of context, therefore sharable (e.g., a character's code).
+- **UnsharedConcreteFlyweight** (`Row`, `Column`) — not all Flyweight subclasses must be shared; the interface enables sharing without enforcing it.
+- **FlyweightFactory** — creates and manages flyweight objects, ensuring proper sharing: returns an existing instance or creates one if none exists.
+- **Client** — maintains references to flyweights and computes/stores their **extrinsic state** (context-dependent, unshareable — e.g., a character's position and font), passing it in on each operation.
+
+**Consequences**:
+1. Run-time cost is introduced by transferring, finding, or computing extrinsic state — offset by space savings that grow as more flyweights are shared.
+2. Storage savings depend on the reduction in total instance count, the amount of intrinsic state per object, and whether extrinsic state is computed versus stored — the greatest savings occur when extrinsic state is computed rather than stored.
+3. Often combined with Composite to represent a hierarchy as a graph with shared leaf nodes; a consequence is that flyweight leaves cannot store a parent pointer — the parent must be passed in as extrinsic state, which materially changes how objects in the hierarchy communicate.
+
+**Implementation notes**: Removing extrinsic state only helps if it can be computed from a much smaller separate structure (GoF's example stores font runs in a BTree keyed by character index, not per character). Clients must never instantiate ConcreteFlyweight directly — only the FlyweightFactory does, typically via an associative lookup (a table indexed by character code). Sharability implies reference counting or GC to reclaim flyweights when no longer needed — unnecessary only when the flyweight set is fixed and small (e.g., ASCII), in which case keeping them permanently is fine.
+
+**Known Uses (1994-era)**: InterViews 3.0's Doc editor (180,000 characters represented with only 480 character objects); ET++'s Layout objects for look-and-feel independence (also cited as an example of Strategy implemented as Flyweight).
+
+**Related Patterns (per GoF)**: Composite — Flyweight is often combined with it to implement a hierarchy as a directed-acyclic graph with shared leaf nodes. State and Strategy — GoF note it's often best to implement these as flyweights when their objects carry no client-specific state.
+
 ## Key Concepts
 - **Flyweight**: The shared object itself (`IRobot`/`SmallRobot`/`LargeRobot`, or `Robot` in the modified version) — acts independently in each context even though it's the same instance.
 - **Intrinsic state**: Data stored inside the flyweight, independent of context, and therefore shareable (the robot's category — Small or Large).
@@ -169,3 +199,4 @@ Modified version: to demonstrate extrinsic state, the book collapses `SmallRobot
 - **Ch 1 (Singleton)**: Both patterns restrict object creation, but toward different goals — Singleton for uniqueness, Flyweight for shared reuse across many logical objects; the thread-safety pitfalls in lazy creation are shared between the two chapters.
 - **Ch 9 (Facade)**: Not directly related in intent, but both patterns in this book use a "coordinator" class (`RobotFactory` here, `RobotFacade` in Ch 9) that clients call instead of managing details themselves — worth contrasting the very different reasons each coordinator exists.
 - **GoF 1994 catalog**: Flyweight is one of the seven original Structural patterns.
+- **GoF 1994 canonical entry**: The original catalog's intrinsic/extrinsic split is sharper than this chapter's — GoF's document-editor example computes extrinsic font state from a separate BTree structure rather than storing it per object, showing a more disciplined way to keep extrinsic state cheap than the book's simple client-supplied-color approach.

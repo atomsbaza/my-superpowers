@@ -8,6 +8,31 @@ Ensure a class has only one instance, and provide a global point of access to it
   - When to use: You need exactly one instance of a class shared across the system — e.g., a centralized file system or resource manager — and creating extra instances would be wasteful or incorrect.
   - How: Make the constructor private so callers cannot use `new`, hold a single instance in a `private static readonly` field, and expose it through a `public static` property/accessor that returns the existing instance.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: Ensure a class only has one instance, and provide a global point of access to it.
+
+**Applicability** — GoF says use this pattern when:
+- There must be exactly one instance of a class, and it must be accessible to clients from a well-known access point.
+- The sole instance should be extensible by subclassing, and clients should be able to use an extended instance without modifying their code.
+
+**Participants**:
+- **Singleton** (no example class given — the pattern is presented generically) — defines an `Instance` operation (a class/static operation) that lets clients access its unique instance, and may be responsible for creating its own unique instance.
+
+**Consequences**:
+1. Controlled access to sole instance — the class encapsulates its sole instance and controls how and when clients access it.
+2. Reduced name space — an improvement over global variables, which pollute the name space.
+3. Permits refinement of operations and representation — the Singleton class may be subclassed, letting an app configure itself with an instance of an extended class at run-time.
+4. Permits a variable number of instances — it's easy to change your mind later and allow more than one instance; only the access operation needs to change.
+5. More flexible than class operations — static member functions in C++ are never virtual, so subclasses can't override them polymorphically the way an `Instance` operation can be overridden.
+
+**Implementation notes**: Hide the creation operation behind a static accessor with lazy initialization. GoF explicitly warns against relying on a global/static object with automatic initialization instead of an accessor, for three C++-specific reasons: you can't guarantee only one static instance is ever declared, you may lack the data needed to construct it at static-init time, and C++ doesn't define construction order for globals across translation units — so dependent singletons can break. For run-time-selectable subclasses, GoF proposes a registry-of-singletons keyed by name (looked up via an environment variable) rather than hard-coding the concrete subclass in `Instance`.
+
+**Known Uses (1994-era)**: Smalltalk-80's `ChangeSet current`, and the class/metaclass relationship (every metaclass has exactly one instance — its class). The InterViews toolkit uses Singleton for its unique `Session` and `WidgetKit` instances; `WidgetKit::instance()` picks the concrete look-and-feel subclass based on an environment variable `Session` defines.
+
+**Related Patterns (per GoF)**: Many patterns can be implemented using Singleton — see Abstract Factory, Builder, and Prototype, all of which may use a single "factory object" that is itself a Singleton.
+
 ## Key Concepts
 - **Static initialization**: The approach used in the chapter's main example — the CLR creates the instance the first time any static member of the class is referenced.
 - **Lazy instantiation**: Instantiation is deferred until the `Instance` property is actually invoked, rather than happening eagerly at program start.
@@ -128,3 +153,4 @@ Running the main demo prints `***Singleton Pattern Demo***`, then on the first c
 ## Connects To
 - **Ch 3**: Both Singleton and Builder care about controlling object construction, but Singleton restricts cardinality (exactly one) while Builder controls how a complex object's parts are assembled.
 - **GoF 1994 catalog**: Singleton is one of the five Creational patterns in the original Gang of Four catalog; this chapter's static-initialization and double-checked-locking variants are C#-specific implementation strategies for that same intent.
+- **GoF 1994 canonical entry**: GoF's registry-of-singletons technique — looking up the concrete subclass to instantiate by name at run-time via an environment variable — is a subclass-selection strategy this chapter never discusses, since its `sealed` static-instance approach forecloses subclassing entirely.

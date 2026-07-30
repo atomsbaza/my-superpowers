@@ -8,6 +8,38 @@ Provide an interface for creating families of related or dependent objects witho
   - When to use: When you need to create related products that must vary together as a family (e.g., wild-dog + wild-tiger vs. pet-dog + pet-tiger) and want to swap the whole family's concrete implementation at runtime without touching client code.
   - How: Define an abstract factory interface with one creation method per product type in the family; each concrete factory implements all of those methods to produce one consistent family of concrete products.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: Provide an interface for creating families of related or dependent objects without specifying their concrete classes.
+
+**Also Known As**: Kit
+
+**Applicability** — GoF says use this pattern when:
+- A system should be independent of how its products are created, composed, and represented.
+- A system should be configured with one of multiple families of products.
+- A family of related product objects is designed to be used together, and you need to enforce this constraint.
+- You want to provide a class library of products and reveal just their interfaces, not their implementations.
+
+**Participants**:
+- **AbstractFactory** (`WidgetFactory`) — declares an interface for operations that create abstract product objects.
+- **ConcreteFactory** (`MotifWidgetFactory`, `PMWidgetFactory`) — implements the operations to create concrete product objects.
+- **AbstractProduct** (`Window`, `ScrollBar`) — declares an interface for a type of product object.
+- **ConcreteProduct** (`MotifWindow`, `MotifScrollBar`) — defines a product object created by the corresponding concrete factory, implementing `AbstractProduct`.
+- **Client** — uses only interfaces declared by `AbstractFactory` and `AbstractProduct`.
+
+**Consequences**:
+1. Isolates concrete classes — clients manipulate instances only through abstract interfaces; product class names never appear in client code.
+2. Makes exchanging product families easy — a concrete factory class appears only once (where it's instantiated), so switching the whole product family means switching one factory object.
+3. Promotes consistency among products — since AbstractFactory guarantees an application uses objects from only one family at a time.
+4. Supporting new kinds of products is difficult — extending the `AbstractFactory` interface to add a new product requires changing it and every subclass.
+
+**Implementation notes**: A ConcreteFactory is typically implemented as a Singleton, since an app usually needs only one instance per product family. Concrete factories are most commonly implemented via a factory method per product; when many product families are possible, GoF suggests implementing the concrete factory with the Prototype pattern instead — initialized with one prototypical instance per product, cloning rather than subclassing to add a new family. A more flexible but less type-safe alternative parameterizes a single "Make" operation with a kind-identifier rather than declaring one method per product type.
+
+**Known Uses (1994-era)**: InterViews uses the "Kit" suffix for its `WidgetKit`, `DialogKit`, and `LayoutKit` abstract factories (the last generating different composition objects for portrait vs. landscape layout). ET++ uses Abstract Factory (its `WindowSystem` abstract class) to achieve portability across X Windows and SunView.
+
+**Related Patterns (per GoF)**: AbstractFactory classes are often implemented with factory methods (Factory Method), but can also be implemented using Prototype.
+
 ## Key Concepts
 - **Abstract Factory**: `IAnimalFactory`, declaring `GetDog()` and `GetTiger()` without specifying which concrete dog/tiger type they return.
 - **Concrete Factory**: `WildAnimalFactory` and `PetAnimalFactory`, each implementing both methods to produce a consistent family — wild animals or pet animals respectively.
@@ -195,3 +227,4 @@ The key observation: switching from `wildAnimalFactory` to `petAnimalFactory` is
 - **Ch 4**: Abstract Factory is presented as a direct extension of the Factory Method example — the same `IAnimal`/`Dog`/`Tiger`-style products, now organized into wild/pet families behind one factory interface per family.
 - **Ch 3**: The abstract-class-vs-interface design discussion from the Builder chapter's Q&A (MSDN's versioning/shared-behavior guidance) is the same reasoning underlying why `IAnimalFactory` here is an interface rather than an abstract class.
 - **GoF 1994 catalog**: Abstract Factory is one of the five Creational patterns in the original Gang of Four catalog, and the chapter positions it as the most complex/flexible of the "factory family" — Simple Factory, Factory Method, Abstract Factory — that this book's early chapters build up in sequence.
+- **GoF 1994 canonical entry**: GoF's "Also Known As: Kit" and its recommendation to implement a ConcreteFactory as a Singleton (an explicit Related-Patterns-style cross-reference to Ch 1) are both missing from this chapter's `IAnimalFactory` treatment.

@@ -8,6 +8,32 @@ Separate the construction of a complex object from its representation so that th
   - When to use: When an object has multiple parts and a complex, multi-step assembly process that should be decoupled from what the final assembled object looks like — e.g., assembling different vehicle types, or converting between text formats.
   - How: Define a `Builder` interface with step methods; each `ConcreteBuilder` implements those steps to assemble its own parts into a `Product`; a `Director` drives the builder through the same fixed sequence of steps regardless of which concrete builder is used.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: Separate the construction of a complex object from its representation so that the same construction process can create different representations.
+
+**Applicability** — GoF says use this pattern when:
+- The algorithm for creating a complex object should be independent of the parts that make up the object and how they're assembled.
+- The construction process must allow different representations for the object that's constructed.
+
+**Participants**:
+- **Builder** (`TextConverter`) — specifies an abstract interface for creating parts of a `Product` object.
+- **ConcreteBuilder** (`ASCIIConverter`, `TeXConverter`, `TextWidgetConverter`) — constructs and assembles parts by implementing the `Builder` interface, tracks the representation it creates, and provides an interface for retrieving the finished product.
+- **Director** (`RTFReader`) — constructs an object using the `Builder` interface.
+- **Product** (`ASCIIText`, `TeXText`, `TextWidget`) — represents the complex object under construction, including its constituent parts and their assembly.
+
+**Consequences**:
+1. Lets you vary a product's internal representation — since construction goes through an abstract interface, changing representation just means defining a new builder.
+2. Isolates code for construction and representation — each `ConcreteBuilder` holds all the code for one product variant, written once and reused by different Directors.
+3. Gives you finer control over the construction process — unlike one-shot creational patterns, Builder constructs step by step under the Director's control, and the product is only retrieved once finished.
+
+**Implementation notes**: The `Builder` interface must be general enough for all concrete builders — usually a model where construction requests simply append to the product, though some builders (e.g., adding a door between existing rooms) need access to previously built parts. GoF deliberately gives no common abstract `Product` class, since concrete products (e.g., `ASCIIText` vs. `TextWidget`) typically don't share a useful interface. In C++, `Builder`'s build methods are defined as empty (not pure virtual) so `ConcreteBuilder` subclasses can override only the steps they care about.
+
+**Known Uses (1994-era)**: ET++'s RTF converter. Smalltalk-80's `Parser`/`ProgramNodeBuilder` (Director/Builder), `ClassBuilder` (where a `Class` is both Director and Product), and `ByteCodeStream` (a nonstandard builder producing a byte array). The Adaptive Communications Environment's Service Configurator framework uses a builder driven by an LALR(1) parser to construct network service components at run-time.
+
+**Related Patterns (per GoF)**: Abstract Factory is similar in that it too builds complex objects, but Builder focuses on constructing one complex object step by step and returns the product only at the end, whereas Abstract Factory emphasizes families of products (simple or complex) returned immediately. A Composite is often what a Builder builds.
+
 ## Key Concepts
 - **Product**: The complex object under construction (`Product`, backed by a `LinkedList<string>` of parts in the example).
 - **Builder**: The abstract interface (`IBuilder`) declaring the construction steps (`StartUpOperations`, `BuildBody`, `InsertWheels`, `AddHeadlights`, `EndOperations`) and a way to retrieve the finished product (`GetVehicle`).
@@ -211,3 +237,4 @@ Notably, `Car` adds its model name during `StartUpOperations` (first step) while
 - **Ch 1**: Both Singleton and Builder are Creational patterns, but Builder decomposes construction into explicit steps for complex multi-part objects, whereas Singleton restricts an object's cardinality to exactly one instance.
 - **Ch 5**: The chapter's abstract-class-vs-interface discussion (MSDN recommendations on versioning, shared default behavior) recurs directly in Chapter 5's Q&A when discussing the Abstract Factory pattern's interface design.
 - **GoF 1994 catalog**: Builder is one of the five Creational patterns in the original Gang of Four catalog, distinguished from Factory Method and Abstract Factory by its focus on *step-by-step* assembly of one complex product rather than one-shot creation of a product (or family of products).
+- **GoF 1994 canonical entry**: GoF's own Related Patterns note — "A Composite is what the builder often builds" — draws a link between Builder and the Composite pattern that this chapter's `LinkedList<string>`-based example never surfaces.

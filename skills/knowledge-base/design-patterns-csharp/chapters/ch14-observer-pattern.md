@@ -8,6 +8,40 @@ Define a one-to-many dependency between objects so that when one object (the sub
   - When to use: Multiple objects need to react whenever a single subject's state changes, and you want the subject and its observers to stay loosely coupled — neither needs deep knowledge of the other's implementation.
   - How: Observers implement a common `IObserver.Update(...)` method and register themselves with a `Subject` (via `Register`/`Unregister`); whenever the subject's tracked state changes, it loops over its registered observers and calls `Update` on each, i.e. `NotifyRegisteredUsers`.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: "Define a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically."
+
+**Also Known As**: Dependents, Publish-Subscribe
+
+**Applicability** — GoF says use this pattern when:
+- An abstraction has two aspects, one dependent on the other, and encapsulating them in separate objects lets you vary and reuse each independently.
+- A change to one object requires changing others, and you don't know how many objects need to be changed.
+- An object should notify other objects without making assumptions about who those objects are (i.e., you want to avoid tight coupling).
+
+**Participants**:
+- **Subject** — knows its observers (any number may observe it) and provides an interface for attaching/detaching them.
+- **Observer** — defines an updating interface for objects that should be notified of changes in a subject.
+- **ConcreteSubject** (e.g., ClockTimer) — stores state of interest to ConcreteObserver objects and sends notification when that state changes.
+- **ConcreteObserver** (e.g., DigitalClock, AnalogClock) — maintains a reference to a ConcreteSubject, stores state that should stay consistent with the subject's, and implements Update to reconcile it.
+
+**Consequences**:
+1. Abstract coupling between Subject and Observer — the subject only knows a list of objects conforming to a simple Observer interface, so subjects and observers can belong to different layers of abstraction.
+2. Support for broadcast communication — a notification needn't specify its receiver; any number of observers can subscribe or unsubscribe at any time.
+3. Unexpected updates — because observers don't know about each other, an innocuous subject change can cascade into costly updates, and poorly defined dependency criteria cause spurious, hard-to-track updates. The minimal update protocol also gives observers no detail on *what* changed, forcing them to deduce it.
+
+**Implementation notes**:
+- **Push vs. pull update models**: push has the subject send observers detailed change data (assumes it knows observer needs, hurting reusability); pull sends a bare notification and lets observers query for what they need (more decoupled, but observers must work harder to discover the change).
+- **Who triggers Notify**: either state-setting operations on Subject call it automatically (simple for clients but can cause redundant consecutive updates), or clients call it explicitly after a batch of changes (more efficient but error-prone if forgotten).
+- **Dangling references**: deleting a subject must notify observers first so they can reset their reference, rather than leaving stale pointers.
+- **Self-consistency before notification**: Subject state must be fully consistent before Notify fires (observers query the subject during their own update); GoF recommends calling Notify last inside a Template Method to guarantee subclass state is settled first.
+- **ChangeManager**: for complex subject/observer graphs, a separate ChangeManager object maps subjects to observers, defines the update strategy, and batches updates so observers aren't notified redundantly when several interdependent subjects change together.
+
+**Known Uses (1994-era)**: Smalltalk MVC (Model plays Subject, View is the observer base class); ET++ and the THINK class library, which put Subject/Observer interfaces in the root class; Interviews, the Andrew Toolkit, and Unidraw UI toolkits.
+
+**Related Patterns (per GoF)**: Mediator (273) — a ChangeManager that encapsulates complex update semantics is itself an instance of Mediator, acting as intermediary between subjects and observers. Singleton (127) — the (usually single, globally known) ChangeManager is a natural candidate for Singleton.
+
 ## Key Concepts
 - **Subject**: The object being watched, which maintains the list of registered observers and triggers notification when its state changes (`Subject` implementing `ISubject`).
 - **Observer**: An object that wants to be notified of subject changes (`IObserver`, implemented by `ObserverType1`, `ObserverType2`).
@@ -96,3 +130,4 @@ Three observers are created: `myObserver1` ("Roy", `ObserverType1`), `myObserver
 - **Ch 17 (Command, referenced via Chain of Responsibility comparison)**: The book contrasts Observer's parallel notification with Chain of Responsibility's sequential handoff to clarify when each is appropriate.
 - **Ch 29 (Memory leaks)**: The book explicitly flags the lapsed listener problem here and defers the full treatment of leak-avoidance techniques to its dedicated memory-leak chapter.
 - **GoF 1994 catalog**: Observer is one of the original eleven Behavioral patterns and is the direct ancestor of the .NET `IObservable<T>`/`IObserver<T>` and event-delegate conventions.
+- **GoF 1994 canonical entry**: GoF's push-vs-pull update models and its "unexpected updates"/dangling-reference liabilities give a sharper, implementation-independent account of the lapsed-listener risk than this chapter's C#-specific memory-leak framing.

@@ -8,6 +8,34 @@ Given a language, define a representation for its grammar along with an interpre
   - When to use: You have a small, well-defined language or notation whose sentences need repeated evaluation — the book's own Q&A cautions this is rarely needed in everyday programming and should be weighed against its cost.
   - How: Represent each grammar rule as a class deriving from a common abstract expression type; a `Context` carries the input/output state; a "parse tree" of expression objects interprets the context piece by piece.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: "Given a language, define a representation for its grammar along with an interpreter that uses the representation to interpret sentences in the language."
+
+**Applicability** — GoF says use the pattern when there is a language to interpret and its statements can be represented as abstract syntax trees; it works best when:
+- The grammar is simple — for complex grammars the class hierarchy becomes large and unmanageable, and a parser generator is the better tool.
+- Efficiency is not a critical concern — the most efficient interpreters translate the parse tree into another form first (e.g., regular expressions into state machines) rather than interpreting the tree directly, though that translator can itself be built with Interpreter.
+
+**Participants**:
+- **AbstractExpression** (`RegularExpression`) — declares an abstract `Interpret` operation common to all nodes in the abstract syntax tree.
+- **TerminalExpression** (`LiteralExpression`) — implements `Interpret` for terminal symbols; one instance is required per terminal symbol in a sentence.
+- **NonterminalExpression** (`AlternationExpression`, `RepetitionExpression`, `SequenceExpression`) — one class per grammar rule of the form `R ::= R1 R2 ... Rn`; holds instance variables of type AbstractExpression for each Ri and implements `Interpret` by recursing into them.
+- **Context** — holds information global to the interpreter (e.g., the input string and how much has been matched).
+- **Client** — builds (or is given) the abstract syntax tree for a particular sentence and invokes `Interpret`.
+
+**Consequences**:
+1. It's easy to change and extend the grammar — because rules map to classes, inheritance lets you modify existing expressions incrementally and define new ones as variations.
+2. Implementing the grammar is easy too — the classes for each tree node have similar shapes and are straightforward (even automatable) to write.
+3. Complex grammars are hard to maintain — one class per rule (sometimes more, for BNF) means many rules produce many classes; beyond a certain complexity, parser/compiler generators are more appropriate.
+4. Adding new ways to interpret expressions is easy — new operations (pretty-printing, type-checking) can be added as new methods on the expression classes; if new interpretations keep appearing, consider moving them into a **Visitor** instead of growing the grammar classes.
+
+**Implementation notes**: (1) Creating the abstract syntax tree is out of scope for the pattern itself — it doesn't address parsing; a table-driven parser, a hand-written recursive-descent parser, or the client directly can build it. (2) Defining `Interpret` doesn't have to live on the expression classes — if new interpreters are created often, moving `Interpret` into a separate Visitor object avoids repeatedly modifying every grammar class. (3) Sharing terminal symbols via **Flyweight** — grammars whose sentences repeat the same terminal many times (e.g., a variable name across a program) benefit from sharing one instance per terminal, distinguishing shared intrinsic state from passed-in (extrinsic) context.
+
+**Known Uses (1994-era)**: Smalltalk compilers' widespread use of the pattern; SPECTalk, interpreting descriptions of input file formats; the QOCA constraint-solving toolkit, using it to evaluate constraints.
+
+**Related Patterns (per GoF)**: **Composite** — the abstract syntax tree is itself an instance of Composite. **Flyweight** shows how to share terminal symbols within the tree. **Iterator** can be used to traverse the tree structure. **Visitor** can be used to keep the behavior for each tree node in one class instead of scattering it across the grammar classes.
+
 ## Key Concepts
 - **Grammar**: A formal definition of the language's structure — here, a three-digit number is defined as `E ::= E1 E2 E3` (hundreds, tens, units).
 - **Context**: Holds shared interpretation state — the raw input, a validity flag (`CanProceed`), and the accumulating output string (`SetOutput`).
@@ -112,3 +140,4 @@ The client prompts for a three-digit number. A `Context` is constructed from the
 ## Connects To
 - **Ch 22 (Chain of Responsibility)**: Both patterns process a `List`/chain of objects in sequence, but Interpreter's list (the "parse tree") always runs every element to accumulate output, whereas Chain of Responsibility's chain stops as soon as one handler claims the request.
 - **GoF 1994 catalog**: Interpreter is one of the Behavioral patterns in the original Gang of Four catalog, and is generally considered one of its least frequently applied patterns in mainstream application development.
+- **GoF 1994 canonical entry**: The original catalog's explicit warning — one class per grammar rule quickly becomes unmanageable, so the pattern suits only *simple* grammars, with complex grammars better served by a parser generator — is the load-bearing caveat missing from a from-scratch three-digit-number example.

@@ -8,6 +8,32 @@ Avoid coupling the sender of a request to its receiver by giving more than one o
   - When to use: A request may be handled by one of several candidate handlers, but the sender shouldn't need to know which handler is responsible — and the set/order of handlers should be changeable independently of the sender.
   - How: Each handler holds a reference to the next handler in the chain; on receiving a request, it either handles it fully or forwards it to the next handler, continuing until a handler processes it or the chain ends.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: "Avoid coupling the sender of a request to its receiver by giving more than one object a chance to handle the request. Chain the receiving objects and pass the request along the chain until an object handles it."
+
+**Applicability** — GoF says use this pattern when:
+- More than one object may handle a request, and the handler isn't known a priori — it should be ascertained automatically.
+- You want to issue a request to one of several objects without specifying the receiver explicitly.
+- The set of objects that can handle a request should be specified dynamically.
+
+**Participants**:
+- **Handler** (`HelpHandler`) — defines an interface for handling requests and, optionally, implements the successor link.
+- **ConcreteHandler** (`PrintButton`, `PrintDialog`) — handles requests it's responsible for; if it can't, forwards to its successor.
+- **Client** — initiates the request to a ConcreteHandler object somewhere on the chain.
+
+**Consequences**:
+1. Reduced coupling — an object only needs to know a request will be handled "appropriately"; neither sender nor receiver needs explicit knowledge of the other, and objects need only a single reference to their successor rather than to every candidate receiver.
+2. Added flexibility in assigning responsibilities — responsibilities can be added to or rearranged on the chain at run-time, combinable with static subclassing.
+3. Receipt isn't guaranteed — since a request has no explicit receiver, it can fall off the end of the chain unhandled, whether by design or by a misconfigured chain.
+
+**Implementation notes**: (1) Implementing the successor chain — either define new links (usually in Handler) or reuse existing links already present in the object structure (e.g., parent references in a part-whole hierarchy), which saves space but only works if that structure matches the needed chain. (2) Representing requests — a hard-coded operation call (simple, safe, closed set of requests) versus a single handler function keyed by request code (open-ended, but needs conditional dispatch and manual parameter packing) versus explicit Request objects (type-safer, subclassable per request kind). (3) Subclasses extend rather than override dispatch by handling only requests they care about and forwarding the rest to the parent class's handler. (4) Smalltalk can implement forwarding automatically via `doesNotUnderstand`, rather than hand-writing it per class.
+
+**Known Uses (1994-era)**: MacApp and ET++'s `EventHandler`, Symantec TCL's `Bureaucrat`, and NeXT AppKit's `Responder` — all chain-of-responsibility event dispatch under different names; Unidraw's `Command` objects forwarding interpretation up a component/view hierarchy; ET++'s `InvalidateRect` graphical-update forwarding through enclosing Scrollers/Zoomers up to a `Window`.
+
+**Related Patterns (per GoF)**: Chain of Responsibility is often applied together with **Composite**, where a component's parent acts as its successor in the chain.
+
 ## Key Concepts
 - **Handler**: An object in the chain that can process a particular kind of request (e.g., `IReceiver` with `HandleMessage`).
 - **Chain construction**: Handlers are wired together explicitly by passing the "next" handler into each constructor (e.g., `FaxErrorHandler` holds a reference to `EmailErrorHandler`).
@@ -101,3 +127,4 @@ An `IssueRaiser` is wired to a two-handler chain: `FaxErrorHandler` → `EmailEr
 ## Connects To
 - **Ch 14 (Observer)**: The book explicitly contrasts the two in this chapter's Q&A — Observer notifies all registered objects in parallel, while Chain of Responsibility notifies objects sequentially until one handles the request or the chain ends.
 - **GoF 1994 catalog**: Chain of Responsibility is one of the Behavioral patterns in the original Gang of Four catalog; the GoF also references Smalltalk's automatic message-forwarding mechanism (`doesNotUnderstand`) as a related real-world precedent for handling unclaimed requests.
+- **GoF 1994 canonical entry**: The catalog's explicit liability — "receipt isn't guaranteed," since a request can fall off the end of an unhandled or misconfigured chain — is the pattern's key risk the derivative treatment doesn't call out by name, and GoF's cross-pattern discussion positions Chain of Responsibility as good for decoupling sender/receiver specifically when the chain structure already exists in the system (e.g., a part-whole hierarchy).

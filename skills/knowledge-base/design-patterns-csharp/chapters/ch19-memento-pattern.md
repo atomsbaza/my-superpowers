@@ -8,6 +8,35 @@ Without violating encapsulation, capture and externalize an object's internal st
   - When to use: When you need to save and later restore an object's internal state (e.g., supporting undo/rollback) without exposing that object's internal implementation details to the code that manages the saved states.
   - How: Three roles — `Originator` (owns the state, can produce a `Memento` snapshot and restore from one), `Memento` (an opaque, immutable-from-the-outside snapshot of the originator's state), and `Caretaker` (requests and holds mementos on the originator's behalf, but never inspects or modifies their contents).
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: "Without violating encapsulation, capture and externalize an object's internal state so that the object can be restored to this state later."
+
+**Also Known As**: Token
+
+**Applicability** — GoF says use this pattern when:
+- A snapshot of (some portion of) an object's state must be saved so that it can be restored to that state later.
+- A direct interface to obtaining the state would expose implementation details and break the object's encapsulation.
+
+**Participants**:
+- **Memento** (`SolverState`) — stores internal state of the Originator; may store as much or as little as the originator decides. It has two effective interfaces: a **narrow interface** exposed to the Caretaker (which can only pass the memento around, never inspect it), and a **wide interface** exposed only to the Originator (full read/write access to the captured state). Ideally only the originator that produced a memento can access its internals.
+- **Originator** (`ConstraintSolver`) — creates a memento capturing its current internal state and uses a memento to restore that state later.
+- **Caretaker** (undo mechanism) — responsible for the memento's safekeeping; never operates on or examines its contents.
+
+**Consequences**:
+1. Preserving encapsulation boundaries — Memento shields other objects from an Originator's internals that must nonetheless be stored externally.
+2. It simplifies Originator — clients that request state manage its lifetime instead of Originator tracking every version it has handed out.
+3. Using mementos might be expensive — copying large amounts of state into a memento, or doing so often, can be costly; may not be worth it unless capture/restore is cheap.
+4. Defining narrow and wide interfaces can be difficult in some languages — enforcing "only the originator sees the wide interface" is a language-support problem, not just a design one.
+5. Hidden costs in caring for mementos — a Caretaker has no idea how much state a memento holds, so a lightweight-looking caretaker can incur large storage costs.
+
+**Implementation notes**: (1) Language support — some languages (GoF's example: C++ via `friend`) can statically enforce the wide/narrow interface split; others cannot, leaving it a convention. (2) Storing incremental changes — when mementos are created/restored in a predictable sequence (e.g., an undo history list), a memento can capture just the *delta* from the previous state rather than the full object state, dramatically reducing cost.
+
+**Known Uses (1994-era)**: Unidraw's `CSolver` connectivity solver; Dylan's collection iteration protocol (an `IterationState` object is a memento representing iterator position, keeping collections encapsulated); the QOCA constraint-solving toolkit, which stores only the constraint variables that changed since the last solution.
+
+**Related Patterns (per GoF)**: **Command** — commands can use mementos to hold the state needed to undo themselves. **Iterator** — an iterator's cursor/position state can itself be represented as a memento to support marking or restoring iteration points.
+
 ## Key Concepts
 - **Originator**: The object whose internal state is being saved/restored; only the originator that created a memento is allowed to access its contents.
 - **Memento**: The snapshot object holding captured state; treated as opaque by the caretaker (caretaker cannot alter it).
@@ -94,3 +123,4 @@ The Q&A extension generalizes this to multiple restore points using `IList<Memen
 ## Connects To
 - **Ch 17 (Command)**: GoF treats these as related patterns for supporting undo; Command re-executes inverse actions, Memento restores captured state snapshots, and applications often combine both.
 - **GoF 1994 catalog**: Memento is one of the original 23 GoF behavioral patterns; the book also flags serialization/deserialization as a practical alternative technique achieving similar state-capture goals in C#/Java.
+- **GoF 1994 canonical entry**: The original catalog's defining subtlety — a wide interface for the Originator versus a narrow interface for the Caretaker — makes explicit why the Caretaker must never be able to read or mutate a memento's contents, a constraint the derivative treatment leaves implicit.

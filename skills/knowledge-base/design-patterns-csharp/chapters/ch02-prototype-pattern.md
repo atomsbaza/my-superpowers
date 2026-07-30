@@ -8,6 +8,35 @@ Specify the kinds of objects to create using a prototypical instance, and create
   - When to use: When creating a new instance is expensive or complex, but you already have a similar object available to copy and then adjust.
   - How: Define an abstract prototype with a `Clone()` method; concrete prototypes implement `Clone()` (commonly via `MemberwiseClone()` for a shallow copy) and return a copy of themselves that the client then customizes.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: Specify the kinds of objects to create using a prototypical instance, and create new objects by copying this prototype.
+
+**Applicability** — GoF says use this pattern (when a system should be independent of how its products are created, composed, and represented, and):
+- The classes to instantiate are specified at run-time, e.g., by dynamic loading.
+- You want to avoid building a class hierarchy of factories that parallels the class hierarchy of products.
+- Instances of a class have only a few different combinations of state, and installing a corresponding number of prototypes to clone is more convenient than instantiating manually each time.
+
+**Participants**:
+- **Prototype** (`Graphic`) — declares an interface for cloning itself.
+- **ConcretePrototype** (`Staff`, `WholeNote`, `HalfNote`) — implements the operation for cloning itself.
+- **Client** (`GraphicTool`) — creates a new object by asking a prototype to clone itself.
+
+**Consequences**:
+1. Adding and removing products at run-time — a client can install and remove prototypes dynamically, more flexibly than other creational patterns.
+2. Specifying new objects by varying values — highly dynamic systems can define "new classes" purely by instantiating and registering prototype instances with different variable values, without writing new code.
+3. Specifying new objects by varying structure — composite/structured objects (e.g., subcircuits) can themselves serve as prototypes, as long as `Clone` performs a deep copy.
+4. Reduced subclassing — cloning a prototype replaces asking a factory method for a new object, so no parallel `Creator` class hierarchy is needed (this benefit is smaller in languages like Smalltalk where classes are already first-class objects).
+5. Configuring an application with classes dynamically — dynamically loaded classes register a prototype instance with a prototype manager, letting the app create instances of classes it wasn't linked against originally.
+- Main liability: every `Prototype` subclass must implement `Clone`, which can be hard when classes already exist or contain members that don't support copying or have circular references.
+
+**Implementation notes**: The hardest part is implementing `Clone` correctly — deciding shallow vs. deep copy, since a shallow copy (the Smalltalk/C++ default) leaves clone and original sharing referenced objects. When the set of prototypes isn't fixed, keep a **prototype manager** — an associative registry clients query by key rather than managing prototypes themselves. Clone can't easily take initialization parameters (their number varies per prototype class), so a separate `Initialize` operation is often needed after cloning.
+
+**Known Uses (1994-era)**: Ivan Sutherland's Sketchpad is cited as perhaps the first example. ThingLab let users promote a composite object into a reusable prototype library entry. Etgdb (an ET++-based debugger front-end) clones a `DebuggerAdaptor` prototype looked up by name from an environment variable. Mode Composer's "interaction technique library" stores interaction-technique prototypes. The music editor example is based on the Unidraw drawing framework.
+
+**Related Patterns (per GoF)**: Prototype and Abstract Factory are competing alternatives in some designs but can be combined — an Abstract Factory can store prototypes to clone and return as products. Composite and Decorator-heavy designs often benefit from Prototype as well.
+
 ## Key Concepts
 - **Prototype**: The abstract base class (`BasicCar` in the example) that declares the `Clone()` contract all concrete prototypes must implement.
 - **Concrete Prototype**: A class (`Nano`, `Ford`) that implements `Clone()`, typically by calling `MemberwiseClone()` and casting the result to its own type.
@@ -179,3 +208,4 @@ The exact numbers vary run to run because of the random price generator, but the
 ## Connects To
 - **Ch 1**: Like Singleton, Prototype is a Creational pattern concerned with controlling how instances come into being, but Prototype optimizes *repeated* creation via copying rather than restricting cardinality to one.
 - **GoF 1994 catalog**: Prototype is one of the five Creational patterns in the original Gang of Four catalog, positioned as an alternative to factory-style creation when instantiation cost matters more than instantiation flexibility.
+- **GoF 1994 canonical entry**: GoF explicitly pairs Prototype with a prototype-manager registry for dynamically loaded classes — a run-time class-registration mechanism this chapter's `Clone()`/`MemberwiseClone()` treatment doesn't cover, since it assumes prototype classes are known at compile time.

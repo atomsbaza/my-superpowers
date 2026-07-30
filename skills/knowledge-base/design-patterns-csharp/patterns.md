@@ -129,3 +129,13 @@
 **When to use**: An application needs a clean separation between data (Model), presentation (View), and request/input handling (Controller).
 **How**: Model holds data and business rules; View renders it; Controller receives input, updates the Model, and selects the View to render.
 **Trade-offs**: Can accumulate logic in the Controller if boundaries aren't disciplined; still supported in ASP.NET Core, but Minimal APIs (route-grouped, delegate-based endpoints) have become the more common default for new API/microservice code as of 2025/26. (Ch26)
+
+## Program to an Interface, Not an Implementation
+**When to use**: Client code needs to remain unaware of the concrete types or classes of the objects it collaborates with — any time you want to swap an implementation later without touching the caller.
+**How**: Define an abstract class or interface establishing the common contract; have concrete subclasses implement it; instantiate concrete classes only through creational patterns (Abstract Factory, Builder, Factory Method, Prototype, Singleton) so the rest of the system stays written in terms of interfaces, never `new ConcreteType()` scattered throughout.
+**Trade-offs**: Declaring variables by interface type buys substitutability and testability but adds a layer of indirection; the payoff only materializes if concrete types genuinely vary or need mocking — for a type that will never have a second implementation, the extra interface is pure ceremony. This is GoF's first foundational principle (Section 1.6); nearly every pattern in the catalog is an application of it, and it is the direct conceptual ancestor of the Dependency Inversion Principle. (Ch31)
+
+## Favor Object Composition Over Class Inheritance
+**When to use**: Whenever inheritance would expose subclasses to a parent's implementation details ("inheritance breaks encapsulation"), or behavior needs to change after compile time.
+**How**: Give composed objects well-defined interfaces (black-box reuse) instead of exposing internals (white-box reuse via inheritance); assemble behavior at run time by holding references to other objects and delegating to them, rather than baking behavior into a fixed compile-time class hierarchy.
+**Trade-offs**: Composition costs more objects and makes behavior depend on run-time interrelationships rather than one class, which can be harder to trace statically than an inheritance chain; in exchange it buys the ability to change behavior at run time without recompiling or subclassing. This is GoF's second foundational principle (Section 1.6) and underlies the modern preference for composition-based DI containers over deep class hierarchies. (Ch31)

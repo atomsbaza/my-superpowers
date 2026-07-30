@@ -8,6 +8,33 @@ Compose objects into tree structures to represent part-whole hierarchies. Compos
   - When to use: You have tree-structured data and want client code to stop discriminating between a single leaf node and a branch that contains many nodes.
   - How: Define a common interface (`IEmployee`) implemented both by leaf objects (`Employee`) and by a container object (`CompositeEmployee`) that holds a list of children of that same interface type and delegates operations to them recursively.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: "Compose objects into tree structures to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly."
+
+**Applicability** — GoF says use this pattern when:
+- You want to represent part-whole hierarchies of objects.
+- You want clients to be able to ignore the difference between compositions of objects and individual objects — clients should treat all objects in the composite structure uniformly.
+
+**Participants**:
+- **Component** (`Graphic`) — declares the interface for objects in the composition, implements default behavior common to all classes where appropriate, declares an interface for accessing/managing child components, and optionally an interface for accessing a parent.
+- **Leaf** (`Rectangle`, `Line`, `Text`) — represents leaf objects, which have no children; defines behavior for primitive objects.
+- **Composite** (`Picture`) — defines behavior for components having children, stores child components, and implements child-related operations from the Component interface.
+- **Client** — manipulates objects in the composition through the Component interface.
+
+**Consequences**:
+1. Defines class hierarchies of primitives and composites; wherever client code expects a primitive object, it can also take a composite.
+2. Makes the client simple — clients don't know or care whether they're dealing with a leaf or a composite, avoiding tag-and-case-statement code.
+3. Makes it easier to add new kinds of components — new Composite/Leaf subclasses work automatically with existing structure and client code.
+4. Can make a design overly general — it's harder to restrict what a composite may contain, since the type system can't enforce such constraints; run-time checks are needed instead.
+
+**Implementation notes**: Explicit parent references (usually declared on Component) simplify upward traversal and deletion, and support Chain of Responsibility — the invariant (a component's parent is the composite that holds it as a child) should be maintained only inside Add/Remove. Sharing components is hard once a component can have only one parent; Flyweight shows how to rework a design to avoid storing parents by externalizing state. The safety-vs-transparency trade-off on where to declare Add/Remove is the single most-discussed implementation issue: declaring them on Component gives transparency at the cost of safety (clients can call meaningless operations on leaves); declaring them only on Composite gives compile-time safety at the cost of uniformity. GoF explicitly favor transparency, using a `GetComposite()` escape hatch when safety is needed.
+
+**Known Uses (1994-era)**: Smalltalk Model/View/Controller's original View class; ET++ (VObjects) and InterViews (Styles, Graphics, Glyphs); the RTL Smalltalk compiler framework's parse-tree and SSA-form classes; financial portfolio-as-composite-of-assets; Command's MacroCommand.
+
+**Related Patterns (per GoF)**: Chain of Responsibility often reuses the component-parent link. Decorator is often used with Composite and shares a common parent class. Flyweight lets components be shared, but shared components can no longer refer to their parents. Iterator traverses composites. Visitor localizes operations that would otherwise be spread across Composite and Leaf classes.
+
 ## Key Concepts
 - **Part-whole hierarchy**: A structure where whole objects are built from parts, and parts can themselves be wholes containing further parts (a tree).
 - **Component interface**: The shared contract (`IEmployee.PrintStructures()`) that both leaves and composites implement, enabling uniform treatment.
@@ -95,3 +122,4 @@ The demo builds a college org chart: a `CompositeEmployee` Principal contains tw
 - **Ch 13 (Visitor)**: The book's modified Visitor example directly reuses this chapter's college composite structure, adding an `Accept(IVisitor)` method to both `Employee` and `CompositeEmployee` to demonstrate Visitor-over-Composite.
 - **Ch 18 (Iterator)**: Traversing a composite tree commonly needs an Iterator to standardize "visit every node" without exposing the internal list structure.
 - **GoF 1994 catalog**: Composite is one of the seven original Structural patterns, alongside Adapter, Bridge, Decorator, Facade, Flyweight, and Proxy.
+- **GoF 1994 canonical entry**: GoF's own discussion of structural patterns clarifies a distinction this chapter doesn't make explicit — Composite's intent is *representation* (treating a whole tree as one uniform object), whereas Decorator's superficially similar recursive-composition structure exists for *embellishment* (adding responsibilities without subclassing); the two are complementary, not interchangeable, even though a decorator plays a Leaf role from Composite's point of view and vice versa.

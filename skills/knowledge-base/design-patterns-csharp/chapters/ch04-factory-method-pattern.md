@@ -8,6 +8,36 @@ Define an interface for creating an object, but let subclasses decide which clas
   - When to use: When client code needs to create objects of a family without hardcoding `if-else`/`switch` logic that picks the concrete type — e.g., choosing between `SqlConnection` and `OracleConnection` — so new types can be added without modifying existing code.
   - How: Declare an abstract `CreateAnimal()`-style method on an abstract creator class; each concrete creator subclass overrides it to instantiate its own specific product type, keeping the "varying" creation logic isolated in the subclasses.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: Define an interface for creating an object, but let subclasses decide which class to instantiate. Factory Method lets a class defer instantiation to subclasses.
+
+**Also Known As**: Virtual Constructor
+
+**Applicability** — GoF says use this pattern when:
+- A class can't anticipate the class of objects it must create.
+- A class wants its subclasses to specify the objects it creates.
+- Classes delegate responsibility to one of several helper subclasses, and you want to localize the knowledge of which helper subclass is the delegate.
+
+**Participants**:
+- **Product** (`Document`) — defines the interface of objects the factory method creates.
+- **ConcreteProduct** (`MyDocument`) — implements the `Product` interface.
+- **Creator** (`Application`) — declares the factory method (which may have a default implementation returning a default `ConcreteProduct`) and may call it internally.
+- **ConcreteCreator** (`MyApplication`) — overrides the factory method to return an instance of a `ConcreteProduct`.
+
+**Consequences**:
+1. Eliminates the need to bind application-specific classes into code — client code only deals with the `Product` interface.
+2. A potential disadvantage: clients may have to subclass `Creator` just to create a particular `ConcreteProduct`.
+3. Provides hooks for subclasses — a non-abstract factory method with a reasonable default implementation still lets subclasses override it to return an extended product.
+4. Connects parallel class hierarchies — when a class delegates responsibilities to a separate class (e.g., `Figure` to `Manipulator`), a factory method (`CreateManipulator`) localizes the knowledge of which classes in the two parallel hierarchies belong together.
+
+**Implementation notes**: Two major varieties — an abstract `Creator` with no default implementation (forces subclasses to define one) versus a concrete `Creator` with a default implementation (used mainly for flexibility). A **parameterized factory method** takes an identifier and creates one of several product kinds from one method, and can be selectively overridden (delegating unhandled identifiers back to the parent's implementation). In C++, avoid calling factory methods from the `Creator`'s constructor — the `ConcreteCreator`'s override isn't available yet; use lazy initialization via an accessor instead. A template-based `Creator` subclass parameterized by the product class can avoid subclassing entirely.
+
+**Known Uses (1994-era)**: Pervasive in MacApp and ET++ (the Document/Application example) and in Unidraw (the Manipulator example). Smalltalk-80 MVC's `View` uses `defaultControllerClass` as its real factory method (not `defaultController`, which merely calls it). `Behavior`'s `parserClass` lets a class supply a customized source-code parser (e.g., `SQLParser`). Orbix (IONA Technologies' ORB system) uses Factory Method to generate the appropriate proxy type for a remote object reference.
+
+**Related Patterns (per GoF)**: Abstract Factory is often implemented with factory methods. Factory methods are usually called within Template Methods. Prototype doesn't require subclassing `Creator` but often needs an `Initialize` operation on the product that Factory Method doesn't require.
+
 ## Key Concepts
 - **Creator (abstract)**: `IAnimalFactory`, an abstract class declaring the abstract factory method `CreateAnimal()` that subclasses must implement.
 - **ConcreteCreator**: `DogFactory` and `TigerFactory`, each overriding `CreateAnimal()` to instantiate its own specific product (`Dog` or `Tiger`).
@@ -174,3 +204,4 @@ The repeated warning line demonstrates that neither `DogFactory` nor `TigerFacto
 - **Ch 5**: Abstract Factory directly extends this chapter's `IAnimalFactory`/`Dog`/`Tiger` example by adding a second axis of variation (wild vs. pet), turning single-product factories into "factories of families of related products."
 - **Simple Factory (book Chapter 24, non-GoF)**: repeatedly used as the comparison baseline throughout this chapter's Q&A to clarify what Factory Method adds — subclass-based extensibility instead of conditional-logic-based creation.
 - **GoF 1994 catalog**: Factory Method is one of the five Creational patterns in the original Gang of Four catalog, and is frequently confused with the non-GoF Simple Factory idiom this book treats as a separate, simpler precursor.
+- **GoF 1994 canonical entry**: GoF's "Also Known As: Virtual Constructor" and its Related-Patterns link to Template Method ("factory methods are usually called within Template Methods") are both absent from this chapter's treatment, which frames the pattern purely through the `IAnimalFactory` subclass-selection example.

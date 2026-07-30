@@ -8,6 +8,39 @@ Provide a way to access the elements of an aggregate object sequentially without
   - When to use: When you need to traverse different kinds of collection objects (arrays, linked lists, and so on) in a standard, uniform way without the client needing to know each collection's internal structure.
   - How: An `Aggregate` interface (e.g., `ISubjects`) exposes a `CreateIterator()` factory method; a common `IIterator` interface (`First()`, `Next()`, `IsDone()`, `CurrentItem()`) is implemented differently by each concrete iterator (e.g., `ScienceIterator` over a `LinkedList<string>`, `ArtsIterator` over a `string[]`) so client code can traverse any of them identically.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: "Provide a way to access the elements of an aggregate object sequentially without exposing its underlying representation."
+
+**Also Known As**: Cursor
+
+**Applicability** — GoF says use this pattern to:
+- Access an aggregate object's contents without exposing its internal representation.
+- Support multiple traversals of aggregate objects pending at once.
+- Provide a uniform interface for traversing different aggregate structures (polymorphic iteration).
+
+**Participants**:
+- **Iterator** — defines an interface for accessing and traversing elements.
+- **ConcreteIterator** — implements the Iterator interface and tracks the current position in the traversal.
+- **Aggregate** — defines an interface for creating an Iterator object.
+- **ConcreteAggregate** — implements the iterator-creation interface to return an instance of the proper ConcreteIterator.
+
+**Consequences**:
+1. Supports variations in traversal — swapping in a different iterator (or Iterator subclass) changes how a complex aggregate (e.g., a parse tree, inorder vs. preorder) is walked, without touching the aggregate.
+2. Simplifies the Aggregate interface — traversal operations live on the Iterator, so Aggregate doesn't need its own.
+3. More than one traversal can be pending on an aggregate at once, since each iterator tracks its own state independently.
+
+**Implementation notes**:
+- **External vs. internal iterators**: an *external* iterator is driven by the client (calls `Next`/`IsDone` itself) and is more flexible — e.g., you can compare two collections in lockstep — while an *internal* iterator controls its own traversal and applies a client-supplied operation to each element; internal iterators are easier to use but weaker in languages without closures.
+- **Who defines the traversal algorithm**: putting it in the iterator (rather than the aggregate) makes it easy to reuse across different aggregates, but the iterator may then need privileged access to the aggregate's internals, which can compromise encapsulation.
+- **Robust iterators**: traversal state can be corrupted by concurrent insertion/removal; a robust iterator, typically by registering itself with the aggregate, guarantees insertions/removals don't interfere with an in-progress traversal without requiring a defensive copy.
+- Iterating recursive/Composite structures often favors an internal iterator (it can recurse and use the call stack to store the path implicitly) over an external one (which must explicitly store a path through the structure); a **NullIterator**, whose `IsDone` is always true, simplifies traversing leaf nodes uniformly.
+
+**Known Uses (1994-era)**: The Booch components' bounded/unbounded Queue classes; Smalltalk's collection classes (`do:`, an internal iterator taking a block) and its `ReadStream`-style external iterators; ET++ container classes (polymorphic iterators plus a cleanup Proxy); Unidraw's cursor-based iterators; Borland ObjectWindows 2.0 (a uniform iterator hierarchy overloading `operator++`).
+
+**Related Patterns (per GoF)**: Composite (163) — iterators are often applied to recursive Composite structures. Factory Method (107) — polymorphic iterators rely on a factory method (e.g., `CreateIterator`) to instantiate the right ConcreteIterator. Memento (283) — often used with Iterator so an iterator can capture and internally store a snapshot of traversal state.
+
 ## Key Concepts
 - **Aggregate**: An object (or interface) that defines how to create an Iterator object for a given collection; the term and naming convention are adopted directly from the GoF.
 - **Iterator interface**: The common contract (`First()`, `Next()`, `IsDone()`, `CurrentItem()`) that every concrete iterator implements, regardless of the underlying data structure.
@@ -107,3 +140,4 @@ namespace IteratorPattern.Iterator
 ## Connects To
 - **Ch 13 (Visitor / Composite, referenced in-book)**: The book's modified Visitor illustration combines Visitor, Composite, and Iterator patterns together, using C#'s `foreach` to consume an iterator from client code.
 - **GoF 1994 catalog**: Iterator is one of the original 23 GoF behavioral patterns; C#'s built-in `foreach`/`IEnumerable<T>` is a language-level realization of this same pattern.
+- **GoF 1994 canonical entry**: GoF's external-vs-internal iterator distinction (client-driven vs. self-driven traversal) and its discussion of robust iterators under concurrent mutation are canonical framing this chapter's `foreach`-centric treatment doesn't cover.

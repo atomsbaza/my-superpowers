@@ -8,6 +8,35 @@ Define the skeleton of an algorithm in an operation, deferring some steps to sub
   - When to use: You have a multistep algorithm that is mostly identical across variants, and you want to allow subclasses to customize specific steps without letting them touch the overall flow.
   - How: An abstract base class exposes one non-overridable (or non-virtual) "template" method that calls a fixed sequence of private/concrete helper methods and one or more abstract (or virtual "hook") methods. Subclasses override only the abstract/hook methods; the base class retains control of the sequence.
 
+## Canonical GoF Reference (1994)
+*Source: Gamma, Helm, Johnson & Vlissides, "Design Patterns: Elements of Reusable Object-Oriented Software" (Addison-Wesley, 1994).*
+
+**Intent (verbatim)**: "Define the skeleton of an algorithm in an operation, deferring some steps to subclasses. Template Method lets subclasses redefine certain steps of an algorithm without changing the algorithm's structure."
+
+**Applicability** — GoF says use this pattern when:
+- You want to implement the invariant parts of an algorithm once and leave the varying behavior to subclasses.
+- Common behavior among subclasses should be factored and localized in one class to avoid duplication (GoF calls this "refactoring to generalize" per Opdyke and Johnson).
+- You want to control subclass extension by exposing "hook" operations at specific points, permitting extension only there.
+
+**Participants**:
+- **AbstractClass** (Application) — implements the template method (the algorithm's skeleton) and defines the abstract primitive operations concrete subclasses must supply.
+- **ConcreteClass** (MyApplication) — implements the primitive operations to carry out subclass-specific steps.
+
+**Consequences**:
+1. Template methods are a fundamental code-reuse technique, especially for factoring out common behavior in class libraries.
+2. They produce an inverted control structure GoF calls the **Hollywood Principle** — "Don't call us, we'll call you" — the parent class calls the subclass's operations, never the reverse.
+3. Template methods call concrete operations, concrete AbstractClass operations, primitive (abstract) operations, factory methods, and **hook operations**; hook operations provide default (often empty) behavior subclasses may optionally extend, distinct from primitive/abstract operations subclasses *must* override — GoF stresses that subclass authors need to know which is which.
+
+**Implementation notes**:
+- In C++, primitive operations a template method calls can be `protected` so only the template method invokes them; the template method itself should be non-virtual so it can't be overridden.
+- Minimize the number of primitive operations a subclass must override — more required overrides means more tedium for every subclass author.
+- A naming convention (e.g., MacApp's `Do-` prefix: `DoCreateDocument`, `DoRead`) helps identify which operations subclasses are expected to override.
+- To keep a subclass from forgetting to call `base.Operation()` when extending behavior, turn the parent operation into a template method that calls a hook — the hook can default to doing nothing, so subclasses can't break the invariant by skipping the base call.
+
+**Known Uses (1994-era)**: GoF notes template methods are "so fundamental that they can be found in almost every abstract class," citing Wirfs-Brock et al. for a broader overview; the chapter's own example is NeXT's AppKit `View::Display`, which calls `SetFocus`/`DoDisplay`/`ResetFocus`.
+
+**Related Patterns (per GoF)**: Factory Method (107) — often called by template methods (e.g., `DoCreateDocument` is invoked from the `OpenDocument` template method). Strategy (315) — Template Method uses inheritance to vary part of an algorithm; Strategy uses delegation to vary the entire algorithm — the two patterns are GoF's canonical inheritance-vs-composition pairing.
+
 ## Key Concepts
 - **Template method**: The method in the base class that defines the fixed sequence of steps (e.g., `Papers()` calling `Math()`, `SoftSkills()`, `SpecialPaper()`).
 - **Abstract step**: A step subclasses must implement (e.g., `SpecialPaper()`), representing the varying part of the algorithm.
@@ -91,3 +120,4 @@ The Q&A extension adds a hook method `IsAdditionalPapersNeeded()` (returns `true
 ## Connects To
 - **Ch 3 (Builder, if present in this catalog)**: Both are step-by-step processes, but Template Method fixes the sequence in the base class while Builder lets the client direct it.
 - **GoF 1994 catalog**: Template Method is one of the original 23 GoF patterns, classified as behavioral, and is frequently taught alongside Strategy since both defer behavior but via different mechanisms (inheritance vs composition).
+- **GoF 1994 canonical entry**: GoF names the pattern's inverted control flow the "Hollywood Principle" ("Don't call us, we'll call you") and draws a sharp hook-vs-abstract-operation distinction this chapter's C# treatment doesn't spell out by name.
