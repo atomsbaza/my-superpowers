@@ -136,6 +136,7 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 | `mediumlm` | Research a topic on Medium using the user's own logged-in session — search, fetch full article text, save a research note |
 | `notebooklm` | Full programmatic access to Google NotebookLM — create notebooks, add sources, generate podcasts/mind maps/study guides |
 | `oss-contribute` | End-to-end OSS contribution workflow — fork, orient, implement, scrutinize, open a PR |
+| `wayfinder` | Codebase exploration and architecture mapping |
 | `xcodebuildmcp-cli` | Reference for driving XcodeBuildMCP from the CLI for Apple platform builds |
 | `design-patterns-csharp` | Knowledge base from *Design Patterns* (Gang of Four, 1994) and *Design Patterns in C#* (Sarcar, 2018) — all 23 patterns with canonical definitions and C# implementations, Simple Factory/Null Object/MVC, pattern criticisms, anti-patterns, modern C# notes (2025–26) |
 | `dobovizki-csharp-concurrency` | Knowledge base from *C# Concurrency: Asynchronous and Multithreaded Programming* by Nir Dobovizki — async/await, compiler state machines, thread safety, SynchronizationContext, multithreading patterns, concurrent collections, async streams |
@@ -263,7 +264,7 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 `scrutinize`, `post-mortem`
 
 **Adapted from [mattpocock/skills](https://github.com/mattpocock/skills)** by Matt Pocock:
-`codebase-design`, `domain-modeling`, `grill-with-docs`, `to-issues`, `writing-great-skills`
+`codebase-design`, `domain-modeling`, `grill-with-docs`, `to-issues`, `writing-great-skills`, `wayfinder`
 
 **Adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)** (MIT):
 `ponytail`
