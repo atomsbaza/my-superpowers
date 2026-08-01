@@ -1,6 +1,6 @@
 ---
 name: dobovizki-csharp-concurrency
-description: "Knowledge base from "C# Concurrency: Asynchronous and multithreaded programming" by Nir Dobovizki. Use when applying C# async/await frameworks, multithreading patterns, thread safety primitives, and performance optimizations."
+description: 'Knowledge base from "C# Concurrency: Asynchronous and multithreaded programming" by Nir Dobovizki. Use when applying C# async/await frameworks, multithreading patterns, thread safety primitives, and performance optimizations.'
 ---
 
 <!-- argument-hint: [topic, framework name, or chapter number] -->

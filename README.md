@@ -37,12 +37,23 @@ git clone git@github.com:atomsbaza/my-superpowers.git ~/Work/my-superpowers
 cd ~/Work/my-superpowers && chmod +x install.sh && ./install.sh
 ```
 
-The script symlinks agents and skills into place.
+The script installs independent copies of agents and skills into place, so AI tools do not load them directly from this repository.
 
 | Tool | Skills | Agents |
 |---|---|---|
 | Claude Code | `~/.claude/skills/` | `~/.claude/agents/` |
 | Codex CLI | `~/.agents/skills/` | — |
+
+To install one skill independently—for example, `book-to-skill` for Codex—run:
+
+```bash
+cd ~/Work/my-superpowers
+./install.sh --skill book-to-skill --codex-only
+```
+
+This installs an independent copy at `~/.agents/skills/book-to-skill`. Add `--force` to replace an existing installation.
+
+Use `--claude-only` or `--codex-only` when installing to just one AI tool.
 
 Repo-level instructions for both tools live in [`CLAUDE.md`](CLAUDE.md); `AGENTS.md` is a symlink to it so Codex CLI picks up the same guidance.
 
