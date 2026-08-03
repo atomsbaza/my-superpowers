@@ -24,7 +24,7 @@ Culturally, the research is clear that tooling and frameworks fail without adopt
 2. [Information Architecture](chapter02-information-architecture.md) — hierarchical vs. networked vs. tag-based organization; PARA, Zettelkasten, Johnny Decimal, Maps of Content.
 3. [Documentation Frameworks](chapter03-documentation-frameworks.md) — Diátaxis, ADRs (Nygard/MADR), the C4 model, and runbook design.
 4. [Tooling Landscape](chapter04-tooling-landscape.md) — Docs-as-Code vs. database-backed wikis, static site generators, linters, and Internal Developer Portals.
-5. [Maintenance & Governance](chapter05-maintenance-governance.md) — the Continuous Context model, ownership (DRI), CI quality gates, and freshness metrics.
+5. [Maintenance & Governance](chapter05-maintenance-governance.md) — the Continuous Context model, ownership (DRI), CI quality gates, freshness metrics, and access control/confidentiality.
 6. [Search & Retrieval / RAG](chapter06-search-retrieval-rag.md) — BM25, dense vector search, hybrid retrieval, chunking, reranking, and RAG evaluation metrics.
 7. [AI-Ready Knowledge Bases](chapter07-ai-ready-kb.md) — structuring Markdown for LLM/agent consumption, `llms.txt`, authority tiers, agent-optimized ADRs.
 8. [Adoption & Culture](chapter08-adoption-culture.md) — building a documentation culture, DORA/SPACE metric alignment, and the AI verification tax.

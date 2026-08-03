@@ -123,11 +123,11 @@ Culture shifts when engineering leadership visibly rewards knowledge sharing.
 
 Reducing workplace interruptions requires establishing self-service search as the default developer behavior.
 
-* **Quantifiable Friction**: Industry data indicates that 61% of developers spend over 30 minutes daily searching for answers, while 30% encounter knowledge silos ten or more times per week. Unintuitive tooling and friction reduce developer innovation sentiment by 50%.
+* **Quantifiable Friction**: Industry data indicates that 61% of developers spend over 30 minutes daily searching for answers, while 30% encounter knowledge silos ten or more times per week. One reported survey figure attributes a **50% reduction in developer innovation sentiment** to unintuitive tooling and friction; treat this as a single reported data point, not an independently verified causal result.
 * **Internal Developer Portals (IDPs)**: Platforms like Spotify Backstage, Port, or Cortex unify technical documentation, service ownership catalogs, API specifications, and operational scorecards in a central portal.
 * **Integrated Local and Global Search**:
  * Implement fast, in-browser lexical search engines (such as Pagefind, `docusaurus-search-local`, or Algolia DocSearch) for instant keyword matching.
- * Deploy **`llms.txt` and `llms-full.txt` standards** at the domain root, enabling AI coding assistants (Cursor, Copilot, Claude Code) and IDE search plugins to fetch verified context instantly without interrupting human peers.
+ * Consider publishing **`llms.txt` and `llms-full.txt`**, an emerging (not standardized) convention, at the domain root. It may let AI coding assistants (Cursor, Copilot, Claude Code) and IDE search plugins fetch context without interrupting human peers, but consumer support varies — test that the tools you actually use discover and fetch it before relying on it.
 
 ---
 

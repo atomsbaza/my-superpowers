@@ -19,7 +19,7 @@ Traditional human-facing documentation sites rely on complex HTML, client-side J
 ```
 
 ### Token Efficiency & Abstract Syntax Tree (AST) Parsing
-* **Clean Text vs. HTML**: Serving raw, structured Markdown instead of flattened HTML achieves up to a **10x reduction in token consumption**, resulting in faster, cheaper, and more accurate agent execution.
+* **Clean Text vs. HTML**: Practitioners report that serving raw, structured Markdown instead of flattened HTML can achieve up to a **10x reduction in token consumption** — a practitioner-reported figure, not independently verified — resulting in faster, cheaper, and more accurate agent execution.
 * **Markdoc Framework**: Stripe open-sourced **Markdoc** to parse Markdown into a declarative Abstract Syntax Tree (AST) before rendering. Unlike MDX (which compiles content directly into executable client-side JavaScript and introduces security and parsing risks), Markdoc’s declarative AST allows build-time validation, safe variable interpolation, and static analysis by compilers and LLMs without executing untrusted code.
 * **Markform Schemas**: For structured agent workflows, frameworks like **Markform** extend Markdown using invisible HTML comments (`<!-- field -->`) to define fields, instructions, and validation rules inside `.form.md` files. Agents fill these forms via explicit patch operations (`set_string`), self-correcting validation errors early.
 

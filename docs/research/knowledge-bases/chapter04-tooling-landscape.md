@@ -170,22 +170,29 @@ Modern engineering knowledge platforms rely on **Markdown-first standards** to m
 |:--- |:--- |
 | **Team Size** | **Small teams (5–20)**: Benefit from low-overhead static sites (MkDocs, Docusaurus) or lightweight Git vaults. <br>**Medium (20–100)**: Require hybrid systems (GitBook, Slite) balancing Git-sync with cross-departmental editing. <br>**Large Enterprises (100+)**: Require standardized Internal Developer Portals (Backstage) or Jira-connected wikis (Confluence). |
 | **Technical vs. Non-Technical** | If technical writers and engineers write 100% of content, choose **Git-backed Markdown**. If product managers, HR, and business analysts must co-author, choose **Database-backed UI tools** (Confluence, Notion) or **Git-sync tools** (GitBook). |
-| **Search Quality** | **Lexical Search (BM25)** is essential for exact parameter and code symbol matches. **Hybrid Search** (combining BM25 + dense vector semantic search) is the gold standard for handling natural language questions without losing exact keyword precision. |
+| **Search Quality** | **Lexical Search (BM25)** is essential for exact parameter and code symbol matches. Compare lexical, dense, and hybrid retrieval (combining BM25 + dense vector semantic search) on representative queries before selecting a default; hybrid is a strong default candidate for natural language questions, not a settled choice. |
 | **Integrations** | Deep integration with issue trackers (Jira/GitHub Issues), CI/CD quality pipelines (`lychee`, `markdownlint`, `Vale`), and Slack bots is necessary to prevent documentation drift. |
 | **Pricing Models** | Open-source self-hosted options (MkDocs, Docusaurus, Outline, Backstage) incur zero software licensing costs but require platform engineering maintenance. Commercial SaaS platforms (GitBook, Slite, Confluence, Fern) charge per-seat or per-user monthly fees. |
 
 ---
 
-## 5. Migration & Maintenance Considerations
+## 5. Migrating Between Tools
 
-### Mitigating "Stale Documentation" Drift
-Stale documentation can be worse than missing documentation: its apparent authority can misdirect engineers during outages or onboarding. Mark, archive, and de-index superseded guidance so users and agents can distinguish it from current instructions.
+Coverage of formal platform-to-platform migration mechanics (read-only freezes, running old and new systems in parallel, bulk URL redirects, phased cutover timelines) is thin to non-existent in the research corpus; treat this section as directional practice rather than a step-by-step runbook, and expect to fill gaps with vendor-specific guidance.
 
-To prevent documentation decay during tool migration, implement a **Continuous Context** strategy:
-1. **Event-Driven Updates**: Tie documentation review tasks directly to ticket closures (e.g., Jira/GitHub PR merge events) rather than relying on calendar-based reminders.
-2. **Automated CI Quality Gates**: Enforce syntax checking (`markdownlint`), prose and style validation (`Vale`), and link integrity checking (`lychee` / `baler`) in PR pipelines.
-3. **Single Named Ownership**: Assign every core page or space an explicit individual owner rather than a committee.
-4. **Aggressive Archiving**: When deprecating software components, remove archived docs from search indices immediately so AI search agents do not surface stale instructions.
+### Content Inventory, Audit, and Disposition
+Before moving anything, inventory the legacy space using page analytics and edit timestamps. Prioritize high-traffic, highest-ranked pages first rather than starting with cold, unread pages — outdated pages that still rank high in search carry false authority and cause the most operational damage.
+
+### Port vs. Prune vs. Archive
+Avoid the "collector's fallacy" of porting every legacy page; retire docs aggressively rather than defaulting to preservation. When porting from UI wikis (Confluence, Notion) to Markdown-based systems, convert core pages into plain Markdown, categorize them into an explicit authority hierarchy (e.g., Tier 1 Source of Truth, Tier 2 Core Knowledge — see chapter05's 4-tier model), and create a central `START_HERE.md` entry point. For content that is neither ported nor deleted, ISO/IEC/IEEE 26511 distinguishes **archiving** (placing documents in less frequently used storage) from **disposition** (a formal retention, transfer, or destruction decision) — pick one deliberately rather than leaving pages in limbo. Archived documents should carry a top-line banner marking them non-authoritative and, critically, be de-indexed from search and AI retrieval — a page sitting in an "Archive" folder that is still indexed by internal search or RAG vectors will keep surfacing to users and AI assistants as if it were current.
+
+### Redirects, Freezes, and Parallel Runs
+The corpus does not provide explicit patterns for automated link/URL rewriting between platforms, read-only freeze protocols during cutover, or running the old and new systems in parallel — plan these mechanics yourself based on your specific source and target tools.
+
+### Migration Pitfalls
+* **The Manual Restructuring Trap**: Attempting to audit, reclassify, and rewrite an entire legacy knowledge base all at once (e.g., forcing every page into the four Diátaxis quadrants in one pass) is a massive effort that frequently causes migration projects to stall. Prefer incremental porting driven by the traffic-based priority above.
+* **Tool Churn**: Hopping between platforms (e.g., Notion → Obsidian → Confluence) in search of better software features, without fixing the underlying capture, ownership, and maintenance habits, prevents knowledge from compounding — the new tool inherits the old problems.
+* **Discoverability Risk**: See the de-indexing point above — this is the single most common way a migration silently fails after it appears complete.
 
 ---
 

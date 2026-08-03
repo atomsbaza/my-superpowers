@@ -69,12 +69,34 @@ A structured knowledge base yields measurable improvements across engineering pe
 * **Knowledge Continuity**: Single-source-of-truth architectures ensure institutional knowledge survives employee turnover, team reorganizations, or sudden departures, protecting the organization from knowledge vaporization.
 
 ### C. Interruption Reduction & Developer Focus
-* **Time Reclaimed**: Studies indicate that developers spend an average of **8 hours per week** searching internal resources (or **3.2 to 3.5 hours per week** in dedicated search friction ), with 61% of developers losing over 30 minutes daily looking for answers. 
+* **Time Reclaimed**: Reported estimates of developer search-friction time vary by study and definition, ranging roughly **3 to 8 hours per week** — one study puts the figure at an average of **8 hours per week** searching internal resources, another narrows dedicated search friction to **3.2 to 3.5 hours per week**. Treat both as directional, differently-scoped estimates rather than a single agreed number. Separately, 61% of developers report losing over 30 minutes daily looking for answers.
 * **Self-Service Support**: Self-service documentation eliminates constant Slack interruptions and "shoulder taps" directed at senior staff.
 
 ### D. Operational Metrics (DORA & SPACE Frameworks)
 * **DORA Metric Alignment**: Accurate, accessible runbooks directly reduce **Failed Deployment Recovery Time / MTTR** by allowing on-call responders to debug systems without searching for tribal knowledge. Clear architecture docs compress **Lead Time for Changes** by removing technical ambiguity during development.
 * **SPACE Framework Alignment**: High-quality documentation directly boosts **Communication & Collaboration** (by streamlining handoffs and code reviews) and **Efficiency & Flow** (by expanding uninterrupted focus time and lowering cognitive context-switching).
+
+---
+
+## 5. What Belongs in the KB (and What Doesn't)
+
+Preventing "Duplicated Truth" (§3) requires a clear division of labor across the channels engineers actually write in day to day:
+
+* **Code Comments**: Belong inline to explain local, single-point business logic and immediate code context — the *why* behind a specific block. They must not be used to document broader system architecture, cross-repository standards, or conceptual workflows; those belong in the KB.
+* **README Files**: Belong at the root of a repository (`README.md` or `START_HERE.md`) as the entry point for that single repository — quickstart steps, repository purpose, team owners, and pointers to deeper documentation. Standards or policies that span multiple repositories belong in the central KB, not duplicated across individual READMEs.
+* **Issue Trackers (Jira / GitHub Issues)**: Belong to active execution, sprint tracking, and task management — transient work items, not a durable, canonical reference store. Coverage of strict boundaries here is thin beyond this distinction.
+* **Chat (Slack, etc.)**: Belongs to real-time coordination, informal discussion, and quick Q&A. Chat must never act as a primary knowledge store — messages disappear into history and become single points of failure.
+* **Knowledge Base (KB / Handbook)**: Belongs to durable, canonical, structured knowledge as the Single Source of Truth — system design specs, Diátaxis-quadrant content, operational runbooks, team policies, and domain ontologies.
+
+### Capturing Decisions and Meeting Outcomes
+Architectural and technical decisions belong in ADRs or RFCs stored in source control (e.g., `docs/adr/`), co-located with code. Non-technical and organizational decisions — strategy, tooling, process — belong in Decision Records (DRs) in the central KB. Meeting outcomes should be stored as raw, chronological notes (e.g., in a `meetings/` folder) or preserved as immutable event records, but any decision or action item worth keeping must be extracted and promoted into an SSoT page, ADR, or task tracker rather than left buried in meeting notes.
+
+### Promoting Ephemeral Communication to Durable Docs
+Four rules govern when transient communication should be converted into permanent documentation:
+1. **The "Rule of Two"**: If a technical question comes up in chat or meetings more than once, the next response must be a link to its permanent documentation.
+2. **Docs-First / Link-First Policy**: When asked a question in chat, reply with a link to the KB page. If the answer doesn't exist yet, open a PR/MR to write the documentation first, then share that link as the answer.
+3. **Public-by-Default Thread Migration**: When a non-confidential conversation or decision starts in a private message, 1:1 call, or email, move the thread into a public channel or open document.
+4. **Filing Explorations & Incident Learnings**: Debugging insights, incident postmortems, and architecture explorations discussed live should be converted into permanent notes, runbooks, or flow pages so they compound in the KB instead of disappearing into chat history.
 
 ---
 

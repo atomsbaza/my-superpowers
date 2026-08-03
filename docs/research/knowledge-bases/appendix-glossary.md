@@ -88,7 +88,7 @@ Alphabetized glossary of key terms used across this research set. Chapter refere
 
 **MkDocs / Material for MkDocs** — a fast, Python-based static site generator widely used for platform documentation. (Ch. 4)
 
-**Nygard Template** — the classic 5-section ADR template (Title, Status, Context, Decision, Consequences) coined by Michael Nygard in 2011; empirically outperforms more complex templates in readability and adoption speed. (Ch. 2, 3)
+**Nygard Template** — the classic 5-section ADR template (Title, Status, Context, Decision, Consequences) coined by Michael Nygard in 2011; a controlled comparison reported in an arXiv preprint found it outperformed more complex templates in readability and adoption speed — promising empirical evidence, not a universal mandate. (Ch. 2, 3)
 
 **Observed Context** — inferred system behavior based on actual usage patterns (e.g. tables joined in most queries, silent deprecations), continuously inferred from telemetry and logs. (Ch. 5)
 
@@ -113,6 +113,8 @@ Alphabetized glossary of key terms used across this research set. Chapter refere
 **Tag Explosion** — an anti-pattern in which uncontrolled, ad-hoc folksonomy tagging accumulates synonyms and near-duplicates until tags stop being useful for discovery. (Ch. 2, 10)
 
 **TechDocs / Backstage** — Spotify's Docs-as-Code solution integrated into its open-source Internal Developer Portal, unifying documentation with the service catalog, ownership metadata, and scorecards. (Ch. 3, 4, 9)
+
+**User Profile** — per ISO/IEC/IEEE 26511, a unique attribute set (e.g. job function or clearance level) that a knowledge system uses to restrict or grant access to specific documentation spaces. (Ch. 5)
 
 **`Vale`** — an open-source prose linter enforcing style guide compliance, active voice, terminology, and readability metrics (e.g. Flesch-Kincaid) across Markdown files. (Ch. 3, 4, 5, 11)
 

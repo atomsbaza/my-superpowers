@@ -34,7 +34,7 @@ Stripe treats technical documentation as a primary developer-facing product. Str
 
 ### Why It Works
 * **Shortens Distance to Value**: Focuses on task-based developer jobs (e.g., *"Accept a payment"*, *"Set up subscriptions"*) rather than internal company structures.
-* **Drives Conversion**: Converts developer prospects into active customers at **3x the industry average** with a 99% developer satisfaction rating.
+* **Drives Conversion**: Stripe reports converting developer prospects into active customers at **3x the industry average**, with a claimed **99% developer satisfaction** rating — figures as reported by Stripe, not independently verified.
 
 ### Concrete Practices Worth Copying
 * **The Three-Column Layout**: Organizes documentation into persistent panels: (1) product navigation on the left, (2) conceptual prose and tutorials in the center, and (3) runnable, language-specific code samples on the right.

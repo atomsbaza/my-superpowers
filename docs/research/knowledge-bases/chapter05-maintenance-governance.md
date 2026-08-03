@@ -260,11 +260,41 @@ Documentation quality maps directly across the SPACE framework dimensions:
 
 ---
 
+## 8. Access Control, Permissions & Confidentiality
+
+### What Must Never Go Into Documentation
+Real secrets, credentials, and personal data must never appear in a knowledge base, regardless of how convenient it is to paste a working example:
+* **Secrets and Credentials**: Real tokens, personal access tokens, API secrets, application IDs, CI/CD variables, runner tokens, webhook secrets, and system passwords must never be placed in documentation. A personal developer's notes or local knowledge base must not become an unsafe shadow copy of private systems by holding credentials.
+* **Real User Information (PII)**: Real usernames and real email addresses must be excluded entirely.
+* **Standardized Sanitization Rules**: Use diverse, non-gendered placeholder names with common surnames (e.g., *Sidney Jones*, *Zhang Wei*, *Alex Garcia*); fake email addresses ending in `example.com`; `example.com` (or `gitlab.example.com` for self-managed examples) for generic URLs; and standard placeholder syntax for tokens (e.g., `<your_access_token>`) or explicitly generated fake strings.
+
+### Sensitive Data in Screenshots and Examples
+Screenshots of live or internal applications are a common leak vector. In order of preference:
+1. **Browser DOM Inspection (Preferred)**: Right-click the element in the browser, select Inspect, and edit the HTML directly in the Elements panel to replace real user data, account IDs, or email addresses with fake example data before capturing the image.
+2. **Dedicated Test Environments**: Reproduce the scenario using fake accounts inside an isolated test environment.
+3. **Image Blurring (Fallback)**: If the test environment cannot be reproduced and DOM editing is impractical, blur the sensitive data using an image editing tool.
+
+### Open vs. Restricted Content
+* **Public-by-Default Paradigm**: High-performing async organizations (such as GitLab) enforce a "public by default" transparency bias for internal documentation — policies, workflows, project plans, and architectural decisions are open to the entire company unless explicitly designated as non-public/confidential.
+* **Moving Conversations to SSoT**: When non-confidential discussions start in private messages, emails, or restricted channels, move the conversation to public documentation or a shared issue/PR to eliminate knowledge silos.
+* **Formal Confidentiality Levels**: Organizations maintain explicit confidentiality classifications (such as "Not Public" or restricted tiers) for sensitive corporate, financial, legal, or security materials.
+
+### Permission Models in KB Tools
+Enterprise wikis (such as Confluence) provide enterprise permissions, and other knowledge base tools support custom user rights, role assignments, and password-protected articles or folders restricted to authorized teams or clients. ISO/IEC/IEEE 26511 defines a **user profile** as a unique attribute set (such as job function or clearance level) used by knowledge systems to restrict or grant access to specific documentation spaces. The corpus covers these permission models at a high level; granular, tool-by-tool role-based permission matrix configuration is thin and better treated as vendor-specific setup work.
+
+### Access Control in AI / RAG Architectures
+Connecting large language models and search engines to internal documentation introduces access-control considerations specific to retrieval:
+* **Hard Metadata Filtering Before Retrieval**: Security boundaries (tenant IDs, user clearance levels, team permissions) must be applied as hard metadata constraints *before* search execution (e.g., `access_level <= user_clearance`). Running semantic vector retrieval before security filtering is a critical anti-pattern that leads to data leakage and access violations.
+* **Permission-Aware Search Agents**: AI search agents should inherit the querying user's existing document permissions so generated answers never surface context from pages that user is not authorized to read.
+* **Vector Database Inference Risk**: Because raw document embeddings stored in vector databases can potentially be reverse-engineered to infer underlying text, RAG infrastructure needs data encryption, strict guardrails, and access governance around the vector store itself, not just the source documents.
+
+---
+
 ## Summary Maintenance Checklist
 
 | Maintenance Dimension | Operational Best Practice | Key Target Metric / Tool |
 |:--- |:--- |:--- |
-| **Freshness Engine** | Event-driven updates triggered on Jira/PR close events. | Sync-o / Slite Agent / Code Wiki `/doc-resync`. |
+| **Freshness Engine** | Event-driven updates triggered on Jira/PR close events. | Slite Agent / Code Wiki `/doc-resync`. |
 | **Ownership** | Single named owner (DRI) in frontmatter schema. | 100% of Tier 1/2 docs with named owner. |
 | **Linting Pipeline** | Automated syntax, style, and link checking in CI. | `markdownlint`, `Vale`, `Lychee`. |
 | **Stale Content** | De-index dead files from search/AI; apply 4-tier hierarchy. | Zero archived pages in `/llms.txt` or RAG vector indexes. |

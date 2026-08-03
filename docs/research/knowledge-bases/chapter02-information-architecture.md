@@ -90,7 +90,7 @@ Standardizing page layouts enforces structural completeness and allows static si
 ### Architecture Decision Records (ADRs)
 
 #### Classic Nygard Template vs. MADR Template
-* **Nygard (5 Sections)**: *Title, Status, Context, Decision, Consequences*. Controlled empirical trials demonstrate that Nygard outperforms more complex templates in readability, conciseness, and speed of adoption.
+* **Nygard (5 Sections)**: *Title, Status, Context, Decision, Consequences*. A controlled comparison reported in an arXiv preprint found this lean template easier to comprehend and adopt than several more elaborate alternatives — promising empirical evidence, not a universal mandate (see Ch. 3).
 * **MADR (Markdown Architectural Decision Records)**: Expands Nygard by adding *Decision Drivers*, *Considered Options*, and *Pros/Cons Comparison Matrices*. Recommended for large-scale enterprise decisions where explicit rationale and trade-off evaluation are required.
 
 #### Agent-Optimized ADR Schema
