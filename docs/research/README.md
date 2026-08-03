@@ -81,3 +81,8 @@ docs/research/
 ### 🛡️ 8. Security & Static Analysis (`docs/research/web-security/` & `sonarqube/`)
 * **[2026-06-14-vuln-bank-additional-vulnerabilities.md](./web-security/2026-06-14-vuln-bank-additional-vulnerabilities.md):** Vulnerability Analysis Corpus.
 * **[2026-06-14-sonaranalyzer-csharp-local-verification.md](./sonarqube/2026-06-14-sonaranalyzer-csharp-local-verification.md):** SonarAnalyzer C# Local Code Quality Verification.
+
+---
+
+### 📖 9. Knowledge Base Engineering (`docs/research/knowledge-bases/`)
+* **[README.md](./knowledge-bases/README.md):** 12-chapter research set on engineering knowledge bases — information architecture, Diátaxis/ADR/C4 frameworks, tooling, governance, RAG/search, AI-readiness, adoption culture, case studies, anti-patterns, decision rules, and an implementation roadmap.

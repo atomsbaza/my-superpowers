@@ -20,6 +20,7 @@ docs/            Research reports, session logs, and design specs
     docklock/    DockLock research
     ios/         iOS / Xcode / Swift research
     kiro/        Kiro CLI research (archived)
+    knowledge-bases/ Engineering knowledge-base research (NotebookLM, 108 sources)
     mcp/         MCP server research
     sonarqube/   SonarQube / .NET code-quality research
   sessions/      Work session summaries
