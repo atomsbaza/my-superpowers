@@ -31,9 +31,9 @@ Traditional human-facing documentation sites rely on complex HTML, client-side J
 
 ---
 
-## 2. The `llms.txt` and `llms-full.txt` Standards
+## 2. The `llms.txt` and `llms-full.txt` Convention
 
-The **`llms.txt` standard** (introduced by Jeremy Howard) provides a standardized, machine-readable index at the domain root that helps AI coding assistants (Cursor, Windsurf, Claude Code, GitHub Copilot) and Model Context Protocol (MCP) servers navigate documentation.
+**`llms.txt`** is an emerging machine-readable convention, introduced by Jeremy Howard, for publishing a documentation index at a domain root. It may help some AI coding assistants and Model Context Protocol (MCP) servers navigate documentation, but consumer support and fetching behavior vary. Publish it only for identified target consumers and test that each one actually discovers and uses it.
 
 ```
  llms.txt FILE SYSTEM ARCHITECTURE
@@ -50,16 +50,16 @@ The **`llms.txt` standard** (introduced by Jeremy Howard) provides a standardize
  └──────────────────────────────────────────────────────────────────┘
 ```
 
-### The Four Structural Rules of `llms.txt`
-To ensure compatibility with LLM crawlers, `llms.txt` files must adhere to four strict formatting rules:
-1. **Single H1 Header**: Begins with a single `# Title` containing solely the literal name of the project or brand (no taglines).
-2. **Summary Blockquote**: A 1–2 sentence third-person summary blockquote immediately following the H1 that describes what the product is and who it is for.
-3. **H2 Category Sections**: Grouping links into 4–7 logical H2 sections (e.g., `## Platform`, `## Guides`, `## API Reference`).
-4. **Strict Link Syntax**: Formatted strictly as `- [Page Title](URL): Description`. Descriptions must explain *what* is on the page and *when* an agent should fetch it (e.g., *"- [Auth Guide](https://example.com/auth): Explains OAuth2 PKCE flow and token refresh intervals"*), acting as an explicit routing signal.
+### A Practical `llms.txt` Shape
+Use the commonly proposed shape as a compatibility experiment, then verify it against the consumers you support:
+1. **H1 Header**: A project title.
+2. **Summary Blockquote**: A short description of the product and audience.
+3. **H2 Category Sections**: Logical groups such as `## Platform`, `## Guides`, and `## API Reference`.
+4. **Descriptive Links**: A consistent form such as `- [Page Title](URL): Description`, explaining what is on the page and when an agent should fetch it.
 
 ### `llms.txt` vs. `llms-full.txt`
-* **`llms.txt` (Summary Index)**: A curated, token-efficient index containing 20–50 high-value links with descriptions. Designed for agents with limited context windows to discover pages and fetch them individually.
-* **`llms-full.txt` (Consolidated Context)**: A single concatenated, unabridged Markdown file containing the complete documentation corpus, resolved OpenAPI/AsyncAPI specifications, and code samples. It enables LLMs with massive context windows (e.g., Gemini, Vertex AI Studio) to ingest the entire technical surface in a single request, eliminating round-trip fetch overhead.
+* **`llms.txt` (Summary Index)**: A curated, token-efficient index of high-value links with descriptions. Test whether target agents discover pages and fetch them individually.
+* **`llms-full.txt` (Consolidated Context)**: An optional concatenated Markdown export of selected canonical pages, schemas, and examples. It can help consumers with large context windows, but its size, freshness, access controls, and actual consumption must be tested.
 
 ### Granular Content Control: `<llms-only>` and `<llms-ignore>`
 Platforms like Fern allow fine-grained content tagging:
@@ -67,7 +67,7 @@ Platforms like Fern allow fine-grained content tagging:
 * **`<llms-ignore>`**: Strips out marketing banners, navigation hints, and UI elements from LLM endpoints to conserve context tokens.
 
 ### The Business-to-Agent (B2A) Protocol Role
-Empirical analysis of 500M+ bot traffic events shows that while public AI search engines (e.g., GPTBot) rarely crawl `/llms.txt` for general web indexing, **IDE coding agents and MCP servers fetch `llms.txt` routinely**. It functions as a **Business-to-Agent (B2A)** protocol—the canonical routing surface for autonomous agents building on software APIs.
+Traffic studies and vendor reports are context-specific: public AI crawlers, IDE agents, and MCP servers do not share a single fetching pattern. Treat `llms.txt` as an optional Business-to-Agent (B2A) routing surface and instrument or test the consumers you intend to support before making it canonical.
 
 ---
 
@@ -140,9 +140,13 @@ By removing archived files from `docs/index.md` and forcing agents to cite Tier 
 
 ---
 
-## 5. Automated Documentation Generation & LLM-Maintained Code Wikis
+## 5. Repository-Grounded Agent Work Requires Evaluation
 
-Rather than treating documentation as a manual, one-time deliverable that decays over time, modern platforms adopt **Code Wiki** architectures (adapting Andrej Karpathy's LLM Wiki pattern). An AI agent **compiles** codebase analysis into a persistent, interlinked Markdown wiki under `docs/`, keeping it current as code evolves.
+Repository-level coding-agent benchmarks such as SWD-Bench are useful evidence that codebase context matters, but they are benchmark-specific: they do not prove that a documentation format will improve every repository or task. Use feature- or snippet-level documentation tied to code and source anchors, evaluate it on representative local tasks, and retain human review for consequential changes.
+
+## 6. Automated Documentation Generation & LLM-Maintained Code Wikis
+
+Rather than treating documentation as a manual, one-time deliverable that decays over time, a **Code Wiki** workflow can propose updates from codebase analysis. Generated pages and resync outputs are draft patches, not automatically authoritative documentation: retain source/code anchors, executable checks, and review before accepting them.
 
 ```
  CODE WIKI: LLM-MAINTAINED WIKI ARCHITECTURE
@@ -172,9 +176,9 @@ Rather than treating documentation as a manual, one-time deliverable that decays
 
 | Command / Operation | Execution Trigger & Mechanics | Output Artifacts & Behavior |
 |:--- |:--- |:--- |
-| **/generate-documentation-from-code** | **Exhaustive Initial Build**: Executed on greenfield codebases or major refactors. Enumerates 100% of business logic files in `src/`, reads every file, and compiles in-memory catalogs. | Generates structured Markdown under `docs/features/<name>.md`, `docs/data-model.md`, `docs/messaging.md`, `docs/cross-cuttings.md`, and initial `docs/log.md`. |
-| **/doc-resync** | **Incremental Git-SHA Sync**: Triggered after feature merges or commits. Reads `base_commit` SHA from `docs/log.md`, inspects `git diff` against `HEAD`, and maps modified files to wiki pages via `sources[]`. | Patches *only* affected wiki sections, updates `last_updated` frontmatter, and appends a commit pointer log entry. If $>50\%$ of pages are stale, escalates to full rebuild. |
-| **Ingest** | **Catalog Refresh**: Runs automatically after generation or resync. | Re-indexes `docs/index.md` (the primary AI routing table) and `docs/glossary.md`. |
+| **/generate-documentation-from-code** | **Initial draft build**: Run for a new codebase or major refactor. Analyze relevant business logic and compile an anchored proposal. | Proposes structured Markdown under `docs/features/<name>.md`, `docs/data-model.md`, `docs/messaging.md`, `docs/cross-cuttings.md`, and `docs/log.md`; review before publication. |
+| **/doc-resync** | **Incremental draft sync**: Inspect `git diff` from the recorded base commit and map changed files to pages through `sources[]`. | Proposes affected-page patches and a commit-pointer entry. Tier 1 and 2 changes require human approval; Tier 3 review is risk-based. Retain unresolved `TODO-VERIFY` and `CONTRADICTION` markers. |
+| **Ingest** | **Catalog refresh proposal**: Run after an accepted generation or resync. | Updates routing indexes only after link, authority, access-control, and freshness checks. |
 
 ### The `START_HERE.md` Pattern
 Every repository maintains a canonical `START_HERE.md` at its root designed to be read in under 5 minutes by both humans and entering AI agents:
@@ -186,7 +190,7 @@ Every repository maintains a canonical `START_HERE.md` at its root designed to b
 
 ---
 
-## 6. Grounding, Citation Practices & Content Trustworthiness
+## 7. Grounding, Citation Practices & Content Trustworthiness
 
 AI-generated documentation carries structural failure modes that must be controlled through explicit prompting, linting, and verification gates.
 
@@ -195,14 +199,14 @@ AI-generated documentation carries structural failure modes that must be control
 * **Vague or Unverifiable Claims**: Describing system behavior without codebase grounding. Models must not speculate, infer unstated features, or invent command syntax or API parameters.
 
 ### Grounding & Evidence Enforcement Rules
-1. **File and Line Anchors**: Every technical statement or business rule in generated documentation must cite its enforcing source file with line-number anchors (e.g., `src/core/UserService.go#L42-L60`) inside a `Source file links` section.
-2. **`TODO-VERIFY` Markers**: If an agent makes an assumption that cannot be backed by codebase evidence or a Tier 1 file, it MUST insert a `TODO-VERIFY` marker rather than guessing.
-3. **`CONTRADICTION` Markers**: When two source files or records conflict, the agent MUST flag the page with a `CONTRADICTION` tag and alert the team rather than arbitrarily picking one interpretation.
+1. **File and Line Anchors**: Generated technical claims should link to enforcing source files and line anchors (e.g., `src/core/UserService.go#L42-L60`) in a `Source file links` section.
+2. **`TODO-VERIFY` Markers**: If an assumption lacks codebase evidence or a Tier 1 source, retain a `TODO-VERIFY` marker rather than guessing; reviewers resolve or explicitly accept it.
+3. **`CONTRADICTION` Markers**: When sources conflict, retain a `CONTRADICTION` tag and alert reviewers rather than choosing an interpretation silently.
 4. **Verifiable Checks**: Include inline verification scripts or commands in ADRs and frontmatter (`verify: "scripts/ci/check-db-schema-compliance.sh"`) so CI pipelines and agents can confirm ongoing compliance.
 
 ---
 
-## 7. Agent Protocol: How AI Agents Query and Update the Knowledge Base
+## 8. Agent Protocol: How AI Agents Query and Update the Knowledge Base
 
 ```
  AGENT WORKSPACE INTERACTION PROTOCOL
@@ -218,13 +222,13 @@ AI-generated documentation carries structural failure modes that must be control
  └───────────────────┘ └───────────────────┘ └───────────────────┘
 ```
 
-When an AI agent (e.g., Claude Code, Cursor, or an internal agent) enters a repository, it must adhere to a standardized interaction protocol:
+When an AI agent (e.g., Claude Code, Cursor, or an internal agent) enters a repository, configure an interaction protocol appropriate to its capabilities and access controls:
 
 1. **Session Start Ritual**: The agent MUST read `START_HERE.md`, `CLAUDE.md` / `AGENTS.md` rules, and Tier 1 SSoT files before executing any task.
 2. **Routing over Blind Search**: Instead of running expensive full-repo searches, the agent queries `docs/index.md` (or `KNOWLEDGE_BASE.md`) to locate the relevant concept cluster and opens only the designated Markdown pages.
 3. **Targeted Evidence Fetching**: The agent reads the pre-compiled feature pages. It follows paths listed in `sources[]` *only* if line-level code verification is required.
 4. **Execution & Compliance Check**: The agent executes code modifications, validating diffs against active ADR rules via embedded `verify` commands.
-5. **Event-Driven Wiki Patching**: Upon task completion, the agent runs `/doc-resync` (or triggers a post-meeting/post-PR workflow) to patch affected wiki pages, update frontmatter `sources[]`, and resolve `TODO-VERIFY` blocks.
+5. **Event-Driven Wiki Patching**: Upon task completion, the agent may run `/doc-resync` (or trigger a post-meeting/post-PR workflow) to propose affected wiki patches and update frontmatter `sources[]`. Review Tier 1/2 changes, apply risk-based review to Tier 3, and retain unresolved `TODO-VERIFY` blocks.
 6. **Log SHA Commit Pointer**: The agent appends an entry to `docs/log.md` recording the `Commit: <SHA>`, `Base: <SHA>`, and updated pages, preserving the synchronization contract for subsequent agent sessions.
 
 ---
@@ -234,10 +238,10 @@ When an AI agent (e.g., Claude Code, Cursor, or an internal agent) enters a repo
 | Architectural Layer | Implementation Standard | Enforcement Mechanism |
 |:--- |:--- |:--- |
 | **Markdown Formatting** | Plain CommonMark or Markdoc AST; RFC 2119 directives (`MUST`/`SHOULD`); <200 lines/file. | `markdownlint`, `Vale`, `applies_to` file globs. |
-| **AI Indexing** | Root `/llms.txt` and `/llms-full.txt` files with strict H1, blockquote, and link formats. | Automated generation platforms (Fern, Mintlify, GitBook). |
+| **AI Indexing** | Optional `/llms.txt` and `/llms-full.txt` exports following a tested, consistent shape. | Validate discovery, parsing, access control, freshness, and consumer use. |
 | **Authority & Governance**| 4-Tier Authority Hierarchy; Tier 1 SSoT read-only for AI. | Frontmatter `authority_tier: 1` schema; archiving banners. |
-| **Code Wiki & Maintenance**| Codebase compiled into `docs/` with `sources[]` lists and SHA sync pointers in `docs/log.md`. | `/generate-documentation-from-code` and `/doc-resync` agent skills. |
-| **Grounding & Trust** | Mandatory `file:line` citations; `TODO-VERIFY` for assumptions; embedded `verify` scripts. | CI verification scripts and post-stream citation validators. |
+| **Code Wiki & Maintenance**| Anchored draft proposals with `sources[]` lists and SHA sync pointers in `docs/log.md`. | Review gates: human approval for Tier 1/2, risk-based review for Tier 3. |
+| **Grounding & Trust** | Source/code anchors, `TODO-VERIFY` for unresolved assumptions, `CONTRADICTION` markers, and embedded `verify` scripts. | CI checks plus human review. |
 
 ---
 

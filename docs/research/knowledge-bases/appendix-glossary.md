@@ -8,7 +8,7 @@ Alphabetized glossary of key terms used across this research set. Chapter refere
 
 **Authority Tier / Document Authority Hierarchy** — a 4-tier governance structure ranking documentation from Tier 1 (authoritative Source of Truth, read-only for AI) down to Tier 4 (Archive/non-authoritative), preventing AI models and developers from treating outdated notes as ground truth. (Ch. 2, 5, 7, 11)
 
-**Business-to-Agent (B2A)** — a protocol role in which a standardized file (`llms.txt`) functions as the canonical routing surface for autonomous IDE coding agents and MCP servers, distinct from traditional human- or search-engine-facing web content. (Ch. 7)
+**Business-to-Agent (B2A)** — a proposed role for an emerging machine-readable convention such as `llms.txt`, intended to route autonomous IDE agents and MCP servers. Test real consumer support rather than assuming it is canonical. (Ch. 7)
 
 **BM25 (Okapi BM25)** — a lexical full-text ranking algorithm refining TF-IDF with term-frequency saturation and document-length normalization; optimal for exact symbols, SKUs, and error codes. (Ch. 6, 11)
 
@@ -16,7 +16,7 @@ Alphabetized glossary of key terms used across this research set. Chapter refere
 
 **C4 Model** — a four-level hierarchical framework (System Context, Container, Component, Code) created by Simon Brown to visualize software architecture across varying levels of abstraction. (Ch. 3, 11)
 
-**Code Wiki** — an LLM-maintained documentation architecture where an AI agent compiles codebase analysis into a persistent Markdown wiki in `docs/` and patches it incrementally using Git commit pointers (`/generate-documentation-from-code`, `/doc-resync`). (Ch. 4, 7, 11)
+**Code Wiki** — a workflow in which an AI agent proposes source-anchored Markdown patches from codebase analysis and Git commit pointers (`/generate-documentation-from-code`, `/doc-resync`). Generated changes are drafts pending checks and appropriate human review. (Ch. 4, 7, 11)
 
 **Continuous Context** — a three-part framework classifying knowledge into Declared, Derived, and Observed Context, each with its own update mechanism and cadence, replacing calendar-based review with event-driven update loops. (Ch. 4, 5)
 
@@ -24,11 +24,11 @@ Alphabetized glossary of key terms used across this research set. Chapter refere
 
 **Context Recall** — a retrieval evaluation metric measuring the proportion of ground-truth statements directly attributable to retrieved context chunks. (Ch. 6, 11)
 
-**Contextual Retrieval** — an ingestion technique (Anthropic) prepending 50–100 tokens of document-level background context to each chunk prior to embedding, cutting retrieval failures by 49% (67% combined with reranking). (Ch. 6, 11)
+**Contextual Retrieval** — an ingestion technique that prepends document-level background context to a chunk before embedding. Anthropic reports improvements for its evaluated setup; test impact on representative local queries. (Ch. 6, 11)
 
 **Cosine Similarity** — the geometric-proximity formula used to measure similarity between dense vector embeddings in semantic search: the dot product of two vectors divided by the product of their magnitudes. (Ch. 6)
 
-**Cross-Encoder Reranker** — a neural model (e.g. monoBERT, duoBERT, Jina Reranker v2, Cohere Reranker) that jointly evaluates query-document pairs to re-score first-stage candidates down to the top 5–10 most relevant chunks for the LLM context window. (Ch. 6, 11)
+**Cross-Encoder Reranker** — a neural model (e.g. monoBERT, duoBERT, Jina Reranker v2, Cohere Reranker) that jointly evaluates query-document pairs to re-score first-stage candidates. Tune the final context size on representative tasks. (Ch. 6, 11)
 
 **Declared Context** — institutional human knowledge (business rules, domain ontologies, strategic intent) that cannot be derived from code and requires periodic human re-validation. (Ch. 5, 11)
 
@@ -48,7 +48,7 @@ Alphabetized glossary of key terms used across this research set. Chapter refere
 
 **DORA Metrics / DORA Four Keys** — DevOps Research and Assessment performance metrics (Deployment Frequency, Lead Time for Changes, Change Failure Rate, Failed Deployment Recovery Time / MTTR); accurate documentation directly compresses Lead Time for Changes and MTTR. (Ch. 1, 8)
 
-**Faithfulness / Groundedness** — an evaluation metric measuring the factual consistency of an LLM's generated response against retrieved context passages; production SLA threshold is typically >90%, with <70% considered unsafe. (Ch. 6, 11)
+**Faithfulness / Groundedness** — an evaluation metric measuring factual consistency of an LLM response against retrieved context passages. Set acceptance thresholds through local evaluation and risk-based review rather than treating published values as universal SLAs. (Ch. 6, 11)
 
 **Folksonomy** — ad-hoc, user-generated tagging without a controlled vocabulary; frictionless initially but degrades into "tag explosion" as synonyms proliferate. (Ch. 2)
 
@@ -68,9 +68,9 @@ Alphabetized glossary of key terms used across this research set. Chapter refere
 
 **"Link-First" Rule** — an organizational communication norm requiring team members to answer inquiries by linking to canonical documentation, or opening a documentation PR first if the page does not exist. (Ch. 2, 5, 8, 9, 11)
 
-**`llms.txt`** — a standardized, machine-readable Markdown file served at a domain root providing AI coding assistants and MCP servers with a summary index of canonical documentation. (Ch. 2, 4, 7, 11)
+**`llms.txt`** — an emerging machine-readable convention for a domain-root documentation index. Publish it only for target consumers and verify discovery, parsing, freshness, access control, and actual use. (Ch. 2, 4, 7, 11)
 
-**`llms-full.txt`** — a single concatenated, unabridged Markdown file containing a complete documentation corpus, OpenAPI specs, and code samples for single-pass LLM context ingestion. (Ch. 2, 4, 7, 11)
+**`llms-full.txt`** — an optional concatenated Markdown export for AI consumption. Validate its size, freshness, access control, and target-consumer behavior before relying on it. (Ch. 2, 4, 7, 11)
 
 **"Lost in the Middle" Phenomenon** — the tendency of LLMs to attend well to information at the beginning or end of a context window while overlooking facts placed in the middle. (Ch. 6, 11)
 
@@ -98,7 +98,7 @@ Alphabetized glossary of key terms used across this research set. Chapter refere
 
 **RAGAS / TruLens / DeepEval** — automated evaluation frameworks that isolate Retrieval Metrics from Generation Metrics for RAG systems, typically run as CI checks. (Ch. 6)
 
-**Reciprocal Rank Fusion (RRF)** — a zero-shot rank-fusion algorithm combining ranked results of lexical and semantic search via a position-based formula with smoothing constant k (industry standard k=60). (Ch. 6, 11)
+**Reciprocal Rank Fusion (RRF)** — a zero-shot rank-fusion algorithm combining lexical and semantic search ranks via a position-based formula. $k=60$ is a common starting value to tune on representative local queries. (Ch. 6, 11)
 
 **Runbook** — a prescriptive, step-by-step operational guide executed by on-call engineers during system incidents to diagnose failures and minimize MTTR. (Ch. 1, 3, 11)
 

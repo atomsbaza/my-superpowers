@@ -21,7 +21,7 @@ Quick-reference tables assembled from the chapters. Use this page when you need 
 |:--- |:--- |
 | **Team Size** | Small teams (5–20): low-overhead static sites (MkDocs, Docusaurus) or lightweight Git vaults. Medium (20–100): hybrid systems (GitBook, Slite) balancing Git-sync with cross-departmental editing. Large enterprises (100+): standardized Internal Developer Portals (Backstage) or Jira-connected wikis (Confluence). |
 | **Technical vs. Non-Technical** | 100% engineer-authored content → Git-backed Markdown. PM/HR/business co-authors needed → database-backed UI tools (Confluence, Notion) or Git-sync tools (GitBook). |
-| **Search Quality** | Lexical (BM25) for exact parameter/symbol matches. Hybrid (BM25 + dense vector) is the gold standard for natural-language questions without losing exact-keyword precision. |
+| **Search Quality** | Use lexical (BM25) for exact parameter/symbol matches; compare lexical, dense, and hybrid retrieval on representative queries before selecting a default. |
 | **Integrations** | Deep integration with issue trackers (Jira/GitHub Issues), CI/CD pipelines (`lychee`, `markdownlint`, `Vale`), and Slack bots to prevent drift. |
 | **Pricing** | Self-hosted OSS (MkDocs, Docusaurus, Outline, Backstage): zero licensing cost, platform-engineering overhead. Commercial SaaS (GitBook, Slite, Confluence, Fern): per-seat fees. |
 
@@ -47,19 +47,21 @@ Quick-reference tables assembled from the chapters. Use this page when you need 
 
 ---
 
-## 3. RAG Chunking & Retrieval Guidance (Chapter 6, 11)
+## 3. RAG Calibration Guide (Chapter 6, 11)
 
-| Pipeline Stage | Recommended Configuration | Target / Benchmark |
+All numeric settings below are starting hypotheses. Build a labeled, representative query set and choose settings from retrieval and answer quality, latency, and cost.
+
+| Pipeline Stage | Starting hypothesis | Validate locally |
 |:--- |:--- |:--- |
-| **Chunking — prose** | 500–800 tokens, 50-token overlap | 40–60% relevant-sentence density per chunk |
-| **Chunking — source code** | 200–400 tokens, split along AST boundaries (functions/classes) | — |
-| **Chunking — dense reference/regulatory text** | 800–1200 tokens | — |
-| **Chunking — data tables** | 1 row per chunk, with injected header | — |
-| **Enrichment** | Contextual Retrieval: prepend 50–100 token doc-level summary | Cuts retrieval failure rate by 49–67% |
-| **Hybrid Fusion** | BM25 + dense vector, fused via Reciprocal Rank Fusion (k=60) | 10–20% recall lift on entity/code queries |
-| **First-stage retrieval** | Over-retrieve 12–20 candidates (20–40 for hybrid) | — |
-| **Reranking** | Cross-Encoder reranker truncates to top 5–10 chunks | Eliminates "Lost in the Middle" noise |
-| **Evaluation** | RAGAS / DeepEval automated CI checks | Target >90% Faithfulness, >80% Context Recall |
+| **Chunking — prose** | Test 500–800 tokens, 50-token overlap | Retrieval/answer quality, latency, cost, relevant-sentence density |
+| **Chunking — source code** | Test 200–400 tokens, split along AST boundaries | Retrieval/answer quality, latency, cost |
+| **Chunking — dense reference/regulatory text** | Test 800–1200 tokens | Retrieval/answer quality, latency, cost |
+| **Chunking — data tables** | Test 1 row per chunk, with injected header | Table question accuracy and context cost |
+| **Enrichment** | Test contextual retrieval with a 50–100 token summary | Compare to a no-enrichment baseline; source-reported percentage improvements vary |
+| **Hybrid Fusion** | Compare BM25 + dense vector; start RRF at k=60 | Exact-identifier and conceptual-query recall against single-mode baselines |
+| **First-stage retrieval** | Test 12–20 candidates (and larger sets if needed) | Recall versus reranker latency/cost |
+| **Reranking** | Test a Cross-Encoder with 5–10 final chunks | Answer quality and context budget |
+| **Evaluation** | RAGAS / DeepEval plus task-specific human review | Calibrated, risk-appropriate thresholds |
 
 **When to use which search mode:** exact symbols/SKUs/error codes → BM25 lexical. Conceptual/natural-language/multi-lingual queries → dense vector semantic search. Mixed, entity-heavy engineering corpora → Hybrid Retrieval (BM25 + vector via RRF).
 
@@ -77,15 +79,15 @@ Quick-reference tables assembled from the chapters. Use this page when you need 
 
 | Maintenance Dimension | Best Practice | Key Target Metric / Tool |
 |:--- |:--- |:--- |
-| **Freshness Engine** | Event-driven updates triggered on Jira/PR close events | Sync-o / Slite Agent / Code Wiki `/doc-resync` |
+| **Freshness Engine** | Event-driven updates triggered on Jira/PR close events | Reviewable update proposals, including Code Wiki `/doc-resync` drafts |
 | **Ownership** | Single named owner (DRI) in frontmatter schema | 100% of Tier 1/2 docs with named owner |
 | **Linting Pipeline** | Automated syntax, style, and link checking in CI | `markdownlint`, `Vale`, `Lychee` |
-| **Stale Content** | De-index dead files from search/AI; apply 4-tier authority hierarchy | Zero archived pages in `/llms.txt` or RAG vector indexes |
+| **Stale Content** | De-index active-search copies of archived files; apply a 4-tier authority hierarchy | Confirm archives are absent from active indexes and any published AI manifests |
 | **Onboarding** | Assign new hires a Week 1 "Fix-PR" task on setup guides | First production commit in ~3–5 days |
 
-**Automated docs review impact (before / after):**
+**Automated docs review impact (illustrative, source-/case-specific):**
 
-| Benchmark Metric | Before | After |
+| Illustrative, Source-/Case-Reported Metric | Before | After |
 |:--- |:--- |:--- |
 | Avg. Review Cycles per Docs PR | 2.4 cycles | 1.4 cycles |
 | Time to First Feedback | 1–3 days | Instant (inline PR comments) |
@@ -113,13 +115,13 @@ Quick-reference tables assembled from the chapters. Use this page when you need 
 | Doc becomes outdated | Archive it, banner it non-authoritative, de-index from search/AI |
 | Searching exact symbols/SKUs/error codes | Lexical BM25 |
 | Searching conceptual/natural-language queries | Dense vector semantic search |
-| Querying mixed entity-heavy corpora | Hybrid Retrieval (BM25 + vector via RRF, k=60) |
-| Setting RAG chunk sizes | See chunking table above (§3) |
-| Configuring first-stage RAG retrieval | Over-retrieve 12–20 (20–40 hybrid), rerank down to top 5–10 |
-| Making docs discoverable to AI agents/MCP servers | Serve `/llms.txt` + `/llms-full.txt` at domain root |
+| Querying mixed entity-heavy corpora | Compare lexical, dense, and hybrid retrieval; start RRF at k=60 and validate locally |
+| Setting RAG chunk sizes | See calibration table above (§3); select from local evaluation |
+| Configuring first-stage RAG retrieval | Start at 12–20 candidates and 5–10 final chunks; tune for quality, latency, and cost |
+| Making docs discoverable to AI agents/MCP servers | Consider emerging `/llms.txt` + optional `/llms-full.txt`; test actual target-consumer use |
 | Preventing AI hallucination/conflicting answers | 4-Tier Document Authority Hierarchy, Tier 1 read-only for AI |
 | Structuring ADRs for coding agents | `applies_to` glob, RFC 2119 keywords, <200 line budget, automated `verify` command |
-| Maintaining docs as code evolves | LLM-maintained Code Wiki (`/generate-documentation-from-code`, `/doc-resync`) |
+| Maintaining docs as code evolves | Anchored Code Wiki draft proposals with checks, `TODO-VERIFY`/`CONTRADICTION`, and appropriate human review |
 
 ---
 

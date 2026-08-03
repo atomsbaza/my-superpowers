@@ -227,11 +227,8 @@ To optimize documentation for external AI coding assistants, internal RAG system
  └──────────────────────────────────┴──────────────────────────────────┘
 ```
 
-### The Four Formatting Rules of `llms.txt`
-1. **Single H1 Header**: Contains solely the literal project/brand name.
-2. **Summary Blockquote**: A concise, 1–2 sentence third-person summary of the project scope placed immediately beneath the H1.
-3. **H2 Category Sections**: Grouping links into 4–7 logical sections.
-4. **Strict Link Syntax**: Format every item as `- [Page Title](URL): Description` where the description states both *what* is on the page and *when* an agent should fetch it.
+### A Tested `llms.txt` Shape
+`llms.txt` is an emerging convention. If an intended AI consumer supports it, test a consistent shape such as a project H1, short summary, logical H2 categories, and descriptive links in the form `- [Page Title](URL): Description`. Confirm the consumer actually discovers and uses the file; do not assume a format is universally fetched or parsed.
 
 ---
 

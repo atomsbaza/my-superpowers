@@ -42,7 +42,7 @@ Stripe treats technical documentation as a primary developer-facing product. Str
 * **Markdoc AST Architecture**: Built on **Markdoc**, an open-source Markdown-superset framework that parses content into a declarative Abstract Syntax Tree (AST) before rendering. This allows technical writers to insert complex UI components, variables, and conditional logic without executing unvalidated client-side JavaScript.
 * **Career Ladder Integration**: Documentation quality and API design compliance are formally built into engineering career ladders and promotion criteria.
 * **Actionable Error Responses**: Errors return an error type, error code, human-readable message, parameter handle, direct documentation URL, and a one-click dashboard request log URL.
-* **Agentic/AI Readiness**: Enforces strict `operationId` descriptors, detailed OpenAPI descriptions, `snake_case` parameter naming, and machine-readable `llms.txt` navigation manifests for AI coding assistants.
+* **Agentic/AI Readiness**: Uses detailed OpenAPI descriptors and machine-readable navigation surfaces. Treat any `llms.txt` usage as an emerging convention and test actual consumer support rather than assuming universal agent consumption.
 
 ### Limitations & Drawbacks
 * **High Platform Capital**: Requires dedicated "Docs Product" engineering teams to build and maintain AST compilers and custom design systems.
@@ -113,7 +113,7 @@ In 2014, Twitter addressed documentation fragmentation by creating **Docbird**, 
 
 ## 7. Cautionary Case Studies: The Quantifiable Cost of Stale Documentation
 
-Empirical data highlights that **stale documentation is explicitly worse than no documentation**. Missing documentation forces engineers to inspect live code; stale documentation carries false visual authority that misdirects human developers and AI assistants into severe operational failures:
+The following practitioner case reports illustrate how stale documentation can be worse than missing documentation: apparent authority can misdirect people and automation. These costs are case-specific, not a general benchmark:
 
 * **Fulfill.com**: Lost **$47,000 in a single week** when warehouse staff and automated systems followed a printed, laminated SOP referencing a discontinued carrier code (stale for 237 days).
 * **Insurance Panda**: Incurred **~$40,000 in carrier chargebacks** due to a 2-year-old state compliance cheat sheet taped to an agent's monitor.
@@ -129,7 +129,7 @@ Empirical data highlights that **stale documentation is explicitly worse than no
 | **Stripe** | API-as-Product / Markdoc | Markdoc AST Markdown | **3-Column Interactive Layout**: Auto-injected API test keys & hover-highlight code sync. | Requires dedicated Docs Product engineering squad. |
 | **Google** | g3doc / Monorepo | Markdown next to source code in `google3` | **In-Repo Co-location**: Code is ultimate authority; docs updated in code commit. | Proprietary internal tooling; hard to adapt to multi-repo setups. |
 | **Spotify** | TechDocs / Backstage IDP | Markdown in service repos; Backstage render | **Service Catalog Integration**: Docs linked to service owners, scorecards, & templates. | High platform engineering overhead to run Backstage. |
-| **ZenML** | `llms.txt` Standard | Structured text manifests | **Specialized AI Surfaces**: Serves `component-guide.txt` (180k tokens) & `llms-full.txt` (600k tokens). | Tailored primarily for AI agent consumption rather than human wikis. |
+| **ZenML** | `llms.txt` convention | Structured text manifests | **Specialized AI Surfaces**: publishes large machine-readable exports. Validate consumer support, freshness, cost, and access control before copying the pattern. | Tailored primarily for AI agent consumption rather than human wikis. |
 
 ---
 

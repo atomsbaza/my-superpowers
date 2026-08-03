@@ -62,7 +62,7 @@
 * **Remedy**:
  1. Integrate documentation directly into the **Definition of Done (DoD)** for pull requests—code cannot be merged without corresponding doc updates.
  2. Embed documentation directly inside developer environments (VS Code IDE extensions, Internal Developer Portals like Backstage).
- 3. Expose machine-readable root manifests (`llms.txt` and `llms-full.txt`) so AI coding assistants (Cursor, Copilot, Claude Code) consume and cite the knowledge base during code generation.
+ 3. Where identified target consumers support it, publish an emerging-convention manifest (`llms.txt`, and optionally `llms-full.txt`) and test that those consumers actually discover, use, and respect the canonical content.
 
 ---
 
@@ -84,7 +84,7 @@
 * **Remedy**:
  1. Assign new engineering hires an **"Onboarding Fix-PR"** during their first week: they must execute setup guides, document every point of friction, and submit a documentation PR by Day 3–5.
  2. Link high-quality documentation contributions directly to **engineering career ladders and promotion criteria**.
- 3. Adopt **LLM-maintained Code Wikis** (`/generate-documentation-from-code`) that automatically compile codebase analysis into persistent Markdown pages, capturing institutional knowledge as code is written.
+ 3. Use **LLM-maintained Code Wiki** workflows (`/generate-documentation-from-code`) to propose anchored Markdown patches; keep `TODO-VERIFY` and `CONTRADICTION` markers, executable checks, and human review rather than publishing generated text automatically.
 
 ---
 
@@ -112,12 +112,12 @@
 ## 11. AI & RAG Retrieval Anti-Patterns (Machine-Consumption Failure Modes)
 
 * **Symptoms**: Internal RAG engines and AI coding assistants retrieve noisy, irrelevant context, miss exact code symbols, hallucinate parameter names, or quote superseded policies.
-* **Root Cause**: Oversized chunks (1500+ tokens); retrieving too few candidates ($k=3$); running pure vector search without lexical term matching; lack of citable `file:line` prompt anchors; and indexing archived documents.
+* **Root Cause**: Untested chunking and candidate settings; retrieving too few candidates; relying on one search mode without comparison; lack of citable `file:line` prompt anchors; and indexing archived documents.
 * **Remedy**:
- 1. **Right-size chunks**: 500–800 tokens (50-token overlap) for prose; 200–400 tokens (AST boundaries) for code.
- 2. **Deploy Hybrid Retrieval**: Combine lexical BM25 and dense vector search fused via Reciprocal Rank Fusion ($k=60$), delivering a 10–20% recall lift on entity-heavy queries.
- 3. **Over-retrieve & Rerank**: Retrieve $k=12\text{--}20$ candidates at the database layer and use a Cross-Encoder reranker to prune down to the top 5–10 chunks for the LLM prompt.
- 4. **Enforce Provenance**: Require LLMs to cite explicit `file:line` anchors in generated output and run post-stream validators to confirm citations resolve to actual retrieved chunks.
+ 1. **Calibrate chunks**: Start by testing 500–800 tokens (50-token overlap) for prose and 200–400 tokens (AST boundaries) for code against representative labeled queries.
+ 2. **Compare retrieval modes**: Test lexical BM25, dense vector search, and hybrid RRF (with $k=60$ as a starting value); reported recall lifts are corpus-specific.
+ 3. **Tune retrieval and reranking**: Start with 12–20 candidates and 5–10 final chunks, then choose settings from retrieval/answer metrics, latency, and cost.
+ 4. **Require provenance and review**: Use explicit `file:line` anchors, verification checks, and human review; validate that any citation resolves to retrieved evidence.
 
 ---
 
@@ -130,11 +130,11 @@
 | **Orphan Pages** | Deeply nested, unlinked documents. | Networked Zettelkasten links + Maps of Content (MOCs) + `index.md` catalogs. |
 | **Over-Structuring** | Rigid, empty folder taxonomies. | Lean 5-folder PARA setup + Emergent structure from atomic links. |
 | **Tool Churn** | Fragmented notes across 5+ apps. | In-repo Docs-as-Code for technical specs + Commit to single team wiki. |
-| **Write-Only KB** | High-volume prose nobody reads. | Definition of Done (DoD) PR gates + IDE integrations + `llms.txt`. |
+| **Write-Only KB** | High-volume prose nobody reads. | Definition of Done (DoD) PR gates + IDE integrations + tested optional AI manifests. |
 | **Stale Docs** | Outdated runbooks causing outage delays. | Jira/PR event-driven update loop + Trust badges + 4-Tier Authority Hierarchy. |
-| **Knowledge Silos** | Tacit knowledge locked in heads. | "Onboarding Fix-PRs" + Promotion incentives + LLM Code Wikis. |
+| **Knowledge Silos** | Tacit knowledge locked in heads. | "Onboarding Fix-PRs" + Promotion incentives + reviewed, anchored Code Wiki proposals. |
 | **Diátaxis Blurring** | Mixed content types degrading lookup. | 4 Diátaxis Quadrants + Strict H2 heading linter rules in CI. |
-| **RAG Noise** | Weak retrieval & AI hallucinations. | 500–800 token chunks + Hybrid RRF search + Cross-Encoder reranking + Provenance. |
+| **RAG Noise** | Weak retrieval & AI hallucinations. | Locally calibrated chunks + compared retrieval modes + tuned reranking + provenance. |
 
 ---
 

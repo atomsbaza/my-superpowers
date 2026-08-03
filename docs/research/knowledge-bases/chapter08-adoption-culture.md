@@ -74,7 +74,7 @@ Documentation maintenance must be enforced programmatically through automated qu
  * **`markdownlint`**: Validates Markdown formatting, heading hierarchies, and paragraph spacing.
  * **`Vale`**: Enforces organizational style guides, terminology consistency (e.g., proper product casing), active voice, and inclusive language.
  * **`Lychee` / `Baler`**: Scans files asynchronously for dead internal links, broken anchors, and expired external domains.
-* **Quantifiable Impact**: Implementing automated documentation reviews directly inside pull request pipelines reduces review cycles from **2.4 to 1.4 per PR**, turns feedback speed from days to **instant**, and cuts style-related human review comments from **~60% to ~10%**.
+* **Illustrative impact**: Source-reported, case-specific examples describe review cycles changing from **2.4 to 1.4 per PR**, faster feedback, and style-related human review comments changing from **~60% to ~10%**. Treat these as examples to measure locally, not expected universal outcomes.
 
 ### Event-Driven Review Triggers vs. Calendar Audits
 Calendar-based reminders (e.g., "review all docs every 90 days") consistently fail under deadline pressures. High-performing teams tie documentation reviews directly to **engineering change events**: closing a Jira ticket, merging an architectural PR, or completing a release milestone triggers automated notification scripts or bot diffs against linked documentation pages.

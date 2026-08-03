@@ -46,14 +46,14 @@ A robust engineering knowledge platform adheres to four foundational architectur
 | **Trustworthiness & Freshness** | Document state reflects the live production environment, supported by explicit ownership and validation signals. | **Continuous Context**: Triggering review events on code commits/ticket closes rather than calendar dates, plus CI/CD pipeline linter checks (e.g., `markdownlint`, `Vale`, `lychee` link checker). |
 
 ### AI-Readiness and Agentic Consumption
-Modern knowledge bases must also cater to AI coding assistants and internal RAG agents. High-quality AI-ready platforms implement the **`llms.txt` standard**—serving a lightweight summary index (`/llms.txt`) and a consolidated full-context markdown corpus (`/llms-full.txt`) at the domain root. They enforce standardized frontmatter schemas (tracking `owner`, `applies_to` globs, and document status) and strict authority hierarchies (Tier 1 Source of Truth down to Tier 4 Archives) to prevent AI hallucinations.
+Knowledge bases that serve AI coding assistants and internal RAG agents benefit from explicit authority, ownership, and source metadata. `llms.txt` and `llms-full.txt` are emerging machine-readable conventions, not universal requirements: publish them only for target consumers and validate discovery, parsing, freshness, and use. Pair any AI surface with frontmatter (such as `owner`, `applies_to`, and status) and an authority hierarchy.
 
 ### Anti-Patterns of a Poor Knowledge Base
 * **The Dead Wiki**: Disconnected, unowned wiki spaces that drift out of sync with the codebase, becoming obsolete and misleading.
 * **Duplicated Truth**: Scattering identical guidance across code comments, Slack threads, Confluence, and READMEs, leading to conflicting authorities.
 * **The Write-Only Knowledge Base**: High-entropy repositories where voluminous text is generated during launch but never read, curated, or updated.
 * **Orphan Pages & Deep Nesting**: Rigid, deeply nested folder trees that isolate documents from global search indexing.
-* **The Stale Documentation Hazard**: Stale documentation is explicitly worse than no documentation. Missing documentation forces engineers to verify live code; stale documentation carries false visual authority (clean formatting, old date) that actively misdirects developers into critical errors or prolonged outage windows.
+* **The Stale Documentation Hazard**: Stale documentation can be worse than missing documentation because its apparent authority may misdirect developers or agents. Mark, archive, and de-index superseded pages rather than leaving them indistinguishable from current guidance.
 
 ---
 

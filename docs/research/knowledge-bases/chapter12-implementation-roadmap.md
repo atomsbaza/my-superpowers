@@ -137,7 +137,7 @@ Integrate automated linters into GitHub Actions or GitLab CI to block broken con
 * **`Lychee` / `Baler`**: Scans files asynchronously for dead internal links, broken anchors, and expired external domains.
 
 ### Stale Content Archiving Policy
-* **Never Delete—Archive and De-index**: Move superseded documents to `04_Archive/`, prepend a top-line Markdown banner marking them as non-authoritative, and **de-index them from search engines, vector databases, and `llms.txt` manifests**. Stale documentation carrying clean formatting actively misdirects developers during outages.
+* **Never Delete—Archive and De-index**: Move superseded documents to `04_Archive/`, prepend a top-line Markdown banner marking them as non-authoritative, and de-index them from active search, vector databases, and any published `llms.txt` manifest. Stale documentation can misdirect developers during outages because it looks current.
 * **Quarterly Drift Audit**: Run a quarterly script filtering for pages not updated in $>90$ days, cross-referencing them against closed Jira components to identify high-risk documentation drift.
 
 ---
@@ -161,18 +161,20 @@ Once the Markdown repository and CI linters are stable, layer in AI capabilities
  └──────────────────────────────────────────────────────────────────┘
 ```
 
-1. **Serve `llms.txt` and `llms-full.txt`**: Serve machine-readable indexes at the domain/repo root to allow IDE coding assistants (Cursor, Copilot, Claude Code) to navigate technical documentation cleanly without burning context tokens on HTML sidebars.
+1. **Evaluate `llms.txt` and `llms-full.txt`**: These are emerging machine-readable conventions. Publish a summary index and optional consolidated export only for identified target consumers, then validate discovery, parsing, access control, freshness, and real use.
 2. **Enforce a 4-Tier Document Authority Hierarchy**:
  * **Tier 1 (Source of Truth)**: Read-only for AI. Accepted ADRs, security policies, and executive directives.
  * **Tier 2 (Core Knowledge)**: Architecture design specs and API contracts.
  * **Tier 3 (Implementation)**: Active sprint notes and transient reports.
  * **Tier 4 (Archive)**: Deprecated specs explicitly excluded from AI retrieval.
-3. **LLM-Maintained Code Wikis**: Implement workflows (such as `/generate-documentation-from-code` and `/doc-resync`) that compile codebase analysis into Markdown pages under `docs/`, using commit SHAs in `docs/log.md` to patch affected pages incrementally after merges.
+3. **LLM-Maintained Code Wikis**: Use workflows (such as `/generate-documentation-from-code` and `/doc-resync`) to propose source-anchored Markdown patches under `docs/`, with commit SHAs in `docs/log.md`. Generated output stays a draft: require human approval for Tier 1/2 pages, risk-based review for Tier 3, executable checks, and retained `TODO-VERIFY`/`CONTRADICTION` markers.
 4. **Production RAG & Retrieval Design**:
- * **Chunking**: Set prose chunk sizes to **500–800 tokens** (50-token overlap) and code chunks to **200–400 tokens** split along AST boundaries.
- * **Hybrid Search (BM25 + Dense Vectors)**: Fuse lexical keyword matching with vector embeddings via Reciprocal Rank Fusion ($k=60$), delivering a 10–20% recall lift on entity/code queries.
- * **Cross-Encoder Reranking**: Re-score the top 12–20 retrieved candidates down to the best 5–10 chunks for the LLM context window.
- * **Provenance Enforcement**: Force LLMs to cite exact `file:line` anchors in outputs.
+ * **Representative evaluation first**: Build labeled queries from the real corpus and measure retrieval metrics, answer quality, latency, and cost before selecting pipeline settings.
+ * **Chunking**: Start by testing prose chunks of **500–800 tokens** with 50-token overlap and code chunks of **200–400 tokens** along AST boundaries.
+ * **Hybrid Search (BM25 + Dense Vectors)**: Compare lexical, dense, and hybrid retrieval. RRF with $k=60$ is a common starting value; reported recall lifts are corpus-specific.
+ * **Cross-Encoder Reranking**: Start by evaluating 12–20 candidates and 5–10 final chunks, then tune against representative tasks.
+ * **Provenance Enforcement**: Require `file:line` anchors where supported and validate that citations resolve to retrieved evidence.
+5. **Repository-grounded agent evaluation**: SWD-Bench-style results are benchmark-specific. Test feature- or snippet-level, code-anchored documentation on representative local coding tasks, and retain human review for consequential changes.
 
 ---
 

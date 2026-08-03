@@ -43,10 +43,10 @@ Modern engineering knowledge platforms rely on **Markdown-first standards** to m
 2. **MDX (React-in-Markdown)**: Executable Markdown used by frameworks like Docusaurus that allows embedding live React components directly inside documentation. However, raw MDX can introduce security risks and make static AST analysis difficult.
 3. **Markdoc (Stripe)**: An open-source Markdown-superset framework created by Stripe. Instead of executing raw JavaScript, Markdoc parses content into a declarative Abstract Syntax Tree (AST) before rendering. This enables static validation (e.g., verifying internal links at build time), safe variable interpolation, and interactive UI components without executing untrusted client code.
 
-### AI-Readiness Standards (`llms.txt`)
-To optimize technical docs for AI assistants (Cursor, Copilot, Claude Code) and internal RAG agents, modern platforms automatically generate two machine-readable root files:
+### AI-Readiness Conventions (`llms.txt`)
+`llms.txt` is an emerging machine-readable convention, not a guaranteed integration point. For identified consumers that support it, platforms can generate and validate two root files:
 * **`llms.txt`**: A lightweight, token-optimized summary index containing page titles, one-sentence descriptions, and URLs.
-* **`llms-full.txt`**: A single concatenated, unabridged Markdown file containing the complete technical documentation corpus, OpenAPI schemas, and code examples for single-pass ingestion by large-context LLMs.
+* **`llms-full.txt`**: An optional concatenated Markdown export of selected canonical documentation, schemas, and examples; validate size, freshness, access control, and actual consumption.
 
 ---
 
@@ -79,7 +79,7 @@ To optimize technical docs for AI assistants (Cursor, Copilot, Claude Code) and 
 
 #### 3. Slite
 * **Architecture**: Database-backed with AI-native self-maintaining workflows.
-* **Strengths**: Directly addresses the "stale documentation" problem using the **Slite Agent**, which continuously monitors 20+ connected tools (Slack, GitHub, Jira) to detect knowledge drift and draft updates; excludes outdated/archived pages from AI answers automatically.
+* **Strengths**: Vendor-reported workflows aim to address stale documentation using the **Slite Agent**, which monitors connected tools to detect drift and draft updates. Validate connected coverage, exclusions, and answer behavior in your environment.
 * **Weaknesses**: Proprietary SaaS model; requires granting read access across enterprise tool integrations.
 
 #### 4. Outline
@@ -108,7 +108,7 @@ To optimize technical docs for AI assistants (Cursor, Copilot, Claude Code) and 
 
 #### 8. GitBook
 * **Architecture**: Git-sync or Database-backed.
-* **Strengths**: Excellent WYSIWYG block editor paired with two-way Git synchronization; out-of-the-box SEO optimization; native, zero-config automatic generation of `llms.txt` and `llms-full.txt`.
+* **Strengths**: WYSIWYG authoring paired with two-way Git synchronization and optional generated `llms.txt`/`llms-full.txt` surfaces; test consumer support and generated-content freshness.
 * **Weaknesses**: Proprietary tier pricing; complex custom deployment configurations at scale.
 
 ---
@@ -136,12 +136,12 @@ To optimize technical docs for AI assistants (Cursor, Copilot, Claude Code) and 
 
 #### 12. Fern & Mintlify (AI-First API Platforms)
 * **Architecture**: Git-backed / OpenAPI-driven.
-* **Strengths**: Treats machine-readable documentation as a primary build artifact; automatically generates and syncs `llms.txt` and `llms-full.txt`; Fern provides granular tags (`<llms-only>`, `<llms-ignore>`) and bot analytics to track LLM agent traffic.
+* **Strengths**: Treats machine-readable documentation as a build artifact and can generate/sync `llms.txt` and `llms-full.txt`; validate generated outputs, tags, bot analytics, and target-agent consumption.
 * **Weaknesses**: Tailored primarily for API references and developer relations rather than general internal team wikis.
 
 #### 13. Code Wiki
 * **Architecture**: Git-backed, LLM-maintained Markdown inside `/docs`.
-* **Strengths**: Adapts Karpathy's LLM Wiki pattern to software repositories. Compiles codebase analysis into persistent, interlinked Markdown pages under `/docs`, updating incrementally via commit pointers (`doc-resync`) without requiring vector databases.
+* **Strengths**: Can propose source-anchored Markdown patches under `/docs`, updating incrementally via commit pointers (`doc-resync`) without requiring vector databases. Treat outputs as drafts requiring checks and review.
 * **Weaknesses**: Optimized for repos up to ~200 wiki pages; requires automated LLM execution commands in CI or IDEs.
 
 ---
@@ -179,7 +179,7 @@ To optimize technical docs for AI assistants (Cursor, Copilot, Claude Code) and 
 ## 5. Migration & Maintenance Considerations
 
 ### Mitigating "Stale Documentation" Drift
-Stale documentation is worse than no documentation. Missing documentation forces developers to inspect the live codebase; stale documentation carries false visual authority that misdirects engineers during P1 outages or onboarding.
+Stale documentation can be worse than missing documentation: its apparent authority can misdirect engineers during outages or onboarding. Mark, archive, and de-index superseded guidance so users and agents can distinguish it from current instructions.
 
 To prevent documentation decay during tool migration, implement a **Continuous Context** strategy:
 1. **Event-Driven Updates**: Tie documentation review tasks directly to ticket closures (e.g., Jira/GitHub PR merge events) rather than relying on calendar-based reminders.

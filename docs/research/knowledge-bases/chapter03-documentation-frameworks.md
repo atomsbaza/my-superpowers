@@ -110,11 +110,15 @@ Coined by Michael Nygard in 2011, an **Architecture Decision Record (ADR)** is a
 #### MADR Template (Markdown Architectural Decision Records)
 Expands Nygard by adding explicit sections for **Decision Drivers**, **Considered Options** (with rationale for rejected alternatives), and **Pros/Cons Comparison Matrices**.
 
+**Selection guidance:** A controlled comparison reported in an arXiv preprint found the lean Nygard template easier to comprehend and adopt than several more elaborate alternatives. Treat that result as promising empirical evidence, not a universal mandate or proof of peer-reviewed consensus. Start with Nygard for routine decisions; add MADR fields only when the decision genuinely needs an explicit alternatives matrix or richer governance record.
+
 #### Agent-Optimized ADR Schema (For Coding Agents)
 * **Frontmatter Scope**: Uses an `applies_to` file-glob array so AI tools load records only when editing relevant files.
 * **Normative Directives**: Replaces conversational prose with RFC 2119 keywords (`MUST`, `MUST NOT`, `SHOULD`).
 * **Verifiable Checks**: Includes a `verify:` linter or script command for automated CI/agent compliance validation.
 * **Token Budget**: Enforces a strict line budget (<200 lines) to maximize LLM context window efficiency.
+
+These agent-specific fields are practitioner patterns rather than an established ADR standard. Validate that each field improves routing or verification in the actual agent harness before enforcing it organization-wide.
 
 ---
 

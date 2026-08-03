@@ -67,7 +67,7 @@ Modern technical search engines must accommodate two fundamentally different que
 Raw documentation (Markdown, PDF, HTML, OpenAPI specs) is extracted alongside structural metadata (headers, tables, timestamps, access levels, and file globs).
 
 ### B. Chunking Strategies & Sizing Guidance
-Choosing the right chunk size is a major lever in retrieval quality. Oversized chunks dilute the semantic vector with irrelevant prose, while undersized chunks lose surrounding context.
+Choosing the right chunk size is a major lever in retrieval quality. Oversized chunks can dilute the semantic vector with irrelevant prose, while undersized chunks can lose surrounding context. The ranges below are starting hypotheses, not portable defaults: validate them with labeled, representative queries from the corpus and tune for retrieval quality, answer quality, latency, and cost.
 
 ```
  CHUNK SIZE BY CONTENT TYPE
@@ -82,9 +82,9 @@ Choosing the right chunk size is a major lever in retrieval quality. Oversized c
  └────────────────────────────────────────────────────────┘
 ```
 
-1. **Standard Prose & Technical Guides**: **500–800 tokens with a 50-token sliding overlap**.
-2. **Source Code & API Specs**: **200–400 tokens** split strictly along syntax/AST boundaries (functions, classes) using Tree-sitter parsers.
-3. **Dense Reference & Regulatory Specifications**: **800–1,200 tokens**, as surrounding definitions are required to preserve the reference frame.
+1. **Standard Prose & Technical Guides**: Start by testing **500–800 tokens with a 50-token sliding overlap**.
+2. **Source Code & API Specs**: Start by testing **200–400 tokens** split along syntax/AST boundaries (functions, classes) using Tree-sitter parsers.
+3. **Dense Reference & Regulatory Specifications**: Start by testing **800–1,200 tokens**, where surrounding definitions may be needed to preserve the reference frame.
 4. **Data Tables**: **1 row per chunk** with the table header row prepended/injected into every chunk.
 
 #### Advanced Chunking Mechanics
@@ -94,13 +94,13 @@ Choosing the right chunk size is a major lever in retrieval quality. Oversized c
 
 ### C. Metadata Enrichment & Contextual Retrieval
 * **Frontmatter Metadata**: Injecting queryable fields (`owner`, `applies_to`, `authority_tier`, `status`) allows hard filtering before vector search.
-* **Anthropic's Contextual Retrieval**: Prepending 50–100 tokens of document-level background context to each chunk prior to embedding (e.g., *"This chunk discusses user authentication for the tenant-db service..."*). This reduces retrieval failures by **49%** (and by **67%** when combined with reranking).
+* **Contextual Retrieval**: Test prepending a 50–100 token document-level summary to each chunk before embedding (e.g., *"This chunk discusses user authentication for the tenant-db service..."*). Anthropic reports 49% fewer retrieval failures for its evaluated setup, and 67% when combined with reranking; treat those results as source-reported, not as an expected local outcome.
 
 ### D. Multi-Stage Retrieval & Candidate Expansion
-* **Candidate Set ($K$)**: First-stage retrieval retrieves $K = 12\text{--}20$ candidates (or $K = 200\text{--}500$ in large corpora) to guarantee high recall.
+* **Candidate Set ($K$)**: Start by evaluating $K = 12\text{--}20$ candidates (or a larger range such as $K = 200\text{--}500$ in large corpora). Choose the final value from recall, reranker quality, latency, and cost measurements; no candidate count guarantees recall.
 
 ### E. Precision Reranking
-First-stage candidates are passed through a **Cross-Encoder reranker** (e.g., `monoBERT`, `duoBERT`, `Jina Reranker v2`, `Cohere Reranker`). Cross-encoders perform joint self-attention across the query and candidate chunk simultaneously, re-scoring candidates down to the top **5–10 most relevant chunks** for the LLM context window.
+First-stage candidates can be passed through a **Cross-Encoder reranker** (e.g., `monoBERT`, `duoBERT`, `Jina Reranker v2`, `Cohere Reranker`). Cross-encoders perform joint self-attention across the query and candidate chunk simultaneously. Start by testing a final context of **5–10 chunks**, then tune it against representative tasks and the target model's context budget.
 
 ### F. Response Generation & Context Placement
 To avoid the **"Lost in the Middle"** phenomenon—where LLMs reliably attend to information at the very beginning or end of a prompt but overlook facts placed in the middle—the retriever orders the top chunks so that the highest-confidence evidence is placed at the boundaries of the prompt.
@@ -125,17 +125,17 @@ $$RRF\_Score(d \in D) = \sum_{m \in M} \frac{1}{k + r_m(d)}$$
  │
  ▼
  Fused Final Rank:
- 1. Doc B (Score: 0.0315)
- 2. Doc A (Score: 0.0322)
- 3. Doc C (Score: 0.0320)
+ 1. Doc A (Score: 0.0322)
+ 2. Doc C (Score: 0.0320)
+ 3. Doc B (Score: 0.0315)
 ```
 
-* **Smoothing Constant ($k$)**: Set to **$k = 60$** as the industry standard. Lower $k$ values favor top-ranked items (precision); higher $k$ values favor consensus across lists (recall).
+* **Smoothing Constant ($k$)**: **$k = 60$** is a common starting value, not an industry-wide optimum. Lower values favor top-ranked items; higher values favor consensus across lists. Tune it with the same labeled evaluation set.
 * **Alpha ($\alpha$) Parameter**: Controls hybrid weighting:
  * $\alpha = 0.0$: Pure lexical / keyword search.
  * $\alpha = 0.5$: Equal weighting between BM25 and Dense Vector search.
  * $\alpha = 1.0$: Pure dense vector semantic search.
-* **Performance Lift**: Deploying hybrid RRF retrieval recovers exact identifier hits while retaining semantic discovery, delivering a **10–20% recall lift** on entity-heavy technical corpora.
+* **Performance Lift**: Hybrid RRF can recover exact-identifier hits while retaining semantic discovery. Reported recall lifts (including 10–20% figures) are corpus- and setup-specific; measure the lift on representative local queries before adopting it.
 
 ---
 
@@ -196,20 +196,20 @@ Evaluating a RAG system requires isolating **Retrieval Metrics** from **Generati
 ### Generation Metrics
 1. **Faithfulness / Groundedness**: Measures factual consistency by verifying if every claim in the LLM's answer can be inferred directly from the context:
  $$\text{Faithfulness Score} = \frac{\text{Number of Claims Inferable from Context}}{\text{Total Claims in Generated Answer}}$$
- * **Production SLA Threshold**: Faithfulness below **70%** is unsafe for production. High-performing engineering systems target **$>90\%$ Faithfulness**.
+ * **Acceptance threshold**: Set a risk-appropriate threshold from a labeled evaluation set and human review. Values such as **$>90\%$ faithfulness** or **$>80\%$ context recall** are starting hypotheses, not universal production SLAs; high-impact tasks need stricter review and escalation paths.
 2. **Answer Relevance**: Quantifies how directly the response addresses the prompt by generating candidate questions from the answer and measuring their mean cosine similarity to the original user query.
 
 ---
 
 ## Summary Architectural Checklist
 
-| Pipeline Stage | Recommended Configuration | Source Benchmark / SLA |
+| Pipeline Stage | Starting hypothesis | Validate locally |
 |:--- |:--- |:--- |
-| **Chunking** | Prose: 500–800 tokens + 50 overlap. Code: 200–400 tokens / AST. | 40–60% relevant-sentence density per chunk. |
-| **Enrichment** | Contextual Retrieval (prepend 50–100 token doc summary). | Cuts retrieval failure rates by 49–67%. |
-| **Hybrid Fusion** | BM25 + Dense Vector fused via RRF ($k=60$). | 10–20% recall lift on entity/code queries. |
-| **Reranking** | Multi-stage: Candidate $K=12\text{--}20 \rightarrow$ Cross-Encoder $\rightarrow$ Top 5–10. | Eliminates context noise before generation. |
-| **Evaluation** | RAGAS / DeepEval automated CI checks. | Target $>90\%$ Faithfulness, $>80\%$ Context Recall. |
+| **Chunking** | Prose: test 500–800 tokens + 50 overlap. Code: test 200–400 tokens / AST. | Retrieval/answer metrics, latency, cost, and relevant-sentence density. |
+| **Enrichment** | Test contextual retrieval with a 50–100 token document summary. | Compare against a no-enrichment baseline on labeled queries. |
+| **Hybrid Fusion** | Test BM25 + dense vectors fused via RRF (start at $k=60$). | Exact-identifier and conceptual-query recall against single-mode baselines. |
+| **Reranking** | Test Candidate $K=12\text{--}20 \rightarrow$ Cross-Encoder $\rightarrow$ 5–10 final chunks. | Retrieval gain versus latency and cost. |
+| **Evaluation** | Use RAGAS / DeepEval plus task-specific human review. | Calibrated acceptance thresholds for faithfulness, recall, and task risk. |
 
 ---
 

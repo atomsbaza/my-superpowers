@@ -24,15 +24,15 @@
 ### 4. Search & Retrieval (RAG & Vector Search)
 * **IF** searching for exact symbols, SKUs, error codes (`ERR_CONN_REFUSED`), or API parameters **THEN** use **lexical full-text search (BM25)** rather than pure vector search.
 * **IF** searching for high-level conceptual questions, natural language queries, or multi-lingual matches **THEN** use **dense vector semantic search**.
-* **IF** querying mixed, entity-heavy engineering documentation **THEN** deploy **Hybrid Retrieval** (fusing BM25 and dense vector search via Reciprocal Rank Fusion with $k=60$), delivering a **10–20% recall lift**.
-* **IF** setting chunk sizes for RAG ingestion **THEN** default to **500–800 tokens** (50-token overlap) for prose, **200–400 tokens** split along AST boundaries (functions/classes) for source code, **800–1200 tokens** for dense reference text, and **1 row per chunk** (with injected header) for data tables.
-* **IF** configuring first-stage candidate retrieval in RAG **THEN** over-retrieve **12–20 candidates** (or 20–40 in hybrid search) at the database layer and truncate to the top **5–10 chunks** using a **Cross-Encoder reranker** to eliminate "Lost in the Middle" errors.
+* **IF** querying mixed, entity-heavy engineering documentation **THEN** compare lexical, dense, and **Hybrid Retrieval** modes; RRF with $k=60$ is a common starting value, and any recall lift must be measured on representative local queries.
+* **IF** setting chunk sizes for RAG ingestion **THEN** begin by testing **500–800 tokens** (50-token overlap) for prose, **200–400 tokens** along AST boundaries for source code, **800–1200 tokens** for dense reference text, and **1 row per chunk** with an injected header for data tables; choose from retrieval and answer metrics, latency, and cost.
+* **IF** configuring first-stage candidate retrieval in RAG **THEN** start with **12–20 candidates** and **5–10 final chunks** via a Cross-Encoder reranker, then tune and evaluate rather than assuming those values eliminate retrieval errors.
 
 ### 5. AI-Readiness & Agentic Workflows
-* **IF** making technical documentation discoverable for AI coding assistants (Cursor, Copilot, Claude Code) or MCP servers **THEN** serve root `/llms.txt` (summary index) and `/llms-full.txt` (consolidated context) files following standard formatting rules.
+* **IF** making technical documentation discoverable for identified AI coding assistants or MCP servers **THEN** consider the emerging `/llms.txt` convention and optional `/llms-full.txt` export; test discovery, parsing, access control, freshness, and real consumer use before relying on them.
 * **IF** preventing AI agents from giving conflicting or hallucinated answers **THEN** enforce a **4-Tier Document Authority Hierarchy** where Tier 1 (Source of Truth) is read-only for AI.
 * **IF** structuring ADRs for coding agents **THEN** attach an `applies_to` frontmatter file glob, use normative RFC 2119 keywords (`MUST`/`SHOULD`), enforce a <200 line budget, and include an automated `verify` check command.
-* **IF** maintaining documentation as a codebase evolves **THEN** adopt an **LLM-maintained Code Wiki** (`/generate-documentation-from-code` for initial build and `/doc-resync` for incremental Git-SHA delta updates).
+* **IF** maintaining documentation as a codebase evolves **THEN** use a Code Wiki workflow to produce anchored draft proposals (`/generate-documentation-from-code` and `/doc-resync`); require human approval for Tier 1/2 changes and risk-based review for Tier 3 while retaining unresolved `TODO-VERIFY` or `CONTRADICTION` markers.
 
 ---
 
@@ -40,11 +40,11 @@
 
 1. **Architecture Decision Record (ADR)**: An immutable, append-only historical log capturing an architecturally significant design decision, its context, considered options, and accepted engineering consequences.
 2. **C4 Model**: A four-level hierarchical framework (System Context, Container, Component, Code) created by Simon Brown to visualize software architecture across varying levels of abstraction.
-3. **Code Wiki**: An LLM-maintained documentation architecture where an AI agent compiles codebase analysis into a persistent Markdown wiki in `docs/` and patches it incrementally using Git commit pointers.
+3. **Code Wiki**: A workflow in which an AI agent proposes source-anchored documentation patches from codebase analysis and Git commit pointers; generated changes remain drafts pending checks and appropriate human review.
 4. **Context Precision**: A retrieval evaluation metric measuring whether ground-truth relevant chunks appear at the highest ranks within the retrieved context window.
 5. **Context Recall**: A retrieval evaluation metric measuring the proportion of ground-truth statements that are directly attributable to retrieved context chunks.
-6. **Contextual Retrieval**: An ingestion technique where 50–100 tokens of document-level background context are prepended to each chunk prior to embedding, significantly reducing retrieval failures.
-7. **Cross-Encoder Reranker**: A neural model that jointly evaluates query-document pairs to re-score first-stage search candidates down to the top 5–10 most relevant chunks for LLM context windows.
+6. **Contextual Retrieval**: An ingestion technique that prepends document-level background context to a chunk before embedding. Test its effect locally; published reductions in retrieval failures are setup-specific.
+7. **Cross-Encoder Reranker**: A neural model that jointly evaluates query-document pairs to re-score first-stage candidates. The final context size is a locally calibrated setting, not a universal 5–10-chunk rule.
 8. **Declared Context**: Institutional human knowledge (business rules, domain ontologies, strategic intent) that cannot be derived from code and requires periodic human re-validation.
 9. **Derived Context**: Summarized technical state (schemas, lineage, quality scores, incident histories) that can be automatically computed and updated from underlying system telemetries.
 10. **Diátaxis Framework**: An intent-focused documentation architecture that categorizes content into four distinct quadrants based on user needs: Tutorials, How-To Guides, Reference, and Explanation.
@@ -54,15 +54,15 @@
 14. **Faithfulness / Groundedness**: An evaluation metric measuring the factual consistency of an LLM's generated response against retrieved context passages.
 15. **Hybrid Retrieval**: A search architecture that fuses exact keyword matching (BM25) and dense vector semantic search to maximize both precision and recall across mixed technical corpora.
 16. **"Link-First" Rule**: An organizational communication norm requiring team members to answer inquiries by linking to canonical documentation, or submitting a documentation PR first if the page does not exist.
-17. **`llms.txt`**: A standardized, machine-readable Markdown file served at a domain root that provides AI coding assistants and agents with a summary index of canonical documentation.
-18. **`llms-full.txt`**: A single concatenated, unabridged Markdown file containing a complete documentation corpus, OpenAPI specs, and code samples for single-pass LLM context ingestion.
+17. **`llms.txt`**: An emerging machine-readable convention for a domain-root documentation index. Verify that each intended AI consumer discovers and uses it.
+18. **`llms-full.txt`**: An optional concatenated Markdown export for AI consumption; validate size, access controls, freshness, and consumer behavior before relying on it.
 19. **"Lost in the Middle" Phenomenon**: The tendency of large language models to attend well to information at the beginning or end of a context window while overlooking facts placed in the middle.
 20. **`Lychee`**: A fast, async link-checking tool that scans Markdown files in CI/CD workflows to detect broken internal paths, dead URLs, and expired domains.
 21. **Map of Content (MOC)**: A fluid Markdown hub page that aggregates and outlines links to atomic notes within a specific domain without enforcing rigid folder trees.
 22. **Markdoc**: Stripe's open-source Markdown-superset framework that parses content into a declarative Abstract Syntax Tree (AST) for static build-time validation and safe UI component rendering.
 23. **`markdownlint`**: A static analysis linter that enforces Markdown syntax rules, heading hierarchies, list indentation, and formatting standards.
 24. **PARA Method**: An information management framework developed by Tiago Forte that organizes workspace files into four top-down categories based on actionability: Projects, Areas, Resources, and Archives.
-25. **Reciprocal Rank Fusion (RRF)**: A zero-shot rank-fusion algorithm that combines the ranked results of lexical (BM25) and semantic (vector) searches using a position-based formula with a smoothing constant ($k=60$).
+25. **Reciprocal Rank Fusion (RRF)**: A zero-shot rank-fusion algorithm that combines lexical (BM25) and semantic search ranks. $k=60$ is a common starting value to tune on representative local queries.
 26. **Runbook**: A prescriptive, step-by-step operational guide executed by on-call engineers during system incidents to diagnose failures and minimize MTTR.
 27. **Single Source of Truth (SSoT)**: An architectural rule mandating that every policy, API contract, or system configuration exists in exactly one authoritative location to prevent knowledge duplication and drift.
 28. **`START_HERE.md`**: A canonical repository entry point designed to be read in under 5 minutes by humans and entering AI agents to provide immediate project orientation.
