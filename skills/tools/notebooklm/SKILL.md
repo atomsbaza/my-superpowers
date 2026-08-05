@@ -580,6 +580,12 @@ notebooklm source add-research --prompt-file ./research_query.txt --mode deep
 2. Retry after 5-10 minutes
 3. Use the NotebookLM web UI as fallback
 
+**Subagent-spawned waits can silently fake completion.** A generic-purpose Task/agent subagent given a long blocking command (`research wait --timeout 1800`, `artifact wait --timeout 1200`) may itself background that command internally and then exit, reporting a plausible-sounding but fabricated "started in the background, will report when done" summary — with no actual wait having occurred and no real completion notification coming. This is a harness-level failure mode, not specific to any one command. If a spawned subagent's very first report claims it "kicked off" or "backgrounded" the wait you asked it to run synchronously, treat that as suspect: check `notebooklm research status` / `notebooklm artifact list` directly rather than trusting the subagent's narration, and prefer running the wait command yourself in a directly-tracked background process (e.g. the calling agent's own background-bash capability) over delegating a bare wait-and-report task to a subagent.
+
+**`ask ... --save-as-note --json` can fail to parse even when the note saved.** Large or multi-source answers can trigger `RPCResponseTooLargeError` in the chat response itself (visible as a JSON decode error downstream), while the `--save-as-note` side effect still completes successfully. If JSON parsing fails after an `ask --save-as-note` call, check `notebooklm note list -n <id>` before assuming the whole operation failed.
+
+**Chat can auto-create an undownloadable "Studio doc."** `ask` occasionally has NotebookLM generate a full document as a Studio artifact (shows as an `(UNKNOWN)` type in `artifact list`) instead of returning the content inline — the CLI has no download path for this artifact type as of `notebooklm-py` 0.7.3. If you need guaranteed downloadable output, use `generate report --format custom "<detailed prompt>"` followed by `download report`, rather than relying on `ask` to produce a complete document.
+
 **Processing times vary significantly.** Use the subagent pattern for long operations:
 
 | Operation | Typical time | Suggested timeout |

@@ -82,6 +82,19 @@ Before integration, collect from every agent:
 
 The lead agent integrates only after reviewing the handoff and relevant diff. Keep the agent pane available until that handoff is accepted.
 
+## Verify a document against live system state
+
+Use this for a read-only fact-check — e.g. confirming a research report, guide, or generated doc actually matches a live CLI/API/docs site — as opposed to reviewing code changes. No worktree is required since nothing is being edited.
+
+1. Default to the **current Herdr workspace** — do not create a new `herdr workspace` just to run a verification agent; splitting a pane in the existing workspace/tab is enough. Only create a new workspace when the document under review concerns a different project/cwd than what's currently open (`herdr workspace create --cwd <path> --label <slug> --no-focus`).
+2. Split a pane in that workspace with `--no-focus` and start the requested agent kind under a task-scoped name (e.g. `reviewer-<topic>`).
+3. Prompt it with the file path to review and concrete verification instructions: what to cross-check against (live `--help` output, docs URLs, actual runtime behavior), and what to report back (what checks out, what's wrong or invented, what's missing, a pass/fail verdict). Use `--wait --timeout <ms>`.
+4. Read the result with `herdr agent read <name> --source recent-unwrapped --lines <n>`.
+5. Fix any confirmed issues yourself (directly, not via the reviewing agent), then re-prompt the **same** agent/pane for a follow-up pass instead of starting a new one — it already has the review context loaded, and reusing it is cheaper and catches regressions from the fix itself.
+6. Repeat until a clean pass, then close the pane per Clean up after integration below.
+
+This differs from Coordinate an agent above in three ways: no worktree, the agent is reused across iterations rather than restarted per round, and completion is a pass/fail verdict rather than a code handoff.
+
 ## Clean up after integration
 
 Once a handoff is accepted and integrated, reclaim the resources this workflow created for that task — do not leave panes, agents, or worktrees running indefinitely:

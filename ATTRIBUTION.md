@@ -219,6 +219,7 @@ Applications* by Andrew Hoffman (O'Reilly, 2nd ed., 2024):
 The following were created independently in this repo:
 
 - `skills/tools/research/` — custom web research skill
+- `skills/tools/research-verify/` — research + mandatory fact-check-against-live-system pass before publishing, built from a real Herdr+NotebookLM+Codex workflow session
 - `skills/tools/session-promoter/` — end-of-session memory promotion
 - `skills/quality/improve-codebase-architecture/`
 - `skills/quality/circuit-breaker/` — stuck-detection wrapper for the loop hook

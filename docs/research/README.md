@@ -86,3 +86,9 @@ docs/research/
 
 ### 📖 9. Knowledge Base Engineering (`docs/research/knowledge-bases/`)
 * **[README.md](./knowledge-bases/README.md):** 12-chapter research set on engineering knowledge bases — information architecture, Diátaxis/ADR/C4 frameworks, tooling, governance, RAG/search, AI-readiness, adoption culture, case studies, anti-patterns, decision rules, and an implementation roadmap.
+
+---
+
+### 🖥️ 10. CLI Tools (`docs/research/cli-tools/`)
+* **[herdr/README.md](./cli-tools/herdr/README.md):** Herdr operator's guide (7 chapters + appendix) — install, CLI command structure, multi-agent orchestration workflow, agent integrations, config, and keyboard shortcuts. NotebookLM deep research verified against the live CLI/docs by Codex across two review rounds; appendix documents every error caught and fixed.
+* **[2026-08-05-xh-http-client-guide.md](./cli-tools/2026-08-05-xh-http-client-guide.md):** `xh` — lightweight Rust CLI HTTP client (Postman alternative), install + security notes from a dependency audit.

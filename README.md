@@ -140,6 +140,7 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 | Skill | What it does |
 |---|---|
 | `research` | Web research — audience/goal/scope interview, then searches, fetches, and synthesizes a cited report saved to `docs/research/<topic>/` |
+| `research-verify` | Research a tool/API/system, then verify the draft against a live ground truth (installed CLI, live docs) via a fact-checking agent before publishing — for operational docs, not just background reading |
 | `teach` | Structured learning framework: manage MISSION, build reference materials, produce beautiful HTML lessons grounded in research, capture learning records |
 | `session-promoter` | End-of-session learning extractor: promotes corrections, decisions, and project facts into persistent memory |
 | `find-skills` | Discover and install new skills |
