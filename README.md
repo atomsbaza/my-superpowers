@@ -80,6 +80,7 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 | `codebase-design` | Deep module design vocabulary — seams, interfaces, testability heuristics |
 | `domain-modeling` | Build/sharpen ubiquitous language; writes `CONTEXT.md` and ADRs as you design |
 | `grill-with-docs` | Relentless design interview that also writes ADRs and glossary entries as it goes |
+| `grill-me` | Relentless plan/design interview, resolving each branch of the decision tree until shared understanding |
 | `to-issues` | Break a PRD into independently-grabbable vertical-slice GitHub Issues |
 | `scale-audit` | Score an architecture proposal against the Order of Magnitude Playbook — flags premature complexity and names the load trigger for the next tier |
 | `quarterly-evolution` | Turn "we need to fix X" into a fundable quarterly proposal: entropy audit, business outcome, deferral cost, and success condition |
@@ -95,6 +96,7 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 | `subagent-driven-development` | Execute plans task-by-task with fresh subagents + 2-stage review |
 | `dispatching-parallel-agents` | Run independent tasks in parallel |
 | `benchmark-sprint` | Parallel agent fleet tests N architectural variants simultaneously and returns a comparison report — 3 days of manual benchmarking in 20 minutes |
+| `tdd` | Red-green-refactor loop, integration-test-first workflow |
 
 ### Quality & Review
 
@@ -111,6 +113,10 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 | `verification-before-completion` | Run checks before claiming work is done |
 | `good-enough` | Detects the Esthetics Trap — finds the value ceiling, audits remaining effort as VALUE vs AESTHETICS, and recommends ship/defer |
 | `pragmatic-review` | Scores a proposal against the Engineering Diagnostic Matrix (scale strategy, tech choice, quality definition, reaction to AI) and outputs concrete adjustments |
+| `security-review` | Security checklist for auth, user input, secrets, API endpoints, and payment/sensitive features |
+| `security-auditor` | OWASP Top 10 vulnerability audit expert, with remediation/checklist/OWASP reference bundles and secret-scanning scripts |
+| `code-review-quality` | Context-driven code review focused on quality, testability, and maintainability, with a structured output schema |
+| `performance` | Web performance audit and optimization — load time, page speed |
 
 ### Debugging
 
@@ -125,6 +131,7 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 |---|---|
 | `using-git-worktrees` | Isolated workspace setup before plan execution |
 | `finishing-a-development-branch` | Guided merge/PR/cleanup when implementation is done |
+| `git-advanced-workflows` | Rebasing, cherry-picking, bisect, worktrees, and reflog for clean history and repo recovery |
 
 ### Communication
 
@@ -149,6 +156,8 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 | `mediumlm` | Research a topic on Medium using the user's own logged-in session — search, fetch full article text, save a research note |
 | `notebooklm` | Full programmatic access to Google NotebookLM — create notebooks, add sources, generate podcasts/mind maps/study guides |
 | `oss-contribute` | End-to-end OSS contribution workflow — fork, orient, implement, scrutinize, open a PR |
+| `changelog-writer` | Generate changelogs/release notes from commits, PR titles, and issues — Keep a Changelog format, semver suggestions |
+| `chrome-extension-development` | Manifest V3 Chrome extension development — security, performance, best practices |
 | `herdr-workflow` | Coordinate Codex/Claude/Kiro CLI agents through Herdr — panes, worktree isolation, parallel implementer/reviewer/tester roles, handoff |
 | `wayfinder` | Codebase exploration and architecture mapping |
 | `xcodebuildmcp-cli` | Reference for driving XcodeBuildMCP from the CLI for Apple platform builds |
@@ -246,6 +255,9 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 | `writing-product-vision` | Vision board, Geoffrey Moore positioning statement, JTBD, north star themes |
 | `writing-brd` | Business Requirements Document with problem, goals, stakeholders, risks |
 | `writing-prd` | Product Requirements Document with personas, user journeys, FRs, NFRs |
+| `brd-to-prd` | Converts an existing BRD/stakeholder brief into a PRD with user stories, ACs, and edge cases |
+| `to-prd` | Turns the current conversation context into a PRD and publishes it to the project issue tracker |
+| `prd-to-tdd` | Converts an approved PRD into a Technical Design Document — architecture, API contracts, data model, sequence flows, error handling |
 | `writing-user-stories` | INVEST-quality stories via SPIDR splitting from epics or PRD |
 | `writing-acceptance-criteria` | Gherkin Given/When/Then ACs covering happy path, validation, auth, edge cases |
 | `prioritizing-backlog` | RICE / WSJF / MoSCoW / Kano prioritization with scoring worksheets |
@@ -264,6 +276,7 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 | `swiftui-layout-components` | Stacks, grids, lists, forms, `.searchable`, ViewThatFits, Layout protocol, Liquid Glass containers, adaptive multi-platform layouts |
 | `swiftui-performance` | Diagnose slow rendering, janky scroll, body-evaluation cost, identity churn, lazy loading, Instruments profiling guidance |
 | `swiftdata-pro` | Writes, reviews, and improves SwiftData code — modelling, queries, migrations, persistence — using modern APIs and best practices |
+| `ce-test-xcode` | Build and test iOS apps on simulator via XcodeBuildMCP after code changes, before a PR, or to check for crashes |
 
 ---
 

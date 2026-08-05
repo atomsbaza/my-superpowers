@@ -60,6 +60,35 @@ by Matt Pocock:
 `skills/quality/ponytail/` was adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail),
 licensed under MIT. Pinned at v4.2.0 (June 2026).
 
+## Backfilled from local Codex CLI skill installs (2026-08-06)
+
+These skills were already present locally under `~/.agents/skills/` (the Codex CLI skill
+directory, populated over time via `npx skills add` and manual installs) but had never been
+copied into this repo — creating the exact "born outside the repo" drift this repo's own
+convention exists to prevent (see `feedback_agents_skills_in_repo` in the maintainer's memory).
+Backfilled into their matching categories here so they're tracked, versioned, and installed
+consistently going forward.
+
+Provenance below is what `~/.agents/.skill-lock.json` records for each (verify license terms
+against the upstream repo before further redistribution — this is a personal-use backfill, not
+a license audit):
+
+- `skills/apple/ce-test-xcode/` — from [everyinc/compound-engineering-plugin](https://github.com/everyinc/compound-engineering-plugin), `plugins/compound-engineering/skills/ce-test-xcode/SKILL.md`
+- `skills/tools/changelog-writer/` — from [patricio0312rev/skills](https://github.com/patricio0312rev/skills), `foundation/changelog-writer/SKILL.md`
+- `skills/git/git-advanced-workflows/` — from [wshobson/agents](https://github.com/wshobson/agents), `plugins/developer-essentials/skills/git-advanced-workflows/SKILL.md`
+- `skills/quality/security-review/` — from [affaan-m/everything-claude-code](https://github.com/affaan-m/everything-claude-code), `skills/security-review/SKILL.md`
+- `skills/tools/chrome-extension-development/` — from [mindrally/skills](https://github.com/mindrally/skills), `chrome-extension-development/SKILL.md`
+- `skills/quality/performance/` — from [addyosmani/web-quality-skills](https://github.com/addyosmani/web-quality-skills), `skills/performance/SKILL.md`, MIT-licensed per the skill's own frontmatter (`author: web-quality-skills`)
+- `skills/quality/security-auditor/` — from [charon-fan/agent-playbook](https://github.com/charon-fan/agent-playbook), `skills/security-auditor/SKILL.md`
+- `skills/quality/code-review-quality/` — from [proffesor-for-testing/agentic-qe](https://github.com/proffesor-for-testing/agentic-qe), `.claude/skills/code-review-quality/SKILL.md`
+
+**Provenance unknown** — no lockfile entry, no in-file attribution; source could not be determined at backfill time:
+- `skills/product-owner/brd-to-prd/`
+- `skills/product-owner/prd-to-tdd/`
+- `skills/product-owner/to-prd/`
+- `skills/planning/grill-me/`
+- `skills/execution/tdd/`
+
 ## Original work — Loop Engineering
 
 The following skill was created in this repo, derived from concepts in
