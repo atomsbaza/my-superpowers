@@ -20,6 +20,7 @@ Use this skill for the team conventions below. Do not use Herdr controls unless 
 - Discover pane and agent IDs from Herdr JSON responses; do not infer them from layout order.
 - Give each live agent a unique role name: `implementer`, `reviewer`, `tester`, or a clear task-specific equivalent. Herdr rejects a duplicate live name, so whenever more than one task pipeline may run at once, scope names to the task, e.g. `implementer-<task-slug>`, `reviewer-<task-slug>`.
 - Require a dedicated Git worktree for every coding agent that might modify code. A read-only research or review agent may use the primary checkout only when its task is not tied to a specific in-progress worktree (e.g. general codebase questions). When reviewing or testing a specific implementer's in-progress work, point that agent's pane `--cwd` at the **implementer's own worktree** so it sees the actual uncommitted changes — the primary checkout will not show them.
+- When `herdr worktree create` or `herdr worktree open` creates a dedicated worktree, use the returned root pane directly for the agent. Do not split another pane after opening or creating that worktree; split only when reusing an existing workspace that has no worktree-created root pane.
 - Never close, interrupt, or repurpose a pane, worktree, tab, or session not created for the current task.
 
 ## Coordinate an agent
@@ -32,9 +33,9 @@ Use this skill for the team conventions below. Do not use Herdr controls unless 
    herdr pane layout --pane "$HERDR_PANE_ID"
    ```
 
-2. Create or select an isolated worktree before starting any agent that can edit code. Use the repository's established worktree convention; inspect `herdr worktree --help` when using Herdr's helper.
+2. Create or select an isolated worktree before starting any agent that can edit code. Use the repository's established worktree convention; inspect `herdr worktree --help` when using Herdr's helper. If `herdr worktree create` or `herdr worktree open` returns a root pane, keep its `.result.root_pane.pane_id` for the agent.
 
-3. Create a background sibling pane in that worktree. Split right when the calling pane is wide; otherwise split down:
+3. If the worktree helper returned a root pane, use it as the available shell pane and keep it unfocused. Only create a background sibling pane when starting from an existing workspace or tab without a dedicated worktree root. Split right when the calling pane is wide; otherwise split down:
 
    ```sh
    herdr pane split --current --direction down --cwd <worktree-path> --no-focus
