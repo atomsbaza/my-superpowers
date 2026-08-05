@@ -148,6 +148,7 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 | `mediumlm` | Research a topic on Medium using the user's own logged-in session — search, fetch full article text, save a research note |
 | `notebooklm` | Full programmatic access to Google NotebookLM — create notebooks, add sources, generate podcasts/mind maps/study guides |
 | `oss-contribute` | End-to-end OSS contribution workflow — fork, orient, implement, scrutinize, open a PR |
+| `herdr-workflow` | Coordinate Codex/Claude/Kiro CLI agents through Herdr — panes, worktree isolation, parallel implementer/reviewer/tester roles, handoff |
 | `wayfinder` | Codebase exploration and architecture mapping |
 | `xcodebuildmcp-cli` | Reference for driving XcodeBuildMCP from the CLI for Apple platform builds |
 | `design-patterns-csharp` | Knowledge base from *Design Patterns* (Gang of Four, 1994) and *Design Patterns in C#* (Sarcar, 2018) — all 23 patterns with canonical definitions and C# implementations, Simple Factory/Null Object/MVC, pattern criticisms, anti-patterns, modern C# notes (2025–26) |
