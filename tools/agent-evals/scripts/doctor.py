@@ -161,15 +161,17 @@ def _terms(desc: str) -> set:
 
 def cross_checks(repo: str, items: List[dict]) -> List[Finding]:
     out = []
-    # duplicate names
-    by_name: Dict[str, List[dict]] = {}
+    # duplicate names — scoped per kind, since agents (~/.claude/agents/) and
+    # skills (~/.claude/skills/) install to disjoint directories and a shared
+    # name across the two kinds cannot clobber either install.
+    by_name: Dict[tuple, List[dict]] = {}
     for it in items:
         if it["name"]:
-            by_name.setdefault(it["name"], []).append(it)
-    for nm, group in sorted(by_name.items()):
+            by_name.setdefault((it["kind"], it["name"]), []).append(it)
+    for (kind, nm), group in sorted(by_name.items()):
         if len(group) > 1:
-            out.append(Finding("ERROR", nm, "duplicate name across: {}".format(
-                ", ".join(_rel(repo, g["path"]) for g in group))))
+            out.append(Finding("ERROR", nm, "duplicate {} name across: {}".format(
+                kind, ", ".join(_rel(repo, g["path"]) for g in group))))
 
     # description overlap (routing/trigger conflict risk)
     termed = [(it, _terms(it["desc"])) for it in items if it["desc"]]
