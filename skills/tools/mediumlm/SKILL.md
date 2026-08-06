@@ -1,6 +1,6 @@
 ---
 name: mediumlm
-description: Research a topic on Medium using the user's own logged-in Medium session (cookies extracted from Chrome). Searches Medium, fetches full article text including member-only content, and produces a chat summary, a saved research note, and optionally NotebookLM artifacts. Activates on explicit /mediumlm <topic> or intent like "research X on Medium" / "what does Medium say about X".
+description: Research a topic on Medium using the user's own logged-in Medium session (cookies extracted from Chrome). Searches Medium, fetches full article text including member-only content, and produces a chat summary, a saved research note, and optionally NotebookLM artifacts. Use when the user explicitly runs /mediumlm <topic> or asks something like "research X on Medium" / "what does Medium say about X".
 ---
 
 # mediumlm

@@ -1,6 +1,6 @@
 ---
 name: chrome-extension-development
-description: Expert guidelines for Chrome extension development with Manifest V3, covering security, performance, and best practices
+description: Expert guidelines for Chrome extension development with Manifest V3, covering security, performance, and best practices. Use when building, reviewing, or debugging a Chrome extension.
 ---
 
 # Chrome Extension Development

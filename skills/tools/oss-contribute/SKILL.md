@@ -1,6 +1,6 @@
 ---
 name: oss-contribute
-description: End-to-end workflow for contributing to an open-source repository — from picking an issue to a merged-ready PR. Covers fork, codebase orientation, implementation, scrutinize, and PR.
+description: End-to-end workflow for contributing to an open-source repository — from picking an issue to a merged-ready PR. Covers fork, codebase orientation, implementation, scrutinize, and PR. Use when the user wants to contribute a fix or feature to an open-source project they don't own.
 ---
 
 # OSS Contribute

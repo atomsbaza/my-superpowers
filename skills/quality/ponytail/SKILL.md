@@ -5,9 +5,9 @@ description: >
   minimal. Channels a senior dev who has seen everything: question whether the
   task needs to exist at all (YAGNI), reach for the standard library before
   custom code, native platform features before dependencies, one line before
-  fifty. Supports intensity levels: lite, full (default), ultra. Use whenever
+  fifty. Supports intensity levels: lite, full (default), ultra. Use when
   the user says "ponytail", "be lazy", "lazy mode", "simplest solution",
-  "minimal solution", "yagni", "do less", or "shortest path", and whenever
+  "minimal solution", "yagni", "do less", or "shortest path", and when
   they complain about over-engineering, bloat, boilerplate, or unnecessary
   dependencies.
 license: MIT

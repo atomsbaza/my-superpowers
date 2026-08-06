@@ -3,8 +3,9 @@ name: secrets-guardrail
 description: >
   PostToolUse hook that redacts credential patterns from all tool output before Claude
   sees it — API keys, tokens, passwords, connection strings. Zero-config security layer,
-  drops in alongside existing hooks. Invoke /secrets-guardrail setup to wire it into
-  a project's settings. No skill invocation needed after setup — it runs automatically.
+  drops in alongside existing hooks. Use when the user runs /secrets-guardrail setup
+  to wire it into a project's settings. No skill invocation needed after setup — it
+  runs automatically.
 allowed-tools: Bash, Read
 disable-model-invocation: true
 ---

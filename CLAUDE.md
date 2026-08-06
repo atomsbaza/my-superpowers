@@ -12,8 +12,10 @@ files (`SKILL.md`, agent `.md`) plus a few shell hooks and Python tooling.
 Skills follow the open [AgentSkills](https://agentskills.io/specification) standard.
 Agents are flat `.md` files with YAML frontmatter (Claude Code's agent format).
 
-`install.sh` symlinks everything into `~/.claude/` (and `~/.agents/` for Codex CLI)
-so the skills/agents are usable from any project on the machine.
+`install.sh` copies everything into `~/.claude/` (and `~/.agents/` for Codex CLI)
+so the skills/agents are usable from any project on the machine. Re-running with
+`--force` overwrites the installed copies, so edits here don't take effect until
+you reinstall.
 
 ## Repository layout
 
@@ -31,7 +33,7 @@ skills/            All skills, grouped by category         (→ ~/.claude/skills
   product-owner/   orchestrating-po-workflow, writing-prd, writing-user-stories, …
   dotnet/          implementing-dotnet, designing-database-schema
   apple/           swift-concurrency-pro, swiftui-patterns, xcodebuildmcp-cli, …
-  knowledge-base/  martin-clean-code, khononov-ddd, tdd-knowledge-base, …
+  knowledge-base/  martin-clean-code, khononov-ddd, tdd-knowledge-base, head-first-design-patterns, …
   design/          frontend-design
 docs/              Research reports, session logs, design specs (reference material)
   research/<topic>/   Cited research output (claude-code, dotnet, ios, mcp, …)

@@ -1,7 +1,7 @@
 ---
 model: sonnet
 name: handoff
-description: Compact the current conversation into a handoff document for another agent to pick up.
+description: Compact the current conversation into a handoff document for another agent to pick up. Use when the user explicitly runs /handoff or asks to hand off the session.
 argument-hint: "What will the next session be used for?"
 ---
 

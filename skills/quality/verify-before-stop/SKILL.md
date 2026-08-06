@@ -4,7 +4,7 @@ description: >
   Always-on regression guard: runs tests on git-changed files before any session ends.
   Blocks the session stop if tests fail, preventing silent regressions from slipping
   through. Not a loop — fires once per session end. Requires its Stop hook wired in
-  .claude/settings.json. Activate with /verify-before-stop setup.
+  .claude/settings.json. Use when the user runs /verify-before-stop setup to activate it.
 allowed-tools: Bash, Read
 disable-model-invocation: true
 ---

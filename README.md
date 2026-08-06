@@ -142,6 +142,12 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 | `management-talk` | Rewrite technical content for leadership audiences |
 | `business-impact` | Translate a technical proposal into quantified business terms: revenue at risk, churn %, uptime hours, cost per hour of downtime |
 
+### Design
+
+| Skill | What it does |
+|---|---|
+| `frontend-design` | Guidance for distinctive, intentional visual design — aesthetic direction, typography, avoiding templated defaults |
+
 ### Tools
 
 | Skill | What it does |
@@ -161,7 +167,14 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 | `herdr-workflow` | Coordinate Codex/Claude/Kiro CLI agents through Herdr — panes, worktree isolation, parallel implementer/reviewer/tester roles, handoff |
 | `wayfinder` | Codebase exploration and architecture mapping |
 | `xcodebuildmcp-cli` | Reference for driving XcodeBuildMCP from the CLI for Apple platform builds |
+| `graphify` | Turn any input (code, docs, papers, images, videos) into a persistent knowledge graph with god nodes, community detection, query/path/explain tools |
+| `tessera-panes` | Drive and observe a neighboring Tessera pane — discover panes, send keystrokes, poll/stream output |
 | `design-patterns-csharp` | Knowledge base from *Design Patterns* (Gang of Four, 1994) and *Design Patterns in C#* (Sarcar, 2018) — all 23 patterns with canonical definitions and C# implementations, Simple Factory/Null Object/MVC, pattern criticisms, anti-patterns, modern C# notes (2025–26) |
+| `designing-data-intensive-apps` | Knowledge base from *Designing Data-Intensive Applications* by Martin Kleppmann — storage engines, data models, replication, partitioning, transactions, consistency, batch/stream processing, derived data |
+| `graph-engineering-knowledge-base` | Research-synthesized knowledge base on Graph Engineering (NotebookLM deep research, ~140 sources) — graph data models, property graphs vs RDF, ontology (OWL/SHACL/SKOS), Neo4j/Cypher, GraphRAG, distributed graph processing, graph ML/GNNs, multi-agent orchestration graphs |
+| `nygard-production-resilience` | Knowledge base from *Release It!* by Michael T. Nygard — stability, capacity, availability, failure containment, observability, safe release |
+| `richards-ford-software-architecture` | Knowledge base from *Fundamentals of Software Architecture* by Mark Richards and Neal Ford — architecture characteristics, trade-off analysis, connascence, architecture styles, quanta, fitness functions, risk storming |
+| `software-engineering-at-google` | Knowledge base from *Software Engineering at Google* — sustainable software, teams, testing, code review, build systems, dependency management, CI/CD, managed compute |
 | `dobovizki-csharp-concurrency` | Knowledge base from *C# Concurrency: Asynchronous and Multithreaded Programming* by Nir Dobovizki — async/await, compiler state machines, thread safety, SynchronizationContext, multithreading patterns, concurrent collections, async streams |
 | `fowler-refactoring` | Knowledge base from *Refactoring: Improving the Design of Existing Code* by Martin Fowler — code smells, refactoring mechanics, the Two Hats, the Rule of Three, small steps, composing methods, organizing data, simplifying conditionals |
 | `head-first-design-patterns` | Knowledge base from *Head First Design Patterns*, 2nd ed., by Freeman, Robson, Sierra & Bates — all GoF patterns with the book's OO principles, compound patterns, real-world patterns, Java-style worked examples |
