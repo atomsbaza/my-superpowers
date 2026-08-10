@@ -19,17 +19,17 @@ Use this skill for the team conventions below. Do not use Herdr controls unless 
 - Keep background work unfocused with `--no-focus`.
 - Discover pane and agent IDs from Herdr JSON responses; do not infer them from layout order.
 - Give each live agent a name that starts with its role — `implementer`, `reviewer`, `tester`, or a clear equivalent — never the bare issue/task title or slug alone; a name without a role prefix doesn't say what the agent is for. Herdr rejects a duplicate live name, so whenever more than one task pipeline may run at once, append the task slug: `implementer-<task-slug>`, `reviewer-<task-slug>` (e.g. `implementer-1834`, not `1834-worktree-remove-error`).
-- Require a dedicated Git worktree for every coding agent that might modify code. A read-only research or review agent may use the primary checkout only when its task is not tied to a specific in-progress worktree (e.g. general codebase questions). When reviewing or testing a specific implementer's in-progress work, point that agent's pane `--cwd` at the **implementer's own worktree** so it sees the actual uncommitted changes — the primary checkout will not show them.
+- Require a dedicated Git worktree for every coding agent that might modify code. Create or open it with `--workspace <current-workspace-id>` so it remains in the current Herdr workspace. A read-only research or review agent may use the primary checkout only when its task is not tied to a specific in-progress worktree (e.g. general codebase questions). When reviewing or testing a specific implementer's in-progress work, point that agent's pane `--cwd` at the **implementer's own worktree** so it sees the actual uncommitted changes — the primary checkout will not show them.
 - When `herdr worktree create` or `herdr worktree open` creates a dedicated worktree, use the returned root pane directly for the agent. Do not split another pane after opening or creating that worktree; split only when reusing an existing workspace that has no worktree-created root pane.
 - Never close, interrupt, or repurpose a pane, worktree, tab, or session not created for the current task.
 - Never put credentials, tokens, or other secrets in `herdr agent prompt` text — prompt text and pane output are persisted and readable. Have agents source secrets from their environment or existing config instead.
 - Before creating a new pane, agent, or worktree, check what already exists (`herdr pane layout`, `herdr worktree list`, or equivalent) and reuse or clean up rather than accumulating parallel resources unboundedly.
-- Default to the **current Herdr workspace**; never create a new one just to run an agent or hold a worktree. Splitting a pane (or opening a worktree root pane) in the existing workspace/tab is enough. Only create a new workspace (`herdr workspace create --cwd <path> --label <slug> --no-focus`) when the task concerns a different project/cwd than what's currently open.
+- Default to the **current Herdr workspace**; never create a new one just to run an agent or hold a worktree. Run multiple agents in panes, tabs, and dedicated worktrees within that workspace, opening or creating each worktree with `--workspace <current-workspace-id>`. Only create a new workspace (`herdr workspace create --cwd <path> --label <slug> --no-focus`) when the target project/cwd differs and no suitable workspace already exists.
 - Every prompt sent to a spawned agent (`herdr agent prompt`, any kind) must tell it to use its own skills, subagents, or custom agents where relevant to the task, not just raw tool calls — the spawned agent has the same capability to reach for specialized tooling that the lead agent does.
 
 ## Coordinate an agent
 
-1. Verify the session and inspect the current layout, and take the current workspace ID from `.result.pane.workspace_id`:
+1. Verify the session and inspect the current layout. Reuse the current workspace for every agent in this project/task, and take its ID from `.result.pane.workspace_id`:
 
    ```sh
    test "${HERDR_ENV:-}" = 1
@@ -37,9 +37,9 @@ Use this skill for the team conventions below. Do not use Herdr controls unless 
    herdr pane layout --pane "$HERDR_PANE_ID"
    ```
 
-2. Create or select an isolated worktree before starting any agent that can edit code, passing `--workspace <current-workspace-id>` from step 1 so the worktree opens inside the current workspace instead of Herdr creating a new one — never call `herdr workspace create` for this. Use the repository's established worktree convention; inspect `herdr worktree --help` when using Herdr's helper. If `herdr worktree create` or `herdr worktree open` returns a root pane, keep its `.result.root_pane.pane_id` for the agent.
+2. Create or select an isolated worktree before starting any agent that can edit code, passing `--workspace <current-workspace-id>` from step 1 so the worktree opens inside the current workspace instead of Herdr creating a separate workspace. Reuse the same workspace for every agent on this project/task; use its panes, tabs, and dedicated worktrees rather than creating another workspace because another agent is needed. Use the repository's established worktree convention; inspect `herdr worktree --help` when using Herdr's helper. If `herdr worktree create` or `herdr worktree open` returns a root pane, keep its `.result.root_pane.pane_id` for the agent.
 
-3. If the worktree helper returned a root pane, use it as the available shell pane and keep it unfocused. Only create a background sibling pane when starting from an existing workspace or tab without a dedicated worktree root. Split right when the calling pane is wide; otherwise split down:
+3. If the worktree helper returned a root pane, use it as the available shell pane and keep it unfocused. Only create a background sibling pane in the existing workspace or tab when no dedicated worktree root is available. Split right when the calling pane is wide; otherwise split down:
 
    ```sh
    herdr pane split --current --direction down --cwd <worktree-path> --no-focus
@@ -102,7 +102,7 @@ This differs from Coordinate an agent above in three ways: no worktree, the agen
 
 ## Clean up after integration
 
-Once a handoff is accepted and integrated, reclaim the resources this workflow created for that task — do not leave panes, agents, or worktrees running indefinitely:
+Once a handoff is accepted and integrated, reclaim the panes, agents, and worktrees this workflow created for that task — do not leave them running indefinitely. Keep the shared Herdr workspace for the project/task so other agents can continue using its remaining panes, tabs, and worktrees:
 
 ```sh
 herdr pane close <pane-id>
