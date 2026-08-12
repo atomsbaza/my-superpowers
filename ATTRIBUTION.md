@@ -243,6 +243,10 @@ Applications* by Andrew Hoffman (O'Reilly, 2nd ed., 2024):
   Zero Trust, dependency vulnerability scanning), generated via the
   `book-to-skill` converter
 
+## UditAkhourii/neuroarxiv
+
+`skills/tools/neuroarxiv/` was copied from [UditAkhourii/neuroarxiv](https://github.com/UditAkhourii/neuroarxiv), licensed under MIT. The portable copy includes only the Claude/Codex skill definition; the upstream TypeScript CLI and its dependencies are not included.
+
 ## Original work
 
 The following were created independently in this repo:

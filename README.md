@@ -161,6 +161,7 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 | `writing-great-skills` | Reference vocabulary and principles for writing predictable, well-structured skills |
 | `mediumlm` | Research a topic on Medium using the user's own logged-in session — search, fetch full article text, save a research note |
 | `notebooklm` | Full programmatic access to Google NotebookLM — create notebooks, add sources, generate podcasts/mind maps/study guides |
+| `neuroarxiv` | Check real arXiv prior art before non-trivial architecture decisions; isolate paper reads, score and cluster approaches, then recommend one cited path |
 | `oss-contribute` | End-to-end OSS contribution workflow — fork, orient, implement, scrutinize, open a PR |
 | `changelog-writer` | Generate changelogs/release notes from commits, PR titles, and issues — Keep a Changelog format, semver suggestions |
 | `chrome-extension-development` | Manifest V3 Chrome extension development — security, performance, best practices |
@@ -309,6 +310,9 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 
 **Adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)** (MIT):
 `ponytail`
+
+**Adapted from [UditAkhourii/neuroarxiv](https://github.com/UditAkhourii/neuroarxiv)** (MIT):
+`neuroarxiv`
 
 **Derived from *The Pragmatic Engineering Playbook*** by Bassem Dghaidi (NotebookLM, 2024):
 `scale-audit`, `quarterly-evolution`, `good-enough`, `pragmatic-review`, `business-impact`, `benchmark-sprint`
