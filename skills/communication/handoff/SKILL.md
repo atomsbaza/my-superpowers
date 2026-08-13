@@ -13,6 +13,8 @@ Do not duplicate content already captured in other artifacts (PRDs, plans, ADRs,
 
 If the user passed arguments, treat them as a description of what the next session will focus on and tailor the doc accordingly.
 
+Redact any sensitive information, such as API keys, passwords, or personally identifiable information.
+
 ## Agent Integrations
 
 ### After saving the handoff document
