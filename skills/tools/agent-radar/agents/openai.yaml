@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Radar"
+  short_description: "Discover and verify useful AI agent engineering projects"
+  default_prompt: "Use $agent-radar to find, verify, rank, and recommend useful AI agent engineering developments."
