@@ -74,6 +74,7 @@ docs/research/
 ---
 
 ### ⚡ 7. Kiro CLI & Orchestration (`docs/research/kiro/`)
+* **[2026-08-14-kiro-crew-technical-review.md](./kiro/2026-08-14-kiro-crew-technical-review.md):** Kiro Crew architecture, team adoption pilot, security guardrails, and distributed-agent trade-offs.
 * **[2026-05-29-kiro-multi-agent-workflows.md](./kiro/2026-05-29-kiro-multi-agent-workflows.md):** Kiro Multi-Agent Workflows.
 * **[2026-05-26-kiro-cli-steering-file-agent-triggering.md](./kiro/2026-05-26-kiro-cli-steering-file-agent-triggering.md):** Kiro Steering & Agent Triggers.
 
