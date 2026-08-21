@@ -66,6 +66,26 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 
 ## Skills (cross-platform)
 
+### Learning & Pairing
+> Use when you want to learn while building: keep the human involved in decisions, work in small slices, and validate with inspectable evidence.
+
+| Skill | What it does |
+|---|---|
+| `learning-pairing` | English-only, evidence-driven AI pair programming with Observe / Guided / Practice modes, explicit checkpoints, validation, and learning recap |
+
+#### Kiro Crew manual installation
+
+`install.sh` installs copies for Claude Code and Codex CLI. It does not modify Kiro Crew. To use this portable skill with Kiro Crew, copy only its `SKILL.md` into the destination machine's Kiro Crew skills directory:
+
+```bash
+cd ~/Work/my-superpowers
+mkdir -p "$HOME/.kiro/crew/skills/learning-pairing"
+cp skills/learning-pairing/SKILL.md \
+  "$HOME/.kiro/crew/skills/learning-pairing/SKILL.md"
+```
+
+Then start a new session or reload skills if the runtime requires it, and invoke `$learning-pairing` or say `Use learning pairing for this task`. The skill is behavioral guidance only; it does not include KiroCrew production code, Pairing Preflight, credentials, or runtime state. Do not copy the entire `$HOME/.kiro/crew` directory to another machine.
+
 ### Planning
 > Use before writing any code — design, investigate, document decisions.
 
@@ -326,6 +346,6 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 **Original work in this repo:**
 `loop`, `tdd-loop`, `spec-writer`, `circuit-breaker`, `secrets-guardrail`, `verify-before-stop`,
 `session-promoter`, `research`, `diagnose`, `improve-codebase-architecture`, `session-summary`,
-`handoff`, `management-talk`
+`handoff`, `management-talk`, `learning-pairing`
 
 See [ATTRIBUTION.md](ATTRIBUTION.md) for full details.

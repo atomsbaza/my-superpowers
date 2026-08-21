@@ -100,6 +100,12 @@ These are concise, non-verbatim adaptations of useful workflow ideas read from p
 
 The existing `tools/agent-evals/` engine is reused as-is. Evaluation concepts from [Microsoft Waza](https://github.com/microsoft/waza) informed the preference for isolated fixtures, explicit validators, baseline comparison, replayable results, and regression gates; no Waza code was copied.
 
+## Kiro Crew learning-pairing adaptation
+
+`skills/learning-pairing/` is a portable, English-only adaptation of the user's Kiro Crew
+learning-pairing behavioral prototype. It contains only AgentSkills-compatible guidance;
+no Kiro Crew production code, runtime integration, credentials, or runtime state was copied.
+
 ## Original work — Loop Engineering
 
 The following skill was created in this repo, derived from concepts in
