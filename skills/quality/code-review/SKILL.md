@@ -10,6 +10,26 @@ Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
 
 Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
 
+## Review contract
+
+This is a read-only analysis and draft-report skill. It may inspect the repository, history, instructions, and diff, but it must not edit files, apply fixes, commit, push, merge, open or update a pull request, or post review comments. Those are separate user-approved actions.
+
+Report only findings grounded in the changed lines or the supplied review scope. Do not turn pre-existing problems, subjective preferences, or issues that tooling already catches into blockers. If no actionable finding survives review, say so explicitly.
+
+## Confidence and impact gate
+
+Score each candidate finding independently:
+
+| Impact | Consequence | Minimum confidence to report |
+|---|---|---:|
+| Critical (81–100) | data loss, security breach, system-wide failure | 50 |
+| High (61–80) | core feature failure, corruption, or serious security risk | 65 |
+| Medium (41–60) | realistic edge-case failure or material maintainability risk | 75 |
+| Medium-low (21–40) | limited quality or maintainability impact | 85 |
+| Low (0–20) | minor style or polish issue | 95 |
+
+Prefer high and critical findings by default. A reported finding needs a file and line or an exact changed symbol, observed evidence, consequence, confidence, impact, and a concrete remediation direction. Keep lower-impact findings out unless the user requests them.
+
 The issue tracker should have been provided to you — run `/setup-matt-pocock-skills` if `docs/agents/issue-tracker.md` is missing.
 
 ## Process

@@ -115,7 +115,10 @@ For a portable Claude Code configuration where the expensive main model (Fable) 
 | `pragmatic-review` | Scores a proposal against the Engineering Diagnostic Matrix (scale strategy, tech choice, quality definition, reaction to AI) and outputs concrete adjustments |
 | `security-review` | Security checklist for auth, user input, secrets, API endpoints, and payment/sensitive features |
 | `security-auditor` | OWASP Top 10 vulnerability audit expert, with remediation/checklist/OWASP reference bundles and secret-scanning scripts |
+| `ai-agent-security` | Threat-model and defensive review for prompt injection, RAG, tool abuse, data exfiltration, and AI security gates |
+| `code-review` | Read-only two-axis diff review with evidence-backed confidence and impact thresholds |
 | `code-review-quality` | Context-driven code review focused on quality, testability, and maintainability, with a structured output schema |
+| `ci-quality-gates` | Design and audit CI quality gates, evidence, failure handling, staged rollout, and rollback readiness |
 | `performance` | Web performance audit and optimization — load time, page speed |
 
 ### Debugging
@@ -260,7 +263,7 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 | `analyzing-codebase-for-test-gaps` | Grep-based scan for untested methods, missing exception paths, OceanBase issues |
 | `generating-automation-scripts` | POM + Playwright E2E + Testcontainers integration + Bogus data factories |
 | `generating-performance-tests` | NBomber steady-state, spike, soak, OceanBase pool pressure tests |
-| `reporting-test-results` | ISTQB defect reports, executive summary, Go/No-Go recommendation |
+| `reporting-test-results` | Evidence-backed ISTQB defect reports, execution summary, and Go/No-Go recommendation |
 | `orchestrating-qa-workflow` | Chains all 8 QA skills via .qa-workflow-state.json |
 
 #### Product Owner Skills (`skills/product-owner/`)

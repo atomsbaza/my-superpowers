@@ -29,6 +29,16 @@ If no test output is provided, ask: "Please share the test results — TRX file 
 2. **Cite or it didn't happen.** Every defect references the exact test that failed and the exact assertion that broke.
 3. **Distinguish claim from verification.** "The test claims to cover X" and "I confirmed the test actually exercises X" are different — flag tests that pass trivially.
 
+## Evidence contract
+
+Build an evidence manifest before writing conclusions. For each raw result, screenshot, log, trace, or report record its source, revision/build, environment, fixture or data identity, observed time, and redaction status. Keep raw evidence immutable or append-only; generated summaries reference it rather than replacing it.
+
+For browser or E2E flows, capture the smallest useful evidence for each critical step: the action or request, expected and actual state, screenshot or trace path, relevant console/network error, and correlation or test-case identifier. Do not claim a flow passed because the page loaded; verify the user-visible assertion and the backend boundary that matters.
+
+Before issuing a report or Go/No-Go recommendation, reconcile counts and check that every defect and conclusion maps to evidence. Mark missing evidence, inferred root causes, and unverified claims explicitly. Redact secrets and personal data before any model-facing summary or external sharing.
+
+This skill produces draft reports only. It does not edit raw test history, delete evidence, submit or close tickets, publish results, or approve a release.
+
 ## Process
 
 ### Step 1 — Parse Test Results

@@ -89,6 +89,17 @@ a license audit):
 - `skills/planning/grill-me/`
 - `skills/execution/tdd/`
 
+## Curated external workflow adaptations (2026-08-21)
+
+These are concise, non-verbatim adaptations of useful workflow ideas read from public skills. No external bundle, dependency, or installer was copied.
+
+- `skills/quality/ci-quality-gates/` — adapted from [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills), specifically `ci-cd-and-automation`; MIT licensed.
+- `skills/quality/ai-agent-security/` — adapted from [alirezarezvani/claude-skills](https://github.com/alirezarezvani/claude-skills), specifically `ai-security`; MIT licensed.
+- `skills/quality/code-review/` — extended with confidence/impact filtering and draft-only safety ideas from [aj-geddes/useful-ai-prompts](https://github.com/aj-geddes/useful-ai-prompts), specifically `code-review-analysis`; MIT licensed.
+- `skills/qa/reporting-test-results/` — extended with evidence-manifest and E2E validation ideas from [aws-samples/sample-agent-skills-for-builders](https://github.com/aws-samples/sample-agent-skills-for-builders), specifically `end-to-end-testing`; Apache-2.0 licensed.
+
+The existing `tools/agent-evals/` engine is reused as-is. Evaluation concepts from [Microsoft Waza](https://github.com/microsoft/waza) informed the preference for isolated fixtures, explicit validators, baseline comparison, replayable results, and regression gates; no Waza code was copied.
+
 ## Original work — Loop Engineering
 
 The following skill was created in this repo, derived from concepts in
