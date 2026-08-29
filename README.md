@@ -71,7 +71,7 @@ Repo-level instructions for both tools live in [`CLAUDE.md`](CLAUDE.md); `AGENTS
 
 ### Orchestrator-only setup (optional)
 
-For a portable Claude Code configuration where the expensive main model (Fable) is hook-enforced to orchestrate only — thinking, planning, and reviewing, but never touching files directly — see [`docs/orchestrator-only-setup.md`](docs/orchestrator-only-setup.md). All edits are delegated to a `sonnet-writer` subagent; the guide covers install steps, verification tests, and a model-tier policy (Fable/Opus/Sonnet/Haiku).
+For a portable Claude Code configuration where the expensive main model (Fable) is hook-enforced to orchestrate only — thinking, planning, and reviewing, but never touching files directly — see [`docs/orchestrator-only-setup.md`](docs/orchestrator-only-setup.md). All edits are delegated to an `engineer` subagent; the guide covers install steps, verification tests, and a model-tier policy (Fable/Opus/Sonnet/Haiku).
 
 ---
 
@@ -239,7 +239,7 @@ Claude Code agent definitions live in `agents/` (one flat `.md` each).
 | `debugger` | Investigates bugs and unexpected behavior, root cause analysis. |
 | `docs` | Writes and maintains documentation: new READMEs/API docs/changelogs plus keeping existing docs aligned with implementation. |
 | `research` | Web research agent — structured markdown report with cited sources. |
-| `sonnet-writer` | Implements all code and file changes — the delegate for an orchestrator-only main model. |
+| `engineer` | Implements all code and file changes — the delegate for an orchestrator-only main model. |
 | `wiki-updater` | Updates the Obsidian project vault after significant work. |
 
 #### Architecture & Platform Agents
@@ -257,7 +257,7 @@ Claude Code agent definitions live in `agents/` (one flat `.md` each).
 | `api-designer` | API contracts: resources, error/pagination semantics, versioning, client-first examples. Sonnet. |
 
 The Apple/iOS/macOS agents below are platform-specific; the general development
-agents above (plus `sonnet-writer`) are available in every project alongside them.
+agents above (plus `engineer`) are available in every project alongside them.
 
 #### Apple / iOS / macOS Agents
 > Focused, single-responsibility agents for Apple platform development (iOS 26, macOS 26, Swift 6.3). Prefer XcodeBuildMCP over shell.

@@ -1,5 +1,5 @@
 ---
-name: sonnet-writer
+name: engineer
 description: Implements all code and file changes. Use when files need to be written or edited — features, fixes, refactors, configs, docs, even one-line edits. The main agent is orchestrator-only and must delegate every file mutation here.
 model: sonnet
 ---

@@ -14,7 +14,7 @@ In this configuration, the top-tier main model (referred to below by its
 model-name prefix, `claude-fable-*`) acts as **orchestrator only**: it thinks,
 plans, diagnoses, reviews, and delegates. It is not allowed to call `Edit`,
 `Write`, or `NotebookEdit` directly. Every file mutation is performed by a
-dedicated subagent (`sonnet-writer`, defined below) that the main model must
+dedicated subagent (`engineer`, defined below) that the main model must
 delegate to.
 
 The enforcement mechanism is a **PreToolUse hook**, not a prompt instruction.
@@ -150,7 +150,7 @@ fi
 
 case "$MODEL" in
   claude-fable-*)
-    echo "Main agent ($MODEL) is orchestrator-only. Delegate this edit to a subagent (e.g. sonnet-writer)." >&2
+    echo "Main agent ($MODEL) is orchestrator-only. Delegate this edit to a subagent (e.g. engineer)." >&2
     exit 2
     ;;
 esac
@@ -199,13 +199,13 @@ jq . ~/.claude/settings.json
 If `jq` prints an error instead of the file's contents, fix the JSON before
 proceeding — a broken `settings.json` can prevent Claude Code from starting.
 
-### Step 3 — Create the sonnet-writer agent
+### Step 3 — Create the engineer agent
 
-Create `~/.claude/agents/sonnet-writer.md` with this exact content:
+Create `~/.claude/agents/engineer.md` with this exact content:
 
 ```markdown
 ---
-name: sonnet-writer
+name: engineer
 description: Implements all code and file changes. Use whenever files need to be written or edited — features, fixes, refactors, configs, docs, even one-line edits. The main agent is orchestrator-only and must delegate every file mutation here.
 model: sonnet
 ---
@@ -246,7 +246,7 @@ can fabricate one:
 echo '{"type":"assistant","message":{"model":"claude-fable-5"}}' > /tmp/fake-transcript.jsonl
 ```
 
-Expected: the script prints the delegate-to-`sonnet-writer` message to stderr
+Expected: the script prints the delegate-to-`engineer` message to stderr
 and exits `2`.
 
 **2. Non-Fable transcript → allowed (exit 0)**
@@ -262,7 +262,7 @@ Expected: exit `0` — Opus (or any non-Fable model) is unaffected.
 **3. Call carries agent_id (i.e. a subagent) → allowed (exit 0)**
 
 ```bash
-echo '{"agent_id":"sonnet-writer","tool_input":{"file_path":"/tmp/x.txt"},"transcript_path":"/tmp/fake-transcript.jsonl"}' \
+echo '{"agent_id":"engineer","tool_input":{"file_path":"/tmp/x.txt"},"transcript_path":"/tmp/fake-transcript.jsonl"}' \
   | bash ~/.claude/hooks/orchestrator-only.sh; echo "exit: $?"
 ```
 
