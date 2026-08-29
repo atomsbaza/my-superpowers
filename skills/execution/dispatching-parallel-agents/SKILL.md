@@ -46,6 +46,10 @@ digraph when_to_use {
 
 ## The Pattern
 
+### 0. Confirm the target and set a budget
+
+Name the concrete target in one sentence before spawning anything — the PR URL, the failing suite, the task list. If the user asked to review "the PR" without naming it, ask for the URL once instead of inferring scope by scanning repositories. Size the fleet from the actual number of independent domains (typically 2–4); if the work seems to need more than ~5 concurrent agents, the domains are probably not independent yet — regroup or go sequential. Verify every agent type name against the harness's available-agent list before the first spawn; one nonexistent type costs a failed launch and a retry cycle.
+
 ### 1. Identify Independent Domains
 
 Group failures by what's broken:

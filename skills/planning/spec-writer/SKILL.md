@@ -12,13 +12,15 @@ disable-model-invocation: false
 
 # Spec Writer
 
-Write the spec before touching code. The spec is a lightweight artifact that captures
+Write the spec before creating anything in the project — code, tests, or scaffolding directories. The spec file itself (`.claude/active-spec.md`) is the only artifact written first. The spec is a lightweight artifact that captures
 *what* the feature does and *how to know it's done* — not how to implement it.
 
 ## When spec-writer activates
 
 Invoke explicitly with `/spec-writer <feature>` or when asked to plan before coding.
 Do not spec-write for trivial changes (typos, config tweaks, renaming).
+
+Activate proactively when a feature starts without a spec — including right after plan approval. If any project file or directory was already created for the feature, stop, write the spec, and get approval before producing anything else.
 
 ## Step 1 — Understand the request
 
