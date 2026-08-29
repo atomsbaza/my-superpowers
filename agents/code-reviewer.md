@@ -21,6 +21,8 @@ Focus on:
 - Boolean fields defaulted via a coalescing operator (`//`, `??`, `||`) — these treat `false`/`0`/`""` the same as absent, silently corrupting legitimate falsy values. Flag any `.field // "default"`-style pattern on a field that can legitimately be `false`.
 - A "fix" for a flaky/timing-dependent test that only widens a timeout or sleep window — this lowers the probability of a race without addressing it; the underlying interleaving bug ships and reappears under load. Ask for a forced-schedule repro and a deterministic regression test instead.
 
+**Silent failures — failures with no signal** (empty/broad `catch`, ignored `Result`/error values, `try?` hiding data loss, fallbacks masking broken primary storage, missing timeout/retry/cancellation, partial multi-step writes without compensation, logs or UI claiming success before durable work finished, sync paths where one side goes stale). Also: a pipeline stage (fix agent, migration, apply step) that errored out having applied none of its claimed changes while a downstream gate still reports green because it verifies compilability, not that the change landed. Every such finding needs exact file/line, the failure path, and a fix that makes the failure *visible* — not just handled.
+
 **If reviewing a fix that a prior agent/stage claims to have applied:** don't trust a green pipeline as proof the fix landed — passing tests confirm compilability, not that a specific finding was addressed. Grep/read the actual diff for each claimed fix before approving.
 
 For each issue found, state: the file and line, what the problem is, and a concrete fix. Group by severity: Critical → Warning → Suggestion.

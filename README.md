@@ -25,11 +25,22 @@ docs/            Research reports, session logs, and design specs
     sonarqube/   SonarQube / .NET code-quality research
   sessions/      Work session summaries
   superpowers/   Plans and specs for this repo
+experiments/     Local-only executable prototypes (not installed)
+  learning-harness/ CI/test failure repair learning-loop prototype
 tools/           Repo tooling (not installed)
   agent-evals/   Measure & improve agent definitions (A/B vs baseline, benchmark)
 ```
 
 Skills use the open [AgentSkills](https://agentskills.io/specification) standard. Agent definitions are flat `.md` files in `agents/`.
+
+## Experimental prototypes
+
+`experiments/learning-harness/` is a local-only prototype for analyzing and repairing
+CI/test failures inside disposable worktrees. Its runbook lives at
+[`experiments/learning-harness/README.md`](experiments/learning-harness/README.md).
+It is not installed by `install.sh`, is not a Kiro Crew runtime dependency, and
+writes only disposable run output outside committed fixtures. The harness must not
+commit or push, mutate live memory or skills, or activate candidate lessons/skills.
 
 ## Install
 
@@ -182,6 +193,7 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 | `find-skills` | Discover and install new skills |
 | `writing-skills` | TDD-based guide for creating new skills |
 | `skill-doctor` | Grades agent setup from real conversation transcripts — efficiency + code-quality + skill-coverage scores, drafted skill improvements, HTML report. Vendored from warpdotdev/common-skills. |
+| `prompt-engineering-patterns` | Patterns for writing system prompts, agent definitions, and skill instructions — structure, behavior, output contracts, and debugging an agent that ignores instructions |
 | `writing-great-skills` | Reference vocabulary and principles for writing predictable, well-structured skills |
 | `mediumlm` | Research a topic on Medium using the user's own logged-in session — search, fetch full article text, save a research note |
 | `notebooklm` | Full programmatic access to Google NotebookLM — create notebooks, add sources, generate podcasts/mind maps/study guides |
@@ -218,31 +230,31 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 
 Claude Code agent definitions live in `agents/` (one flat `.md` each).
 
-| Agent | What it does |
-|---|---|
-| `principal-dotnet-engineer` | Solo full-SDLC agent for C# .NET 8/10: requirements → design → implementation → tests → review. OceanBase, EF Core, MediatR, Serilog, xUnit, Testcontainers. |
-| `qa-dotnet-engineer` | Full QA lifecycle: risk analysis, ISTQB manual test cases, Reqnroll BDD, Playwright E2E, NBomber performance, defect reports. |
-| `po-agent` | Language-agnostic Product Owner: vision, BRD, PRD, user stories, acceptance criteria, backlog prioritization (RICE/WSJF/MoSCoW/Kano), sprint plans, roadmaps, release notes. |
-
 #### General Development Agents
 > Language- and platform-agnostic agents for everyday coding work.
 
 | Agent | What it does |
 |---|---|
-| `code-reviewer` | Reviews code changes for bugs, logic errors, edge cases, and security issues. |
+| `code-reviewer` | Reviews code changes for bugs, logic errors, edge cases, security issues, and silent failures (swallowed errors, unsafe fallbacks, false-success states). |
 | `debugger` | Investigates bugs and unexpected behavior, root cause analysis. |
-| `dependency-auditor` | Audits a new dependency before it's added: security, maintenance health, license, alternatives. |
-| `doc-updater` | Keeps project documentation aligned with implementation after feature/architecture changes. |
-| `docs-writer` | Writes READMEs, API docs, inline comments, and changelogs. |
-| `nextjs-reviewer` | Reviews Next.js App Router code — server/client boundaries, API routes, middleware, data fetching. |
-| `pr-description` | Writes a pull request title and description from git diff and commit history. |
-| `refactor` | Refactors code for clarity, maintainability, or performance. |
-| `release-checklist` | Runs a pre-release checklist — iOS App Store, web app, or general. |
+| `docs` | Writes and maintains documentation: new READMEs/API docs/changelogs plus keeping existing docs aligned with implementation. |
 | `research` | Web research agent — structured markdown report with cited sources. |
-| `silent-failure-hunter` | Finds silent failures, swallowed errors, unsafe fallbacks, misleading success states. |
 | `sonnet-writer` | Implements all code and file changes — the delegate for an orchestrator-only main model. |
-| `test-writer` | Writes unit/integration tests and edge case coverage for existing code. |
 | `wiki-updater` | Updates the Obsidian project vault after significant work. |
+
+#### Architecture & Platform Agents
+> Tech-company role agents: design and delivery leadership, reliability, security, AI systems, data, and API contracts.
+
+| Agent | What it does |
+|---|---|
+| `solution-architect` | Cross-platform system design: candidate architectures with tradeoffs, seams, reversibility, ADRs. Opus. |
+| `tech-lead` | Turns designs into sequenced, delegable task plans with dependencies, verification, and cut lines. Opus. |
+| `sre` | Production readiness review, incident response, blameless post-mortems, alerting/SLOs, failure-mode analysis. Opus. |
+| `security-engineer` | Threat modeling, trust-boundary review, authz analysis, secrets, AI/agent security. Opus. |
+| `ai-engineer` | LLM systems: eval-first design, RAG/agent architecture, model tiering, failure paths, instrumentation. Opus. |
+| `devops-engineer` | CI/CD pipelines, GitHub Actions, build/release automation, caching, flake quarantine. Sonnet. |
+| `data-engineer` | Pipelines and schemas: contracts, idempotency, migrations, data-quality gates, lineage debugging. Sonnet. |
+| `api-designer` | API contracts: resources, error/pagination semantics, versioning, client-first examples. Sonnet. |
 
 The Apple/iOS/macOS agents below are platform-specific; the general development
 agents above (plus `sonnet-writer`) are available in every project alongside them.
@@ -253,11 +265,7 @@ agents above (plus `sonnet-writer`) are available in every project alongside the
 | Agent | What it does |
 |---|---|
 | `swift-reviewer` | Swift 6.3 review: concurrency safety, `@Observable` isolation, Sendable, ARC, Foundation/AppKit/SwiftUI API correctness. |
-| `ui-reviewer` | HIG, iOS 26 Liquid Glass, macOS Tahoe, SF Symbols 6, Dynamic Type, accessibility. |
-| `xcode-build` | Build failures, code signing, privacy manifests, SPM, archiving. |
-| `privacy-reviewer` | `PrivacyInfo.xcprivacy`, `NS*UsageDescription` quality, App Store privacy labels. |
-| `simulator-qa` | Verifies the running app via XcodeBuildMCP screenshot/snapshot_ui — golden path and edge states. |
-| `ios-test-runner` | Runs `test_sim`, triages results, enforces XCTestCase for SwiftData tests. |
+| `ui-reviewer` | HIG, iOS 26 Liquid Glass, macOS Tahoe, SF Symbols 6, Dynamic Type, plus full accessibility review (VoiceOver, contrast, focus order, Reduce Motion). |
 
 Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-evals/) — an A/B evaluation engine plus autonomous improvement loops.
 
