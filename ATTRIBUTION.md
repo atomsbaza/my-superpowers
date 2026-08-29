@@ -264,6 +264,13 @@ Applications* by Andrew Hoffman (O'Reilly, 2nd ed., 2024):
 
 `skills/tools/neuroarxiv/` was copied from [UditAkhourii/neuroarxiv](https://github.com/UditAkhourii/neuroarxiv), licensed under MIT. The portable copy includes only the Claude/Codex skill definition; the upstream TypeScript CLI and its dependencies are not included.
 
+## warpdotdev/common-skills
+
+`skills/tools/skill-doctor/` was vendored from [warpdotdev/common-skills](https://github.com/warpdotdev/common-skills)
+(Warp, `.agents/skills/skill-doctor/`), licensed under MIT. Vendored 2026-08-29;
+the copy includes only the skill itself (SKILL.md, scripts/, scorers/, references/, assets/),
+not the upstream repo's tests or other skills.
+
 ## Original work
 
 The following were created independently in this repo:

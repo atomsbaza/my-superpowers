@@ -181,6 +181,7 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 | `session-promoter` | End-of-session learning extractor: promotes corrections, decisions, and project facts into persistent memory |
 | `find-skills` | Discover and install new skills |
 | `writing-skills` | TDD-based guide for creating new skills |
+| `skill-doctor` | Grades agent setup from real conversation transcripts — efficiency + code-quality + skill-coverage scores, drafted skill improvements, HTML report. Vendored from warpdotdev/common-skills. |
 | `writing-great-skills` | Reference vocabulary and principles for writing predictable, well-structured skills |
 | `mediumlm` | Research a topic on Medium using the user's own logged-in session — search, fetch full article text, save a research note |
 | `notebooklm` | Full programmatic access to Google NotebookLM — create notebooks, add sources, generate podcasts/mind maps/study guides |
