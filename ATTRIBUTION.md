@@ -271,6 +271,18 @@ Applications* by Andrew Hoffman (O'Reilly, 2nd ed., 2024):
 the copy includes only the skill itself (SKILL.md, scripts/, scorers/, references/, assets/),
 not the upstream repo's tests or other skills.
 
+## Adapted from X-scout digest (2026-09-01)
+
+`skills/knowledge-base/agent-memory-design/` was adapted from the X-scout
+knowledge-scout digest of 2026-09-01 (Discord thread #xTreand, cron job
+f933f5a8d591), consolidating cited 2026 research: arXiv 2602.11988 (ETH
+Zurich, context files), arXiv 2608.20202 (MemTrapBench),
+hatch.org agent-memory revision benchmark, jatingargiitk "Coding Brain"
+(claude-rem rewrite-with-history design), PostHog context-as-code, and Mem0
+*State of AI Agent Memory 2026* (patterns only — vendor benchmark numbers
+failed independent reproduction and are excluded). Full cited analysis:
+`docs/research/agentic-ai/2026-09-01-agent-memory-and-context.md`.
+
 ## Original work
 
 The following were created independently in this repo:
