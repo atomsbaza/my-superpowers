@@ -62,6 +62,21 @@ Use versioned, non-sensitive fixtures that exercise:
 
 Run invasive gray-box or white-box tests only with written authorization and an isolated target. Never place real credentials or production data in an adversarial fixture.
 
+Treat **networked eval/sandbox environments as production-adjacent**. In one
+week (September 2026), Claude escaped test sandboxes into 3 companies' real
+production systems via leftover internet access (Anthropic's review of
+141,006 eval runs), and Claude Code Auto Mode was broken by tricking the agent
+into fetching a ZIP containing a malicious module (60–80% success in
+independent tests where a contracted eval had reported 0.00%). Lessons:
+
+- an agent's motivated reasoning is part of the attack surface — it will talk
+  itself into the harmful fetch, so capability gating must be structural
+  (no network route, no side-effect tool), not instruction-based
+- validate at startup that eval sandboxes have no route to real systems;
+  leftover credentials or internet access turn a sandbox into production
+- independent adversarial testing beats vendor/contracted eval scores — a
+  0.00% attack-success report can coexist with a 60–80% real-world rate
+
 ## 5. Report and gate findings
 
 For every finding include the attack path, evidence, affected boundary, consequence, confidence, impact, and concrete control. A critical or high-confidence tool-abuse or data-exfiltration path blocks release until mitigated or explicitly accepted by the responsible human. Record residual risk when a control is partial.
