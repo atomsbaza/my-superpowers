@@ -4,10 +4,15 @@ Guidance for AI coding agents (Claude Code, Codex CLI) working in this repositor
 
 ## What this repo is
 
-`my-superpowers` is a **content repository**, not an application. It is a personal
-collection of reusable **skills** and **agent definitions** for AI coding agents.
-There is nothing to compile or run as a product — the "artifacts" are Markdown
-files (`SKILL.md`, agent `.md`) plus a few shell hooks and Python tooling.
+`my-superpowers` is primarily a **content repository**, not an application. It is a
+personal collection of reusable **skills** and **agent definitions** for AI coding
+agents. The committed product surfaces are Markdown files (`SKILL.md`, agent
+`.md`) plus shell hooks and supporting tooling.
+
+`experiments/learning-harness/` is an explicitly separate, local-only executable
+prototype for CI/test failure repair. It has its own pinned dependency and unittest
+workflow, is not installed by `install.sh`, and must not become a Kiro Crew runtime
+dependency, permission source, or live memory/skills writer.
 
 Skills follow the open [AgentSkills](https://agentskills.io/specification) standard.
 Agents are flat `.md` files with YAML frontmatter (Claude Code's agent format).
@@ -168,9 +173,29 @@ plus description/triggering evals only.
 - **`.gitignore`** excludes `*-workspace/` (agent-evals scratch), local runtime dirs
   (`.gemini/`, `kiro/Global/`), and the usual editor/OS/build noise. Benchmark run
   workspaces are scratch — reviewed, not committed.
-- This repo has **no package manager, no lockfile, no CI build**. The only
-  executable code is shell hooks (`skills/**/hooks/*.sh`) and the Python tooling in
-  `tools/agent-evals/scripts/` (Python 3.9, stdlib only — keep it dependency-free).
+- The root repository has no package manager, lockfile, or product CI build. The
+  `tools/agent-evals/scripts/` tooling remains stdlib-only; the separate learning
+  harness is the only prototype with its own pinned `requirements.txt` and virtual
+  environment.
+
+## Experimental prototype workflow
+
+When working under `experiments/learning-harness/`, use the prototype's isolated
+workflow rather than `install.sh`:
+
+```bash
+cd experiments/learning-harness
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python -m unittest discover -s tests -p 'test_*.py' -v
+.venv/bin/python -m compileall -q harness tests
+```
+
+Keep runtime records, diffs, and temporary worktrees outside committed fixtures.
+The harness is local-only: it must not modify either dirty Kiro Crew source
+checkout, commit or push, write live memory or skill directories, or activate a
+candidate lesson/skill. A successful run is evidence for human review, not an
+automatic promotion.
 
 ## Knowledge Graph Playbook
 

@@ -1,0 +1,475 @@
+# Explicit Knowledge Library allowlist for my-superpowers.
+# This file selects candidates only; it does not ingest, copy, or mutate documents.
+# Paths are relative to source_root and every current file is listed explicitly.
+
+schema_version: 1
+reviewed_at: 2026-08-20
+source_root: /Users/pisitkoolplukpol/Work/my-superpowers/docs
+default_action: exclude
+
+policy:
+  include:
+    description: "Safe candidate for curated Knowledge Library ingestion. Preserve source provenance and research caveats."
+    requires: [stable-or-reusable-content, provenance, no-secrets]
+    default_review_after: 2026-11-20
+  review:
+    description: "Do not ingest automatically. Human review must confirm freshness, sensitivity, authority, and duplication first."
+  exclude:
+    description: "Do not ingest from this allowlist. A future exception requires an explicit entry change and review."
+  identity:
+    source_uri: "file://{source_root}/{path}"
+    update_existing_identity: true
+  safety:
+    source_code: false
+    agent_instructions: false
+    generated_machine_readable_output: false
+    chat_transcripts: false
+    credentials_or_private_runtime_state: false
+
+entries:
+  - path: research/README.md
+    action: include
+    reason: "Canonical navigation and provenance index for the research corpus."
+    tags: [research, index, provenance]
+    review_after: 2026-11-20
+  - path: knowledge-allowlist.yml
+    action: exclude
+    reason: "Policy metadata; never ingest the allowlist itself as source knowledge."
+
+  # Reusable agent-engineering research
+  - path: research/claude-code/2026-05-24-subagent-driven-development-obra.md
+    action: review
+    reason: "Framework-specific research variant; verify overlap and current applicability before ingestion."
+  - path: research/claude-code/2026-06-11-product-owner-agent-skills.md
+    action: review
+    reason: "Role/skill research may be reusable, but provenance and framework-specific claims need review."
+  - path: research/claude-code/2026-06-11-qa-agent-skills-manual-automation-testing.md
+    action: review
+    reason: "QA guidance is potentially useful but contains domain and tool-specific claims that need freshness review."
+  - path: research/claude-code/2026-05-27-claude-code-improvement-strategies.md
+    action: review
+    reason: "Tool behavior and configuration claims can drift; retain as a candidate pending verification."
+  - path: research/claude-code/2026-06-21-agentic-engineering-loop.md
+    action: include
+    reason: "Reusable engineering-loop research with concrete verification and safety principles."
+    tags: [agent-engineering, verification, workflow]
+    review_after: 2026-11-20
+  - path: research/claude-code/2026-06-11-principal-engineer-agent-csharp-dotnet.md
+    action: review
+    reason: "Useful role guidance, but language/tool specificity and possible overlap with installed skills require review."
+  - path: research/claude-code/2026-05-28-subagent-driven-development.md
+    action: include
+    reason: "Reusable delegation and development workflow research with cross-project value."
+    tags: [agent-engineering, delegation, workflow]
+    review_after: 2026-11-20
+  - path: research/clean-code/2026-06-17-clean-code-martin-comprehensive-reference.md
+    action: review
+    reason: "Potentially durable reference, but check duplication with existing skills and confirm source/provenance boundaries."
+
+  # Domain-sensitive KYC material: useful only after explicit audience and sensitivity review.
+  - path: research/kyc/03-dotnet-ai-kyc-integration.md
+    action: review
+    reason: "Financial/KYC architecture and implementation material; review sensitivity, audience, and currentness."
+  - path: research/kyc/README.md
+    action: review
+    reason: "Index for a sensitive domain corpus; do not ingest until the underlying corpus is approved."
+  - path: research/kyc/05-agentic-ai-for-kyc-system.md
+    action: review
+    reason: "Financial compliance and agent architecture content; review sensitivity and authority before ingestion."
+  - path: research/kyc/07-advanced-kyc-topics-ppfl-ubo-regulatory.md
+    action: review
+    reason: "Regulatory and privacy-sensitive material; requires domain-owner review."
+  - path: research/kyc/02-next-gen-kyc-system-innovations.md
+    action: review
+    reason: "KYC strategy and regulatory claims may be sensitive or time-dependent."
+  - path: research/kyc/01-ai-assistant-for-kyc-system.md
+    action: review
+    reason: "Financial onboarding and biometric/AML content requires audience and sensitivity review."
+  - path: research/kyc/04-complete-dotnet-ai-kyc-system-upgrade-guide.md
+    action: review
+    reason: "Implementation guide contains code and regulated-domain assumptions; review before ingestion."
+  - path: research/kyc/06-advanced-agentic-kyc-patterns-and-evals.md
+    action: review
+    reason: "Security, compliance, and evaluation material needs explicit domain-owner approval."
+
+  # Claude/agent communication research
+  - path: research/claude/2026-06-15-po-engineer-agent-integration.md
+    action: review
+    reason: "Workflow-specific integration research; verify it remains authoritative and non-duplicative."
+  - path: research/claude/2026-06-15-claude-workflow-agent-communication.md
+    action: review
+    reason: "Reusable communication principles are promising, but source/tool assumptions require review."
+
+  # Coherent, curated agent-pattern corpus.
+  - path: research/ai-agent-design-patterns/chapter05-multi-agent-patterns.md
+    action: include
+    reason: "Curated, reusable multi-agent coordination patterns with explicit research provenance."
+    tags: [agent-design, multi-agent, orchestration]
+    review_after: 2026-11-20
+  - path: research/ai-agent-design-patterns/chapter07-reactive-workflow-patterns.md
+    action: include
+    reason: "Reusable event-driven and workflow patterns with explicit research caveats."
+    tags: [agent-design, workflow, event-driven]
+    review_after: 2026-11-20
+  - path: research/ai-agent-design-patterns/chapter06-control-safety-patterns.md
+    action: include
+    reason: "Reusable safety, authorization, guardrail, and recovery patterns."
+    tags: [agent-safety, guardrails, authorization]
+    review_after: 2026-11-20
+  - path: research/ai-agent-design-patterns/chapter03-memory-pattern.md
+    action: include
+    reason: "Reusable memory architecture and retrieval failure-mode research."
+    tags: [agent-memory, retrieval, safety]
+    review_after: 2026-11-20
+  - path: research/ai-agent-design-patterns/appendix-glossary.md
+    action: include
+    reason: "Stable terminology for the companion agent-pattern corpus."
+    tags: [agent-design, glossary]
+    review_after: 2026-11-20
+  - path: research/ai-agent-design-patterns/chapter10-anti-patterns-failure-modes.md
+    action: include
+    reason: "Reusable failure taxonomy and mitigation guidance; claims remain marked as research evidence."
+    tags: [agent-design, failure-analysis, safety]
+    review_after: 2026-11-20
+  - path: research/ai-agent-design-patterns/chapter08-framework-landscape.md
+    action: include
+    reason: "Useful comparative framework map, with time-sensitive claims bounded by review date."
+    tags: [agent-frameworks, interoperability]
+    review_after: 2026-11-20
+  - path: research/ai-agent-design-patterns/README.md
+    action: include
+    reason: "Canonical index and provenance boundary for the curated agent-pattern corpus."
+    tags: [agent-design, index, provenance]
+    review_after: 2026-11-20
+  - path: research/ai-agent-design-patterns/chapter01-fundamentals.md
+    action: include
+    reason: "Foundational, reusable agent terminology and taxonomy."
+    tags: [agent-design, fundamentals]
+    review_after: 2026-11-20
+  - path: research/ai-agent-design-patterns/chapter02-foundational-patterns.md
+    action: include
+    reason: "Reusable planner, tool-calling, and RAG design guidance."
+    tags: [agent-design, tools, rag]
+    review_after: 2026-11-20
+  - path: research/ai-agent-design-patterns/chapter04-reflection-verification.md
+    action: include
+    reason: "Reusable reflection and verification patterns with explicit limitations."
+    tags: [agent-design, evaluation, verification]
+    review_after: 2026-11-20
+  - path: research/ai-agent-design-patterns/appendix-cheatsheet.md
+    action: include
+    reason: "Compact companion index for pattern selection and decision rules."
+    tags: [agent-design, cheatsheet]
+    review_after: 2026-11-20
+  - path: research/ai-agent-design-patterns/chapter09-composing-architectures.md
+    action: include
+    reason: "Reusable guidance for composing bounded agent architectures."
+    tags: [agent-design, architecture, orchestration]
+    review_after: 2026-11-20
+
+  # Knowledge-base engineering corpus: include the governance/retrieval core first.
+  - path: research/knowledge-bases/chapter12-implementation-roadmap.md
+    action: include
+    reason: "Directly reusable roadmap and lifecycle guidance for operating a Knowledge Base."
+    tags: [knowledge-base, governance, implementation]
+    review_after: 2026-11-20
+  - path: research/knowledge-bases/chapter09-case-studies.md
+    action: review
+    reason: "Case-study evidence is useful but mixed-quality and may become stale; verify before ingestion."
+  - path: research/knowledge-bases/chapter11-decision-rules.md
+    action: include
+    reason: "Compact, reusable decision rules for document authority, retrieval, and governance."
+    tags: [knowledge-base, decision-rules, governance]
+    review_after: 2026-11-20
+  - path: research/knowledge-bases/chapter04-tooling-landscape.md
+    action: review
+    reason: "Tool landscape changes quickly; verify current products and claims before ingestion."
+  - path: research/knowledge-bases/appendix-glossary.md
+    action: include
+    reason: "Stable terminology for the companion Knowledge Base engineering corpus."
+    tags: [knowledge-base, glossary]
+    review_after: 2026-11-20
+  - path: research/knowledge-bases/chapter05-maintenance-governance.md
+    action: include
+    reason: "Reusable authority, ownership, freshness, and archival guidance."
+    tags: [knowledge-base, governance, provenance]
+    review_after: 2026-11-20
+  - path: research/knowledge-bases/chapter08-adoption-culture.md
+    action: review
+    reason: "Organizational adoption guidance is useful but context-dependent and evidence-mixed."
+  - path: research/knowledge-bases/chapter03-documentation-frameworks.md
+    action: review
+    reason: "Framework comparison is potentially reusable but should be checked for duplication and scope."
+  - path: research/knowledge-bases/README.md
+    action: include
+    reason: "Canonical provenance and navigation boundary for the curated Knowledge Base corpus."
+    tags: [knowledge-base, index, provenance]
+    review_after: 2026-11-20
+  - path: research/knowledge-bases/chapter02-information-architecture.md
+    action: review
+    reason: "Information-architecture guidance is useful but broad; verify retrieval fit before inclusion."
+  - path: research/knowledge-bases/chapter01-fundamentals.md
+    action: include
+    reason: "Foundational principles for durable, attributable, and searchable knowledge."
+    tags: [knowledge-base, fundamentals]
+    review_after: 2026-11-20
+  - path: research/knowledge-bases/chapter07-ai-ready-kb.md
+    action: include
+    reason: "Directly relevant to agent-readable Markdown, authority tiers, and AI retrieval."
+    tags: [knowledge-base, ai-ready, retrieval]
+    review_after: 2026-11-20
+  - path: research/knowledge-bases/chapter06-search-retrieval-rag.md
+    action: include
+    reason: "Directly relevant to hybrid retrieval, chunking, ranking, and evaluation."
+    tags: [knowledge-base, retrieval, rag, evaluation]
+    review_after: 2026-11-20
+  - path: research/knowledge-bases/chapter10-anti-patterns.md
+    action: include
+    reason: "Reusable stale-document, noisy-retrieval, and governance failure modes."
+    tags: [knowledge-base, anti-patterns, retrieval]
+    review_after: 2026-11-20
+  - path: research/knowledge-bases/appendix-cheatsheet.md
+    action: include
+    reason: "Compact retrieval and governance reference for the companion corpus."
+    tags: [knowledge-base, cheatsheet]
+    review_after: 2026-11-20
+
+  # Platform, SDK, and operational research: review before allowing into durable retrieval.
+  - path: research/ios/2026-06-14-apple-os-27-developer-whats-new.md
+    action: review
+    reason: "Platform-version research is time-sensitive and contains mixed-source claims."
+  - path: research/ios/2026-06-14-apple-agent-routing-results.md
+    action: review
+    reason: "Evaluation result is project-specific; verify corpus, methodology, and intended audience."
+  - path: research/ios/2026-05-24-ios-macos-dev-tools-skills-agents.md
+    action: review
+    reason: "Tool/skill landscape can drift and may duplicate installed skills."
+  - path: research/ios/2026-05-24-xcodebuildmcp.md
+    action: review
+    reason: "Tool-specific operational guidance needs freshness verification."
+  - path: research/ios/2026-05-24-ios-simulator-screen-visibility-mcp.md
+    action: review
+    reason: "Tool comparison is time-sensitive and should be checked against current releases."
+  - path: research/dotnet/2026-07-28-mlnet-deep-research.md
+    action: review
+    reason: "Useful technical research, but framework versions and benchmark claims need review."
+  - path: research/dotnet/2026-06-22-ef-core-no-repository.md
+    action: review
+    reason: "Architecture guidance may be reusable but requires scope and source review."
+  - path: research/dotnet/2026-05-28-dotnet-developer-skills.md
+    action: review
+    reason: "Potential overlap with skills and version-sensitive .NET guidance."
+  - path: research/dotnet/2026-07-29-efcore-oceanbase-deep-research.md
+    action: review
+    reason: "Provider-specific research; approve only if this domain is intended for the Knowledge Base."
+  - path: research/dotnet/2026-07-28-dotnet-ai.md
+    action: review
+    reason: "Fast-moving .NET AI ecosystem claims require freshness review."
+
+  # CLI/tool documentation is operational and version-pinned; keep out of automatic ingestion.
+  - path: research/cli-tools/2026-08-05-xh-http-client-guide.md
+    action: review
+    reason: "CLI behavior and security notes are version-sensitive."
+  - path: research/cli-tools/herdr/appendix-verification-notes.md
+    action: review
+    reason: "Verified but explicitly warns that static CLI claims drift; retain for human review."
+  - path: research/cli-tools/herdr/chapter03-multi-agent-workflow.md
+    action: review
+    reason: "Operational CLI workflow is version-pinned."
+  - path: research/cli-tools/herdr/chapter06-operational-constraints.md
+    action: review
+    reason: "Operational behavior and limits may change between releases."
+  - path: research/cli-tools/herdr/chapter01-architecture-and-install.md
+    action: review
+    reason: "Installation and architecture guidance is version-sensitive."
+  - path: research/cli-tools/herdr/chapter02-cli-command-hierarchy.md
+    action: review
+    reason: "Command surface is version-sensitive."
+  - path: research/cli-tools/herdr/README.md
+    action: review
+    reason: "Index is useful only if the version-pinned corpus is intentionally approved."
+  - path: research/cli-tools/herdr/chapter04-agent-integrations.md
+    action: review
+    reason: "Agent support matrix is explicitly drift-prone."
+  - path: research/cli-tools/herdr/chapter05-configuration.md
+    action: review
+    reason: "Configuration keys and defaults may drift."
+  - path: research/cli-tools/herdr/chapter07-keyboard-shortcuts.md
+    action: review
+    reason: "CLI/UI behavior is version-sensitive."
+
+  # Kiro-specific research: only the current Crew reports are initially safe candidates.
+  - path: research/kiro/2026-05-28-kiro-cli-adoption-for-teams.md
+    action: review
+    reason: "Kiro CLI behavior and adoption claims are time-sensitive."
+  - path: research/kiro/2026-05-24-aws-kiro-skill-agent-compatibility.md
+    action: review
+    reason: "Compatibility matrix is version-sensitive and needs current verification."
+  - path: research/kiro/2026-08-14-kiro-crew-technical-review.md
+    action: include
+    reason: "Recent, project-relevant technical review of Kiro Crew architecture and guardrails."
+    tags: [kiro-crew, architecture, security]
+    review_after: 2026-09-20
+  - path: research/kiro/2026-05-29-kiro-hooks-automation.md
+    action: review
+    reason: "Hook behavior and configuration are version-sensitive; inspect for private setup details."
+  - path: research/kiro/2026-05-29-kiro-cli-experimental-features.md
+    action: review
+    reason: "Experimental feature behavior is likely to drift."
+  - path: research/kiro/2026-05-26-kiro-cli-steering-file-agent-triggering.md
+    action: review
+    reason: "CLI triggering behavior is version-sensitive."
+  - path: research/kiro/2026-05-26-advanced-kiro-cli-tips.md
+    action: review
+    reason: "Operational tips may include local configuration and fast-changing claims."
+  - path: research/kiro/2026-05-27-kiro-cli-orchestrator-agents-quality-cost.md
+    action: review
+    reason: "Model/tool routing and cost claims are time-sensitive."
+  - path: research/kiro/2026-05-28-kiro-cli-improvements.md
+    action: review
+    reason: "Product comparison and issue references need freshness review."
+  - path: research/kiro/2026-05-26-kiro-cli-features-quality-cost.md
+    action: review
+    reason: "Feature and cost claims are version-sensitive."
+  - path: research/kiro/2026-05-29-kiro-team-multi-agent-orchestration.md
+    action: review
+    reason: "Team configuration guidance may encode local or version-specific setup."
+  - path: research/kiro/2026-05-29-kiro-multi-root-workspaces.md
+    action: review
+    reason: "Workspace behavior is version-sensitive."
+  - path: research/kiro/2026-05-28-kiro-cli-headless-mode.md
+    action: review
+    reason: "Headless CLI behavior and CI setup need current verification and secret review."
+  - path: research/kiro/2026-05-29-kiro-multi-agent-workflows.md
+    action: review
+    reason: "Workflow behavior is version-sensitive and may overlap with current Crew docs."
+  - path: research/kiro/2026-08-20-kiro-crew-self-improving-agent.md
+    action: include
+    reason: "Recent project research with explicit evidence, limitations, governance, and rollback guidance."
+    tags: [kiro-crew, learning, governance, evaluation]
+    review_after: 2026-09-20
+
+  # Other research collections are retained as review candidates, not automatic sources.
+  - path: research/ponytail/2026-06-14-ponytail-github-evaluation.md
+    action: review
+    reason: "External tool evaluation and adoption recommendation require current verification."
+  - path: research/docklock/2026-05-30-docklock-v0.5.0-privacy-features.md
+    action: review
+    reason: "Product-specific research is unrelated to the default agent/Knowledge scope."
+  - path: research/mcp/2026-05-27-jira-confluence-mcp-aws-kiro-without-uv-uvx.md
+    action: review
+    reason: "Operational integration guide includes authentication/configuration concerns and can drift."
+  - path: research/mcp/2026-05-27-opensearch-mcp-aws-kiro-without-uv-uvx.md
+    action: review
+    reason: "Operational integration guide includes authentication/configuration concerns and can drift."
+  - path: research/mcp/2026-06-17-how-to-create-knowledge-base-mcp.md
+    action: review
+    reason: "Relevant to KB engineering, but implementation and transport claims need verification."
+  - path: research/mcp/2026-05-27-jira-confluence-mcp-without-uv-uvx.md
+    action: review
+    reason: "Authentication and server setup details require sensitivity and freshness review."
+  - path: research/mcp/2026-05-27-oceanbase-mcp-aws-kiro-without-uv-uvx.md
+    action: review
+    reason: "Database integration setup is operational and may contain sensitive configuration patterns."
+  - path: research/mcp/2026-05-27-oceanbase-mcp-without-uv-uvx.md
+    action: review
+    reason: "Database integration setup is operational and may contain sensitive configuration patterns."
+  - path: research/mcp/2026-05-27-opensearch-mcp-claude-code-cli-without-uv-uvx.md
+    action: review
+    reason: "Authentication/configuration guidance must be checked for secret and environment leakage."
+  - path: research/graph-engineering/graph-engineering-deep-research.md
+    action: review
+    reason: "Broad research corpus; approve only if graph engineering is in the intended KB scope."
+  - path: research/ai-assisted-experiences/ai-assisted-experiences-report.md
+    action: review
+    reason: "Broad mixed-source report; verify claims and intended scope before ingestion."
+  - path: research/agentic-ai/2026-08-14-xpoz-agent-engineering-radar.md
+    action: review
+    reason: "External project radar is current but fast-changing and not an authoritative source."
+  - path: research/agentic-ai/2026-07-29-agentic-ai-workflow-orchestration.md
+    action: include
+    reason: "Recent, reusable orchestration research with explicit trade-offs and failure modes."
+    tags: [agentic-ai, orchestration, architecture]
+    review_after: 2026-11-20
+  - path: research/agentic-ai/2026-08-12-agent-engineering-harnesses-sprytix-fact-check.md
+    action: include
+    reason: "Recent fact-checked research on harnesses, verification, and handoffs."
+    tags: [agentic-ai, harnesses, verification]
+    review_after: 2026-11-20
+  - path: research/agentic-ai/2026-06-21-agentic-ai-coding-agent-trends.md
+    action: review
+    reason: "Trend report and ecosystem claims are fast-changing."
+  - path: research/knowledge-graphs/knowledge-graphs-ai-briefing.md
+    action: review
+    reason: "Broad briefing is useful only if graph engineering is in scope; verify source quality."
+  - path: research/knowledge-graphs/knowledge-graphs-ai-mindmap.json
+    action: exclude
+    reason: "Generated machine-readable output; preserve as a project artifact, not Knowledge source material."
+  - path: research/knowledge-graphs/knowledge-graphs-ai-playbook.md
+    action: review
+    reason: "Potentially reusable graph guidance, but broad scope and implementation claims require review."
+  - path: research/knowledge-graphs/knowledge-graphs-ai-practical-supplement.md
+    action: review
+    reason: "Practical supplement may contain fast-changing tool recommendations; review before ingestion."
+  - path: research/sonarqube/2026-06-14-sonaranalyzer-csharp-local-verification.md
+    action: review
+    reason: "Tool/version-specific verification guide; check currentness and project relevance."
+  - path: research/web-security/2026-06-14-vuln-bank-additional-vulnerabilities.md
+    action: review
+    reason: "Security exploitation corpus requires explicit audience, handling, and scope review."
+  - path: research/show-me/2026-08-14-show-me-visual-context-engineering.md
+    action: review
+    reason: "Project/tool-specific research; verify authority and intended retrieval audience."
+  - path: research/adhd/2026-06-16-uditakhourii-adhd-repo-evaluation.md
+    action: review
+    reason: "External repository evaluation is project-specific and may become stale."
+  - path: research/vibecode-pro-max-kit/2026-06-16-vibecode-pro-max-kit.md
+    action: review
+    reason: "External toolkit evaluation and security claims require current verification."
+
+  # Durable internal guidance and project artifacts.
+  - path: improving-agents.md
+    action: include
+    reason: "Durable internal guidance for evaluating and improving agent definitions."
+    tags: [agent-engineering, evaluation, maintainability]
+    review_after: 2026-11-20
+  - path: specs/crypto-test-gateway-spec.md
+    action: exclude
+    reason: "Explicit Draft status plus internal crypto/key and environment context; not an authoritative KB source."
+  - path: specs/aes-gcm-review-checklist.md
+    action: review
+    reason: "Potentially reusable security checklist, but currently coupled to the Draft gateway spec."
+  - path: orchestrator-only-setup.md
+    action: exclude
+    reason: "Personal-machine configuration with local runtime paths and operational instructions."
+  - path: spikes/2026-06-21-stop-hook-loop-spike.md
+    action: review
+    reason: "Completed empirical spike with reusable findings, but promote only after extracting a stable general guide."
+  - path: examples/po-to-engineer-workflow.md
+    action: review
+    reason: "Reusable example, but it is process-specific and should not be treated as authoritative policy."
+
+  # Plans are execution artifacts; keep them out of durable retrieval by default.
+  - path: superpowers/plans/2026-06-14-apple-agent-routing-eval.md
+    action: exclude
+    reason: "Implementation plan; transient execution context rather than durable source material."
+  - path: superpowers/plans/2026-05-28-research-skill-clarify-before-run.md
+    action: exclude
+    reason: "Implementation plan; transient execution context rather than durable source material."
+  - path: superpowers/plans/2026-05-24-research-agent.md
+    action: exclude
+    reason: "Implementation plan; transient execution context rather than durable source material."
+
+  # Design specs remain review-only until lifecycle status and authority are confirmed.
+  - path: superpowers/specs/2026-08-20-learning-harness-design.md
+    action: review
+    reason: "Approved but newly created design; contains local paths and project-specific execution boundaries, so review and redact before ingestion."
+  - path: superpowers/specs/2026-06-14-apple-agent-routing-eval-design.md
+    action: review
+    reason: "Design document; confirm accepted status, owner, and whether it remains authoritative."
+  - path: superpowers/specs/2026-05-24-research-agent-design.md
+    action: review
+    reason: "Design document; confirm accepted status, owner, and whether it remains authoritative."
+  - path: superpowers/specs/2026-05-28-research-skill-clarify-before-run-design.md
+    action: review
+    reason: "Design document; confirm accepted status, owner, and whether it remains authoritative."

@@ -77,10 +77,29 @@ Learning Pairing
 - Definition of Done: The observable condition that means the task is complete
 - Mode: Observe / Guided / Practice
 - Roles: Human = Driver, Agent = Navigator
+- Current phase: Orient | Plan | Build | Verify | Reflect
 - Phases: Orient -> Plan -> Build -> Verify -> Reflect
 - Checkpoint policy: Decisions that require a question, and mechanical work that can continue automatically
 - Validation plan: Tests, lint, typecheck, build, or smoke test that will provide evidence
 ```
+
+## Pairing status and user controls
+
+At session start, and whenever the phase or a material decision changes, show a compact status line:
+
+```text
+Pairing status: Guided · Build · next: implement the smallest slice
+```
+
+- Keep status updates at meaningful boundaries; do not emit one for every tool call.
+- Treat `Observe`, `Guided`, and `Practice` as user-selectable controls.
+- In `Observe`, continue without blocking except for a decision that genuinely requires approval.
+- In `Guided`, use P1 checkpoints before material decisions while continuing mechanical work automatically.
+- In `Practice`, preserve P2 behavior and require the user's attempt before revealing a complete solution.
+- If the user asks to pause or stop pairing, finish only the current safe mechanical step, state the current phase and next action, and return to normal workflow.
+- If the user asks to resume pairing, re-establish the contract and current phase before continuing.
+- Pairing may end when the Definition of Done is met, the user asks to stop, or synchronous pairing no longer adds value; provide the Reflect recap before exiting.
+- Status is conversational only. Do not imply persistent session state, automatic metrics, or runtime interception.
 
 If the user switches roles, record the new role assignment explicitly, for example `Human = Navigator, Agent = Driver`. The default is that the human owns intent and the agent helps navigate.
 
