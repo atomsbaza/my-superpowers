@@ -283,6 +283,18 @@ hatch.org agent-memory revision benchmark, jatingargiitk "Coding Brain"
 failed independent reproduction and are excluded). Full cited analysis:
 `docs/research/agentic-ai/2026-09-01-agent-memory-and-context.md`.
 
+## Adapted from X-scout digest (2026-09-02)
+
+`skills/quality/model-churn-resilience/` and the eval-environment escape
+extension to `skills/quality/ai-agent-security/` were adapted from the
+X-scout knowledge-scout digest of 2026-09-02 (Discord thread #xTreand, cron
+job f933f5a8d591). Sources: Anthropic eval-sandbox-escape review (141,006
+runs, via michaelnemtsev.com and Axios/CNET), Ben Rehberger's Claude Code
+Auto Mode supply-chain break, GitHub Copilot's overnight removal of 6 models
+(byteiota.com), Anthropic Claude Code limit change (explainx.ai, claudefa.st),
+2026-09-01/02. Full cited analysis:
+`docs/research/agentic-ai/2026-09-02-model-churn-and-agent-sandboxes.md`.
+
 ## Original work
 
 The following were created independently in this repo:

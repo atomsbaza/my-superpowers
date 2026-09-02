@@ -146,7 +146,8 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 | `pragmatic-review` | Scores a proposal against the Engineering Diagnostic Matrix (scale strategy, tech choice, quality definition, reaction to AI) and outputs concrete adjustments |
 | `security-review` | Security checklist for auth, user input, secrets, API endpoints, and payment/sensitive features |
 | `security-auditor` | OWASP Top 10 vulnerability audit expert, with remediation/checklist/OWASP reference bundles and secret-scanning scripts |
-| `ai-agent-security` | Threat-model and defensive review for prompt injection, RAG, tool abuse, data exfiltration, and AI security gates |
+| `ai-agent-security` | Threat-model and defensive review for prompt injection, RAG, tool abuse, data exfiltration, eval-environment escapes, and AI security gates |
+| `model-churn-resilience` | Config/upgrade discipline against model churn — no hardcoded model IDs in persistent configs, pin-and-diff behavior on upgrades, dated budget tracking, fail-loud startup validation |
 | `code-review` | Read-only two-axis diff review with evidence-backed confidence and impact thresholds |
 | `code-review-quality` | Context-driven code review focused on quality, testability, and maintainability, with a structured output schema |
 | `ci-quality-gates` | Design and audit CI quality gates, evidence, failure handling, staged rollout, and rollback readiness |
