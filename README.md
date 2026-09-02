@@ -182,6 +182,7 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 | Skill | What it does |
 |---|---|
 | `frontend-design` | Guidance for distinctive, intentional visual design — aesthetic direction, typography, avoiding templated defaults |
+| `archify` | Polished interactive architecture/workflow/sequence/dataflow/lifecycle diagrams as standalone HTML — typed JSON spec, deterministic validate+deliver, theme/pan/zoom/route-trace built in |
 
 ### Tools
 

@@ -60,6 +60,12 @@ by Matt Pocock:
 `skills/quality/ponytail/` was adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail),
 licensed under MIT. Pinned at v4.2.0 (June 2026).
 
+## tt-a1i/archify
+
+`skills/design/archify/` was installed from [tt-a1i/archify](https://github.com/tt-a1i/archify),
+licensed under MIT. Based on Cocoon-AI's architecture-diagram-generator (MIT).
+Pinned at v2.17.0-dev.1 (September 2026); `test/` and `benchmarks/` stripped.
+
 ## Backfilled from local Codex CLI skill installs (2026-08-06)
 
 These skills were already present locally under `~/.agents/skills/` (the Codex CLI skill
