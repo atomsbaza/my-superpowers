@@ -391,6 +391,11 @@ entries:
     reason: "Recent, reusable orchestration research with explicit trade-offs and failure modes."
     tags: [agentic-ai, orchestration, architecture]
     review_after: 2026-11-20
+  - path: research/agentic-ai/2026-09-03-mcp-security-doctrine.md
+    action: include
+    reason: "Durable, principle-level MCP security doctrine with explicit citations and provenance."
+    tags: [agentic-ai, mcp, security]
+    review_after: 2026-12-03
   - path: research/agentic-ai/2026-08-12-agent-engineering-harnesses-sprytix-fact-check.md
     action: include
     reason: "Recent fact-checked research on harnesses, verification, and handoffs."
