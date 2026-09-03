@@ -301,6 +301,21 @@ Auto Mode supply-chain break, GitHub Copilot's overnight removal of 6 models
 2026-09-01/02. Full cited analysis:
 `docs/research/agentic-ai/2026-09-02-model-churn-and-agent-sandboxes.md`.
 
+## Adapted from X-scout digest (2026-09-03)
+
+MCP security controls added to `skills/quality/ai-agent-security/` (new attack
+path + MCP-specific controls subsection), the harness-engineering corollary in
+the same skill, and the write-ownership-per-lane pattern added to
+`skills/knowledge-base/agent-memory-design/` were adapted from the X-scout
+knowledge-scout digest of 2026-09-03 (Discord thread #xTreand, cron job
+f933f5a8d591). Sources: API Evangelist "The MCP Authentication and
+Authorization Gap" (apievangelist.com, 2026-09-03), Digital Applied MCP server
+audit (2026-09-02, injection path in Context7), @tonbistudio security-dials
+masterclass (x.com/tonbistudio/status/2093764090619638228), @0xwhrrari
+harness-engineering article (x.com/0xwhrrari/status/2093685107534000560),
+@joerg_peetz compile-once memory / write-ownership thread. Full cited analysis:
+`docs/research/agentic-ai/2026-09-03-mcp-security-doctrine.md`.
+
 ## Original work
 
 The following were created independently in this repo:
