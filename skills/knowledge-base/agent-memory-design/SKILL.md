@@ -35,7 +35,6 @@ Named failure modes (use this vocabulary when diagnosing):
 ## The core pattern: rewrite-with-history
 
 From the claude-rem design (jatingargiitk):
-
 1. **Append never happens.** After each session, *rewrite* a short (~100-line)
    briefing of "what is true right now".
 2. **Supersession check.** The harvester receives the previous briefing's open
@@ -75,6 +74,12 @@ see the research note):
   the receipt in session history).
 - If the stack uses git: "git log your own memory and watch a belief change"
   is the cheapest audit tool that exists.
+- **Write-ownership per lane** (@joerg_peetz, 2026-09): in multi-agent setups
+  with shared lanes/stores, each lane gets an explicit write owner — one agent
+  (or one consolidation job) may rewrite a lane's memory; others append
+  session digests only. Concurrent writers to the same briefing race and
+  silently drop each other's supersessions; single-writer-per-lane makes the
+  rewrite-with-history audit trail unambiguous.
 
 ## References
 

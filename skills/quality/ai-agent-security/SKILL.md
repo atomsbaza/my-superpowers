@@ -31,6 +31,7 @@ Assess at least these applicable paths:
 - **Data exfiltration:** output, URLs, files, logs, or tool arguments leak secrets or personal data.
 - **System-instruction leakage:** the agent reveals hidden prompts, credentials, or internal routing data.
 - **Knowledge/data poisoning:** untrusted content enters a retrieval or training path without provenance and validation.
+- **MCP tool-result injection:** a tool (e.g. docs/search servers wired into coding agents) returns attacker-controlled instructions — the tool itself becomes the injection vector (found in production audits of popular MCP servers, Sep 2026).
 
 Separate observed behavior, inferred risk, and unverified assumptions in the report.
 
@@ -47,7 +48,14 @@ Prefer controls that reduce blast radius even when the model is manipulated:
 - validate and redact model/tool output before it is displayed, stored, or fed back into context
 - maintain provenance and ingestion checks for RAG documents
 
-One regex or one model safety setting is not a complete defense. Static signature checks catch known patterns; supplement them with domain-specific adversarial cases and control-path tests.
+### MCP-specific controls (2026-09-03 doctrine; full cited analysis in `docs/research/agentic-ai/2026-09-03-mcp-security-doctrine.md`)
+
+- **Never god-mode env-var keys.** Production MCP servers commonly ship long-lived all-scope API keys in env vars — that is no auth layer once the middleman (a probabilistic, injectable model) is compromised. Use OAuth 2.1 + Dynamic Client Registration + token exchange so the agent holds narrowly-scoped, short-lived tokens per task.
+- **Log tool returns outside the agent's trust boundary.** If the agent (or anything it can write) holds the audit log, the attack can edit the evidence. Ship out-of-band tool-output logging from day one.
+- **Treat every tool response as untrusted input** — same trust tier as a fetched web page, never as verified data.
+- **Scope security dials per profile/trust level, not globally.** Capability ↔ security is a trade-off ("no agent fully safe AND fully capable"); set trust, approvals, containers, filters, and hardening per profile. External/webhook/scraped input paths get default-deny approvals + sandboxed backend + blocklist.
+
+One regex or one model safety setting is not a complete defense. Static signature checks catch known patterns; supplement them with domain-specific adversarial cases and control-path tests. Harness-engineering corollary (0xwhrrari, 2026-09): patch the harness, not the run — convert each request into a contract before the agent works to prevent silent task redefinition.
 
 ## 4. Build safe evaluation cases
 
