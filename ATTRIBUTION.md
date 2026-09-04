@@ -95,6 +95,10 @@ a license audit):
 - `skills/planning/grill-me/`
 - `skills/execution/tdd/`
 
+## Original skills (2026-09-05)
+
+- `skills/tools/kirocrew-claude-backend/` — original work; procedures verified against KiroCrew upstream `d3e67b7e9` (2026-09-04) on macOS.
+
 ## Curated external workflow adaptations (2026-08-21)
 
 These are concise, non-verbatim adaptations of useful workflow ideas read from public skills. No external bundle, dependency, or installer was copied.
