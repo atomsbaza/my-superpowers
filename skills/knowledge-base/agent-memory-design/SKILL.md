@@ -80,6 +80,18 @@ see the research note):
   session digests only. Concurrent writers to the same briefing race and
   silently drop each other's supersessions; single-writer-per-lane makes the
   rewrite-with-history audit trail unambiguous.
+- **Forward-only memory typing + source-or-error lint** (@joerg_peetz MeMex
+  Zero-RAG, 2026-09): tag every entry with a memory type (episodic / semantic
+  / procedural) that only moves *up* — consolidation never downgrades old
+  types; and enforce "every claim must have a source, otherwise it is an
+  error" mechanically (lint on every change), not by instruction. Both keep
+  the supersession audit trail trustworthy at scale.
+- **Constraints do not survive compaction** (arXiv 2606.22528, 2026-09): rules
+  living in conversation/context (policies from context files, old turns) are
+  silently cut during compaction/summarization as "not the current sub-goal" —
+  reproduced across 7 model families × 4 compaction strategies. Must-not-fail
+  rules must be re-injected after every compaction or pinned system-level;
+  never trust the summary to keep them.
 
 ## References
 
@@ -88,3 +100,6 @@ see the research note):
 - https://hatch.org/2026/08/24/agent-memory-state-revision
 - https://x.com/jatingargiitk/article/2091901298060952005
 - https://mem0.ai/blog/state-of-ai-agent-memory-2026
+- @joerg_peetz MeMex Zero-RAG: https://x.com/joerg_peetz/status/2094467733568286777 (repo: github.com/JPeetz/MeMex-Zero-RAG)
+- arXiv 2606.22528 (Governance Decay / ConstraintRot — compaction deletes in-conversation constraints)
+- `docs/research/agentic-ai/2026-09-04-sandbox-context-integrity.md` — 2026-09-04 additions (§B1, §C)
