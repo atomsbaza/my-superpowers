@@ -37,6 +37,14 @@ BEFORE claiming any status or expressing satisfaction:
 Skip any step = lying, not verifying
 ```
 
+**External itemized checklists beat generic instructions** (arXiv 2607.17937,
+2026-09): in long/cluttered context, 38/44 failed runs still reported success,
+and a generic mid-context "validate all constraints" instruction passed only
+5/10 — while an **external checklist enumerating every specific obligation**
+passed 10/10. Contradicting tool output did not reopen closed tasks. So: turn
+this skill's gate into a concrete named checklist per task (what proves done,
+item by item) rather than relying on the generic instruction alone.
+
 ## Common Failures
 
 | Claim | Requires | Not Sufficient |
