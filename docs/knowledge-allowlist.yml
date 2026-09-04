@@ -401,6 +401,11 @@ entries:
     reason: "Cited summary of WikiSkill (arXiv:2608.27454) three-layer knowledge architecture with a working personal-agent adaptation runbook."
     tags: [agentic-ai, skills, memory, knowledge-base]
     review_after: 2026-12-04
+  - path: research/agentic-ai/2026-09-04-memory-skills-memskill-selfmem.md
+    action: include
+    reason: "Cited landscape of memory-as-skills research (MemSkill, SelfMem, memory survey) with an audit of the personal lessons loop against the literature."
+    tags: [agentic-ai, memory, skills, self-improvement]
+    review_after: 2026-12-04
   - path: research/agentic-ai/2026-08-12-agent-engineering-harnesses-sprytix-fact-check.md
     action: include
     reason: "Recent fact-checked research on harnesses, verification, and handoffs."

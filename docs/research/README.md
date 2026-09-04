@@ -39,6 +39,7 @@ docs/research/
 * **[2026-06-21-agentic-ai-coding-agent-trends.md](./agentic-ai/2026-06-21-agentic-ai-coding-agent-trends.md):** Coding Agent Trends & Architecture Evolution.
 * **[2026-08-12-agent-engineering-harnesses-sprytix-fact-check.md](./agentic-ai/2026-08-12-agent-engineering-harnesses-sprytix-fact-check.md):** Fact-checked research on long-running agent harnesses, verification, handoffs, and the Sprytix X article.
 * **[2026-09-04-wikiskill-persistent-knowledge.md](./agentic-ai/2026-09-04-wikiskill-persistent-knowledge.md):** WikiSkill (arXiv:2608.27454): three-layer workspace (raw traces / persistent wiki / skills), +15pt ablation for wiki-informed skill evolution, rejected-proposal audit trail — plus a personal-agent adaptation runbook (pattern-per-file lessons, promote gate, never-rollback wiki).
+* **[2026-09-04-memory-skills-memskill-selfmem.md](./agentic-ai/2026-09-04-memory-skills-memskill-selfmem.md):** Memory-as-skills landscape: MemSkill (RL skill selector + designer evolution, ablation: evolving the bank beats selecting from a fixed one), SelfMem (agent-refined memory strategy, +41–49% on BEAM), and the write–manage–read survey taxonomy — ends with an audit of the WikiSkill-style lessons loop against this literature.
 * **[2026-06-21-agentic-engineering-loop.md](./claude-code/2026-06-21-agentic-engineering-loop.md):** Autonomous Engineering Loop Patterns.
 * **[2026-05-28-subagent-driven-development.md](./claude-code/2026-05-28-subagent-driven-development.md):** Subagent-Driven Development Workflows.
 
