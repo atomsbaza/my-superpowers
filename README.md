@@ -141,12 +141,12 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 | `requesting-code-review` | Two-stage review: spec compliance first, then code quality |
 | `receiving-code-review` | Handle review feedback rigorously, not blindly |
 | `improve-codebase-architecture` | Find refactoring and architecture opportunities |
-| `verification-before-completion` | Run checks before claiming work is done |
+| `verification-before-completion` | Run checks before claiming work is done — evidence-backed, with external itemized checklists (beats generic verify instructions, arXiv 2607.17937) |
 | `good-enough` | Detects the Esthetics Trap — finds the value ceiling, audits remaining effort as VALUE vs AESTHETICS, and recommends ship/defer |
 | `pragmatic-review` | Scores a proposal against the Engineering Diagnostic Matrix (scale strategy, tech choice, quality definition, reaction to AI) and outputs concrete adjustments |
 | `security-review` | Security checklist for auth, user input, secrets, API endpoints, and payment/sensitive features |
 | `security-auditor` | OWASP Top 10 vulnerability audit expert, with remediation/checklist/OWASP reference bundles and secret-scanning scripts |
-| `ai-agent-security` | Threat-model and defensive review for prompt injection, RAG, tool abuse, data exfiltration, MCP tool-result injection (scoped tokens, out-of-band tool-output logging, per-profile security dials), eval-environment escapes, and AI security gates |
+| `ai-agent-security` | Threat-model and defensive review for prompt injection, RAG, tool abuse, data exfiltration, MCP tool-result injection (scoped tokens, out-of-band tool-output logging, per-profile security dials), sandbox egress doctrine (deny-by-default egress, git-config startup hijack, gateway + version pinning, classifier-passing chains, trajectory-aware evals), eval-environment escapes, and AI security gates |
 | `model-churn-resilience` | Config/upgrade discipline against model churn — no hardcoded model IDs in persistent configs, pin-and-diff behavior on upgrades, dated budget tracking, fail-loud startup validation |
 | `code-review` | Read-only two-axis diff review with evidence-backed confidence and impact thresholds |
 | `code-review-quality` | Context-driven code review focused on quality, testability, and maintainability, with a structured output schema |
@@ -210,7 +210,7 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 | `tessera-panes` | Drive and observe a neighboring Tessera pane — discover panes, send keystrokes, poll/stream output |
 | `design-patterns-csharp` | Knowledge base from *Design Patterns* (Gang of Four, 1994) and *Design Patterns in C#* (Sarcar, 2018) — all 23 patterns with canonical definitions and C# implementations, Simple Factory/Null Object/MVC, pattern criticisms, anti-patterns, modern C# notes (2025–26) |
 | `designing-data-intensive-apps` | Knowledge base from *Designing Data-Intensive Applications* by Martin Kleppmann — storage engines, data models, replication, partitioning, transactions, consistency, batch/stream processing, derived data |
-| `agent-memory-design` | Research-backed patterns for designing/auditing agent persistent memory — why append-only memory degrades agents (reasoning fixation, belief distortion), rewrite-with-history + supersession checks, multi-scope/multi-signal retrieval patterns, write-ownership per lane, context-file authoring rule (non-inferable constraints only) |
+| `agent-memory-design` | Research-backed patterns for designing/auditing agent persistent memory — why append-only memory degrades agents (reasoning fixation, belief distortion), rewrite-with-history + supersession checks, multi-scope/multi-signal retrieval patterns, write-ownership per lane, forward-only memory typing + source-or-error lint, constraints-don't-survive-compaction (ConstraintRot), context-file authoring rule (non-inferable constraints only) |
 | `graph-engineering-knowledge-base` | Research-synthesized knowledge base on Graph Engineering (NotebookLM deep research, ~140 sources) — graph data models, property graphs vs RDF, ontology (OWL/SHACL/SKOS), Neo4j/Cypher, GraphRAG, distributed graph processing, graph ML/GNNs, multi-agent orchestration graphs |
 | `nygard-production-resilience` | Knowledge base from *Release It!* by Michael T. Nygard — stability, capacity, availability, failure containment, observability, safe release |
 | `richards-ford-software-architecture` | Knowledge base from *Fundamentals of Software Architecture* by Mark Richards and Neal Ford — architecture characteristics, trade-off analysis, connascence, architecture styles, quanta, fitness functions, risk storming |

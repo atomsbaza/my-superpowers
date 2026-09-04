@@ -316,6 +316,28 @@ harness-engineering article (x.com/0xwhrrari/status/2093685107534000560),
 @joerg_peetz compile-once memory / write-ownership thread. Full cited analysis:
 `docs/research/agentic-ai/2026-09-03-mcp-security-doctrine.md`.
 
+## Adapted from X-scout digest (2026-09-04)
+
+Extensions to `skills/quality/ai-agent-security/` (startup hijack via repo git
+config, classifier-passing attack chains as attack paths; sandbox-egress and
+structural-gating controls section), the external-itemized-checklist evidence
+added to `skills/quality/verification-before-completion/`, and the
+forward-only memory typing + source-or-error lint + ConstraintRot additions to
+`skills/knowledge-base/agent-memory-design/` were adapted from the X-scout
+knowledge-scout digest of 2026-09-04 (Discord thread #xTreand, cron job
+f933f5a8d591). Sources: Google Cloud agent sandbox isolation lessons
+(explainx.ai), "Out of the Sandbox" X article
+(x.com/i/article/2094174866576404913), embracethered.com Claude Code
+Auto-Mode attack chain, GitSpawn git-hijack disclosure
+(manifold.security), explainx.ai MCP security guide (updated 2026-09-01),
+Univ. Calgary memory-poisoning research (via the-14.com), arXiv 2606.22528
+(Governance Decay/ConstraintRot), arXiv 2607.17937 (skills failure in long
+context), prefactor.tech step-level evaluation gap, devgent.org harness-design
+piece (Terminal Bench 2.0 harness-only gains), markhuang.ai append-only
+history note, yonk.dev process-as-memory, @joerg_peetz MeMex Zero-RAG thread
+(x.com/joerg_peetz/status/2094467733568286777). Full cited analysis:
+`docs/research/agentic-ai/2026-09-04-sandbox-context-integrity.md`.
+
 ## Original work
 
 The following were created independently in this repo:
