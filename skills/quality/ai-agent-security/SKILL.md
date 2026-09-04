@@ -32,6 +32,8 @@ Assess at least these applicable paths:
 - **System-instruction leakage:** the agent reveals hidden prompts, credentials, or internal routing data.
 - **Knowledge/data poisoning:** untrusted content enters a retrieval or training path without provenance and validation.
 - **MCP tool-result injection:** a tool (e.g. docs/search servers wired into coding agents) returns attacker-controlled instructions — the tool itself becomes the injection vector (found in production audits of popular MCP servers, Sep 2026).
+- **Startup command hijack via repo config:** agents run `git status`/`git log` for context when opening a project; git config `core.fsmonitor` (and similar program-pointing settings) in an untrusted repo's `.git/config` executes on the host before the trust prompt, outside the sandbox (GitSpawn disclosure, Sep 2026 — Claude Code patched, several agent CLIs unpatched).
+- **Classifier-passing attack chains:** each step of an attack can look benign to a permission classifier while the chain exfiltrates — e.g. the agent refuses to run a fetched binary but writes its own decoder; module shadowing (`struct.py`) hijacks the import chain. Classifier approval is not evidence of safety.
 
 Separate observed behavior, inferred risk, and unverified assumptions in the report.
 
@@ -54,6 +56,13 @@ Prefer controls that reduce blast radius even when the model is manipulated:
 - **Log tool returns outside the agent's trust boundary.** If the agent (or anything it can write) holds the audit log, the attack can edit the evidence. Ship out-of-band tool-output logging from day one.
 - **Treat every tool response as untrusted input** — same trust tier as a fetched web page, never as verified data.
 - **Scope security dials per profile/trust level, not globally.** Capability ↔ security is a trade-off ("no agent fully safe AND fully capable"); set trust, approvals, containers, filters, and hardening per profile. External/webhook/scraped input paths get default-deny approvals + sandboxed backend + blocklist.
+
+### Sandbox egress and structural gating (2026-09-04 doctrine; full cited analysis in `docs/research/agentic-ai/2026-09-04-sandbox-context-integrity.md`)
+
+- **Egress deny-by-default is the boundary, not the hypervisor tier.** A cheap sandbox with default-deny network egress prevents exfiltration better than an expensive microVM with full internet. When egress is needed, open per-call, opt-in, visible in code. Ask of every service shared with an agent: "can input to it cause a network request?" (intended-visible services like package managers get converted into SSRF proxies; shared storage becomes an inter-agent channel).
+- **Sanitize git config before opening untrusted repos.** Inspect `.git/config` for `core.fsmonitor` / program-pointing settings before any agent CLI touches the repo; in own tooling run `git -c core.fsmonitor=false ...`.
+- **Centralize MCP enforcement at a gateway**: auth enforcement / rate limit / audit logging at the gateway (sub-servers cannot suppress logs), pin reviewed server versions (no auto-update), run servers sandboxed with watched egress.
+- **Security evals for agents with memory must be trajectory-aware** — continuous multi-interaction sequences, not per-prompt snapshots: injections planted into memory are retrieved later as "learned knowledge" and fraud patterns are non-monotonic.
 
 One regex or one model safety setting is not a complete defense. Static signature checks catch known patterns; supplement them with domain-specific adversarial cases and control-path tests. Harness-engineering corollary (0xwhrrari, 2026-09): patch the harness, not the run — convert each request into a contract before the agent works to prevent silent task redefinition.
 
