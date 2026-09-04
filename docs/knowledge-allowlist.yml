@@ -396,6 +396,11 @@ entries:
     reason: "Durable, principle-level MCP security doctrine with explicit citations and provenance."
     tags: [agentic-ai, mcp, security]
     review_after: 2026-12-03
+  - path: research/agentic-ai/2026-09-04-wikiskill-persistent-knowledge.md
+    action: include
+    reason: "Cited summary of WikiSkill (arXiv:2608.27454) three-layer knowledge architecture with a working personal-agent adaptation runbook."
+    tags: [agentic-ai, skills, memory, knowledge-base]
+    review_after: 2026-12-04
   - path: research/agentic-ai/2026-08-12-agent-engineering-harnesses-sprytix-fact-check.md
     action: include
     reason: "Recent fact-checked research on harnesses, verification, and handoffs."
