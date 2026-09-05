@@ -342,6 +342,30 @@ history note, yonk.dev process-as-memory, @joerg_peetz MeMex Zero-RAG thread
 (x.com/joerg_peetz/status/2094467733568286777). Full cited analysis:
 `docs/research/agentic-ai/2026-09-04-sandbox-context-integrity.md`.
 
+## Adapted from X-scout digest (2026-09-05)
+
+Extensions to `skills/quality/ai-agent-security/` (GitSpawn scope refinement —
+clone/fetch/pull are safe, pre-built `.git` directories are the risk;
+gitignore-is-not-a-sandbox attack path with trace-based verification;
+execution-path enforcement control — fail-closed decision engine, taint floor,
+payload-blind checks against the Framing Gap reframed-injection result,
+arXiv 2608.27092), the Demotion Ladder + context-file/skill hygiene additions
+to `skills/knowledge-base/agent-memory-design/`, and the hook-gotchas section
+(exit code 2, Stop-hook distrust, stdin payloads, settings override semantics)
+added to `skills/execution/loop/` were adapted from the X-scout knowledge-scout
+digest of 2026-09-05 (Discord thread #xTreand, cron job f933f5a8d591). Sources:
+scoutapm.com AGENTS.md analysis, PostHog stale-instruction case
+(x.com/posthog/status/2094485724171223409), pvncher skill-hygiene article,
+@ThePracticalDev skill-trigger evals, dev.to/doberman execution-path
+enforcement, arXiv 2608.27092 (Framing Gap), itsecuritynews.info GitSpawn
+refinement, dev.to/devio_3007 gitignore-vs-sandbox, mem0 loop-engineering
+article, @prukalpa context-governance thread, contextandchaos.substack.com
+context portability, @calcsam harness anatomy, @udayan_w multi-harness research
+summary (HELIX, DGM, EdgeBench), hackernoon.com Demotion Ladder,
+nick-liu.com + dev.to/nishilbhave Claude Code hooks traps,
+@akshay_pachaar local-model agent mechanics. Full cited analysis:
+`docs/research/agentic-ai/2026-09-05-context-hygiene-execution-enforcement.md`.
+
 ## Original work
 
 The following were created independently in this repo:
