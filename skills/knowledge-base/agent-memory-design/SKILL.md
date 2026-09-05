@@ -92,6 +92,20 @@ see the research note):
   reproduced across 7 model families × 4 compaction strategies. Must-not-fail
   rules must be re-injected after every compaction or pinned system-level;
   never trust the summary to keep them.
+- **The Demotion Ladder** (HackerNoon, 2026-09): the systematic mitigation for
+  the above — as a rule proves fragile, walk it down rungs: prose → hook that
+  re-injects it before compaction → restrict the write path → tests as
+  definition of done → make illegal states unrepresentable. Field data
+  (14 months): 4,000 lines of prose replaced by 13 hooks (~1,300 lines) —
+  cost doesn't vanish, it moves and becomes auditable.
+- **Context-file and skill hygiene** (2026-09-05): a context file is paid on
+  every run — every line must name the failure it prevents or be deleted
+  (~150-line ceiling; a fake command is worse than silence); stale
+  instructions become active sabotage (an agent obeyed a superseded
+  "never run gh pr merge" unquestioningly). Skill descriptions are short
+  routing rules, not ads — harnesses truncate long descriptions, causing
+  wrong-skill selection; and many skills never fire at all — verify with
+  trajectory evals that a skill triggers before accumulating more.
 
 ## References
 
