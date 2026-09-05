@@ -82,6 +82,18 @@ implement change  →  hook fires when you finish
 The checker is independent: it runs the real command and reports exit code + output.
 It cannot be fooled by your self-assessment.
 
+### Hook gotchas (2026-09, practitioner reports — verify your wiring)
+
+- **Blocking requires exit code 2.** A JSON `{"decision":"block"}` with exit 0 is
+  silently ignored — the #1 reason a checker "doesn't work". Emit exit 2 on failure.
+- **Stop-hook messages arrive in tool-result format**, and the model is trained to
+  distrust tool results — some blocks get accepted and the agent simply stops instead
+  of iterating. For hard enforcement prefer a PreToolUse gate (+ PostToolUse flag)
+  over a Stop hook as the only gate.
+- **Payloads arrive on stdin** (not env vars); project `.claude/settings.local.json`
+  **overrides** — does not merge with — user-level settings; hook settings load once
+  at session start. Debug real behavior with `claude --debug hooks`.
+
 ## Setup instructions (for humans)
 
 The loop skill requires a Stop hook. Add this to your project's
