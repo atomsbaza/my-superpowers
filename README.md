@@ -122,7 +122,7 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 | Skill | What it does |
 |---|---|
 | `executing-plans` | Inline plan execution with checkpoints and status protocol |
-| `loop` | Engineering loop: implement → verify (Stop-hook checker) → repeat until tests pass or cap hit — includes hook-wiring gotchas (exit code 2, Stop-hook distrust, stdin payloads) |
+| `loop` | Engineering loop: implement → verify (Stop-hook checker) → repeat until tests pass or cap hit — includes hook-wiring gotchas (exit code 2, Stop-hook distrust, stdin payloads) and bounded-loop requirements (declared budget, persisted state, evidence gate) |
 | `tdd-loop` | TDD with automated loop verification: write failing test → implement → loop until green |
 | `subagent-driven-development` | Execute plans task-by-task with fresh subagents + 2-stage review |
 | `dispatching-parallel-agents` | Run independent tasks in parallel |
@@ -141,7 +141,7 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 | `requesting-code-review` | Two-stage review: spec compliance first, then code quality |
 | `receiving-code-review` | Handle review feedback rigorously, not blindly |
 | `improve-codebase-architecture` | Find refactoring and architecture opportunities |
-| `verification-before-completion` | Run checks before claiming work is done — evidence-backed, with external itemized checklists (beats generic verify instructions, arXiv 2607.17937) |
+| `verification-before-completion` | Run checks before claiming work is done — evidence-backed, with external itemized checklists (beats generic verify instructions, arXiv 2607.17937) and self-report failure statistics (75% of failed runs report success; acceptance checks beyond green tests) |
 | `good-enough` | Detects the Esthetics Trap — finds the value ceiling, audits remaining effort as VALUE vs AESTHETICS, and recommends ship/defer |
 | `pragmatic-review` | Scores a proposal against the Engineering Diagnostic Matrix (scale strategy, tech choice, quality definition, reaction to AI) and outputs concrete adjustments |
 | `security-review` | Security checklist for auth, user input, secrets, API endpoints, and payment/sensitive features |
@@ -211,7 +211,7 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 | `kirocrew-claude-backend` | Run KiroCrew with Claude Code as the ACP backend — source setup, isolated test home, model-registry gotcha, z.ai/GLM routing, version gate |
 | `design-patterns-csharp` | Knowledge base from *Design Patterns* (Gang of Four, 1994) and *Design Patterns in C#* (Sarcar, 2018) — all 23 patterns with canonical definitions and C# implementations, Simple Factory/Null Object/MVC, pattern criticisms, anti-patterns, modern C# notes (2025–26) |
 | `designing-data-intensive-apps` | Knowledge base from *Designing Data-Intensive Applications* by Martin Kleppmann — storage engines, data models, replication, partitioning, transactions, consistency, batch/stream processing, derived data |
-| `agent-memory-design` | Research-backed patterns for designing/auditing agent persistent memory — why append-only memory degrades agents (reasoning fixation, belief distortion), rewrite-with-history + supersession checks, multi-scope/multi-signal retrieval patterns, write-ownership per lane, forward-only memory typing + source-or-error lint, constraints-don't-survive-compaction (ConstraintRot) + the Demotion Ladder mitigation, context-file/skill hygiene (every line names the failure it prevents, description truncation, trigger evals), context-file authoring rule (non-inferable constraints only) |
+| `agent-memory-design` | Research-backed patterns for designing/auditing agent persistent memory — why append-only memory degrades agents (reasoning fixation, belief distortion), rewrite-with-history + supersession checks, multi-scope/multi-signal retrieval patterns, write-ownership per lane, forward-only memory typing + source-or-error lint, constraints-don't-survive-compaction (ConstraintRot) + the Demotion Ladder mitigation, context-file/skill hygiene (every line names the failure it prevents, description truncation, trigger evals), context-file authoring rule (non-inferable constraints only), protect-the-prefix compaction rule + ACE/MCE incremental context evolution |
 | `graph-engineering-knowledge-base` | Research-synthesized knowledge base on Graph Engineering (NotebookLM deep research, ~140 sources) — graph data models, property graphs vs RDF, ontology (OWL/SHACL/SKOS), Neo4j/Cypher, GraphRAG, distributed graph processing, graph ML/GNNs, multi-agent orchestration graphs |
 | `nygard-production-resilience` | Knowledge base from *Release It!* by Michael T. Nygard — stability, capacity, availability, failure containment, observability, safe release |
 | `richards-ford-software-architecture` | Knowledge base from *Fundamentals of Software Architecture* by Mark Richards and Neal Ford — architecture characteristics, trade-off analysis, connascence, architecture styles, quanta, fitness functions, risk storming |

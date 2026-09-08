@@ -116,6 +116,36 @@ The existing `tools/agent-evals/` engine is reused as-is. Evaluation concepts fr
 learning-pairing behavioral prototype. It contains only AgentSkills-compatible guidance;
 no Kiro Crew production code, runtime integration, credentials, or runtime state was copied.
 
+## Adapted from X-scout digest (2026-09-08)
+
+Extensions adapted from the X-scout knowledge-scout digest of 2026-09-08
+(Discord thread #xTreand, cron job f933f5a8d591):
+
+- `skills/quality/verification-before-completion/` — self-report failure
+  statistics (Frontier Challenge: 75% of failed runs report success) and the
+  acceptance-checks-beyond-green-tests requirement (SWE-Gate, arXiv
+  2609.04167), plus autonomy-sized-by-verifiability (Andrew Ng).
+- `skills/execution/loop/` — bounded-loop requirements section (declared
+  budget, persisted state, evidence gate; arXiv 2609.00050 — recovery-loop
+  removal drops verified completion 95.0%→12.9%).
+- `skills/knowledge-base/agent-memory-design/` — protect-the-prefix
+  compaction rule (arXiv 2609.03430) and ACE/MCE incremental context
+  evolution evidence.
+- `skills/quality/ai-agent-security/` — GitSpawn CVE-2026-7163 and the
+  global-config-doesn't-work mitigation detail.
+- `docs/research/agentic-ai/2026-09-08-verification-product-bounded-loops.md`
+  — full cited analysis.
+
+Sources: clauday.com Frontier Challenge analysis, arXiv 2609.04167 (SWE-Gate),
+arXiv 2609.04681 (Verification Tax/PQC), x.com/AndrewYNg/status/2095890279865721217
++ deeplearning.ai The Batch, arXiv 2609.00050 (Tata) +
+codex.danielvaughan.com, arXiv 2609.00006 (Wavestone 11-harness autopsy) +
+codex.danielvaughan.com, alphaxiv.org/abs/2609.03430 (Random Attention),
+miraflow.ai ACE/MCE, martinfowler.com accidental blackboard,
+dev.to/jamilxt FLT shared-DAG postmortem, workloft.ai CLAUDE.md demotion,
+pipelinemag.ai design-system memory correction, manifold.security GitSpawn
+(CVE-2026-7163), x.com/METR_Evals HF postmortem.
+
 ## Original work — Loop Engineering
 
 The following skill was created in this repo, derived from concepts in
