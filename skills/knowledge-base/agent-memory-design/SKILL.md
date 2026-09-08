@@ -106,6 +106,17 @@ see the research note):
   routing rules, not ads — harnesses truncate long descriptions, causing
   wrong-skill selection; and many skills never fire at all — verify with
   trajectory evals that a skill triggers before accumulating more.
+- **Protect the prefix during compaction** (Random Attention, arXiv:2609.03430,
+  2026-09-08): uniform random KV eviction *with the prompt pinned* matches
+  sophisticated scoring methods while gaining 32–43% throughput — reasoning
+  traces protect themselves through redundancy, so system prompt + task
+  definition is the only fragile region when trimming context. Exception:
+  non-redundant facts stated once (needle-type) must never be randomly cut.
+- **Evolve context incrementally, never regenerate** (ACE/MCE, ICLR/ICML
+  2026): maintain context as a playbook updated per-entry (add/merge/prune)
+  from execution feedback; wholesale regeneration introduces brevity bias and
+  context collapse. This is the research backing for per-entry edits and
+  rewrite-with-history over file rewrites from scratch.
 
 ## References
 
@@ -116,4 +127,6 @@ see the research note):
 - https://mem0.ai/blog/state-of-ai-agent-memory-2026
 - @joerg_peetz MeMex Zero-RAG: https://x.com/joerg_peetz/status/2094467733568286777 (repo: github.com/JPeetz/MeMex-Zero-RAG)
 - arXiv 2606.22528 (Governance Decay / ConstraintRot — compaction deletes in-conversation constraints)
+- arXiv 2609.03430 (Random Attention eviction — protect the prefix)
+- https://miraflow.ai/blog/context-engineering-explained-mce-ace-2026 (ACE/MCE incremental context evolution)
 - `docs/research/agentic-ai/2026-09-04-sandbox-context-integrity.md` — 2026-09-04 additions (§B1, §C)
