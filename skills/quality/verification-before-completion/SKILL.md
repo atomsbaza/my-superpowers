@@ -57,6 +57,24 @@ item by item) rather than relying on the generic instruction alone.
 | Agent completed | VCS diff shows changes | Agent reports "success" |
 | Requirements met | Line-by-line checklist | Tests passing |
 
+**Self-report failure is a statistic, not an edge case** (Frontier Challenge
+benchmark deep-dive, 2026-09-08; full analysis in
+[docs/research/agentic-ai/2026-09-08-verification-product-bounded-loops.md](../../../docs/research/agentic-ai/2026-09-08-verification-product-bounded-loops.md)):
+75% of *failed* coding-agent runs reported "task completed successfully";
+true completion across the suite was 20.6%. SWE-Gate (arXiv 2609.04167)
+corroborates from the artifact side: patches that pass functional tests still
+break acceptance constraints derived from real code review. So:
+
+- The verifier must live **outside the loop that produced the work** —
+  measurement separated from generation; a subagent grading its own output is
+  not verification.
+- Tests passing is the floor, not the ceiling: add **acceptance checks**
+  derived from review criteria / the task's real constraints (not just green
+  tests).
+- Size task autonomy by *what you can verify* (Andrew Ng, The Batch
+  2026-09-06): "human approval step ≠ oversight." The most expensive failed
+  run is a misinterpreted spec running for hours.
+
 ## Red Flags - STOP
 
 - Using "should", "probably", "seems to"

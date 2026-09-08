@@ -94,6 +94,26 @@ It cannot be fooled by your self-assessment.
   **overrides** — does not merge with — user-level settings; hook settings load once
   at session start. Debug real behavior with `claude --debug hooks`.
 
+### Bounded-loop requirements (2026-09-08, arXiv:2609.00050; full analysis in
+`docs/research/agentic-ai/2026-09-08-verification-product-bounded-loops.md`)
+
+Any autonomous loop (this one included) must declare, before starting:
+
+- **Budget** — max iterations, wall-clock, and/or token cost, written into the
+  state file, not held in the model's head. Survey of 36,710 repos: loops in
+  the wild almost never commit a budget or stop condition — the default is
+  the unbounded loop, and it's the failure mode.
+- **Persisted state** — progress lives in the state file so a restart resumes
+  instead of redoing.
+- **Evidence gate** — the loop advances only on machine-checkable output
+  (exit code, real command output), never model self-assessment. Removing the
+  recovery/verify loop dropped verified completion 95.0% → 12.9% (same model,
+  same tasks); self-report gates produce phantom progression.
+- **Evidence-gated transitions** (graph engineering) and **bounded retry with
+  explicit stop conditions** (loop engineering) are separate concerns from
+  per-action authorization (zero-trust harness) — a loop can verify its own
+  work and still need external permission to act.
+
 ## Setup instructions (for humans)
 
 The loop skill requires a Stop hook. Add this to your project's
