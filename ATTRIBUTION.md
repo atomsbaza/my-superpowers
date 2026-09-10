@@ -396,6 +396,22 @@ nick-liu.com + dev.to/nishilbhave Claude Code hooks traps,
 @akshay_pachaar local-model agent mechanics. Full cited analysis:
 `docs/research/agentic-ai/2026-09-05-context-hygiene-execution-enforcement.md`.
 
+## Adapted from X-scout digest (2026-09-10)
+
+Extensions to `skills/quality/ai-agent-security/` (control-plane-outside-the-
+sandbox doctrine from CVE-2026-82533 — unauthenticated harness API let the
+agent self-escalate to danger-full-access; boundary credential injection from
+Cloudflare Dynamic Workers — secrets never model-visible; markdown playbooks
+as attacker-side standard per Google Threat Intelligence), to
+`skills/knowledge-base/agent-memory-design/` (memory quarantine / HOLDING
+until cold review, decision imports with acceptance-check questions,
+second-brain sprawl counter-patterns), and to `skills/execution/loop/`
+(resume-from-compiled-state with streaming step logs, contract-based
+completion, confidence-loop ≠ verification) were adapted from the X-scout
+knowledge-scout digest of 2026-09-10 (Discord thread #xTreand, cron job
+f933f5a8d591). Full cited analysis:
+`docs/research/agentic-ai/2026-09-10-security-boundaries-memory-lifecycle.md`.
+
 ## Original work
 
 The following were created independently in this repo:
