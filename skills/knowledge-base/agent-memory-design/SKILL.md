@@ -118,6 +118,28 @@ see the research note):
   context collapse. This is the research backing for per-entry edits and
   rewrite-with-history over file rewrites from scratch.
 
+- **Memory quarantine: new memories must cool down before use (2026-09-10).**
+  Independent practitioner confirmation of the recurring-twice promote rule:
+  new memories enter a HOLDING state (stored but barred from
+  decision-making) until a cooldown + cold review; ~40% (case-reported,
+  unverified) evaporate during quarantine because they were startled
+  reactions, not lessons. Never write a rule from a single event.
+- **Import rejected decisions with an acceptance-check question (2026-09-10).**
+  Agents repeat corrected mistakes because every session starts with zero
+  organizational knowledge. When importing a decision — especially a rejection
+  of an option that looked good due to constraints invisible in the final
+  code — record *why* it was rejected, and attach an acceptance check phrased
+  as a question you want answered; it measures whether the memory actually
+  gets used by the next agent.
+- **Second-brain sprawl counter-patterns (2026-09-10).** Letting an agent
+  free-build a knowledge base from full conversation history fails the same
+  way every time: notes land in files nobody chose, structures nobody
+  approved. What works: the vault holds durable knowledge, agent memory holds
+  identity + pointers only; the first-round prompt makes the agent write its
+  own instructions (a direct instruction yields a single report — an audit,
+  not a second brain); start with a small source set (cost is hard to
+  predict); put an approval gate between every stage.
+
 ## References
 
 - `docs/research/agentic-ai/2026-09-01-agent-memory-and-context.md` — full cited analysis with all sources
@@ -130,3 +152,4 @@ see the research note):
 - arXiv 2609.03430 (Random Attention eviction — protect the prefix)
 - https://miraflow.ai/blog/context-engineering-explained-mce-ace-2026 (ACE/MCE incremental context evolution)
 - `docs/research/agentic-ai/2026-09-04-sandbox-context-integrity.md` — 2026-09-04 additions (§B1, §C)
+- `docs/research/agentic-ai/2026-09-10-security-boundaries-memory-lifecycle.md` — 2026-09-10 additions (quarantine, decision acceptance checks, sprawl counter-patterns; sources: x.com/0xCodio/status/2096982132644106507, x.com/i/article/2097362674078331148, x.com/tomcrawshaw01/status/2097308735639265725)
