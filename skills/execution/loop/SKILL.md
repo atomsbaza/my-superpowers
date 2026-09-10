@@ -67,6 +67,20 @@ After each turn, the hook injects one of these into your next context:
 - **One change per turn** — focused edits are easier for the checker to verify.
 - **If stuck (same error 2+ turns)** — try a fundamentally different approach, not just
   a tweak.
+- **Resumable runs execute from compiled state, not raw transcript (2026-09-10).**
+  Persist progress as a compacted state file (current goal, done/failed items,
+  next action) and resume from it — never by replaying the raw event log. A run
+  that fails at hour 6 should stream-log every step server-side so it can
+  resume from logs instead of restarting the whole task.
+- **Contract-based completion.** Frame each turn's question as "which action
+  leads to an outcome the contract accepts," not "what do I do next" — and
+  keep tools that *propose* work separate from tools that *execute* it, so
+  proposals are gated before execution.
+- **Same agent + same context re-checking itself is a confidence loop, not
+  verification (2026-09-10).** Verification must come from a different vantage:
+  the checker hook, a fresh context, or an on-disk check — not the same session
+  re-reading its own output. Related: cross-model review beats same-model
+  review (see AGENTS.md orchestrator conventions).
 
 ## How the maker-checker works
 
