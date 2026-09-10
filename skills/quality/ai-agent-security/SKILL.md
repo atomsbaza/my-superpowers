@@ -58,6 +58,28 @@ Prefer controls that reduce blast radius even when the model is manipulated:
 - **Treat every tool response as untrusted input** — same trust tier as a fetched web page, never as verified data.
 - **Scope security dials per profile/trust level, not globally.** Capability ↔ security is a trade-off ("no agent fully safe AND fully capable"); set trust, approvals, containers, filters, and hardening per profile. External/webhook/scraped input paths get default-deny approvals + sandboxed backend + blocklist.
 
+- **Keep the control plane outside the sandbox (CVE-2026-82533, 2026-09-10).**
+  DeepSeek Harness shipped an unauthenticated internal API reachable from
+  *inside* the sandbox, letting the agent escalate its own session to
+  `danger-full-access` / approval `never` (CVSS 9.4). Doctrine: the harness's
+  approval/permission state must live outside the agent's reach and never be
+  mutable from within — "a fence that opens on any request is not a fence."
+  Audit any harness you run for internal APIs the agent can call to change its
+  own escalation, timeouts, or approval mode.
+- **Inject credentials at the boundary; the agent never sees them
+  (Cloudflare Dynamic Workers, 2026-09-10).** Agents that write code calling
+  APIs can run in an isolate with an RPC bridge making tools feel like a local
+  library; HTTP filter + credential injection sit at the boundary, so the
+  secret is never model-visible and cannot leak. Prefer this over handing the
+  agent scoped-but-visible tokens when the stack allows it.
+- **Agent-readable markdown playbooks are the attacker-side standard
+  (Google TI, 2026-09-08).** A solo attacker assembled a credential-theft agent
+  from commodity chatbot + prompt + markdown playbooks (Google-reported:
+  23,800 credentials in 6 hours, unverified). Any agent that ingests external
+  content must be assumed drivable by the same mechanism — extends indirect
+  prompt injection from "edge case" to default assumption for docs/READMEs the
+  agent reads.
+
 ### Sandbox egress and structural gating (2026-09-04 doctrine; full cited analysis in `docs/research/agentic-ai/2026-09-04-sandbox-context-integrity.md`)
 
 - **Egress deny-by-default is the boundary, not the hypervisor tier.** A cheap sandbox with default-deny network egress prevents exfiltration better than an expensive microVM with full internet. When egress is needed, open per-call, opt-in, visible in code. Ask of every service shared with an agent: "can input to it cause a network request?" (intended-visible services like package managers get converted into SSRF proxies; shared storage becomes an inter-agent channel).
