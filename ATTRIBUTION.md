@@ -412,6 +412,26 @@ knowledge-scout digest of 2026-09-10 (Discord thread #xTreand, cron job
 f933f5a8d591). Full cited analysis:
 `docs/research/agentic-ai/2026-09-10-security-boundaries-memory-lifecycle.md`.
 
+## Adapted from X-scout digest (2026-09-12)
+
+Extensions to `skills/knowledge-base/agent-memory-design/` (abstraction-first
+embedding + merge-don't-add from Microsoft Research's Memora; write-path
+control for agent-writable memory — provenance, write-time validation, audit
+trail — from OWASP ASI06 / the MemoryTrap case; context files as
+table-of-contents from OpenAI harness-engineering), to
+`skills/quality/ai-agent-security/` (skill supply-chain doctrine — no
+portable sandbox contract in skill manifests, audit allowed-tools before
+install, narrow broad shell grants per grith.ai/packslip; sandbox escapes via
+state-changing reads, GET-only proxies, and unauthenticated loopback control
+APIs per DSEWiki / the Hugging Face swarm / the Sept-11 CVE round), to
+`skills/execution/loop/` (classify-failure-before-rerun — six harness layers
+to check before "same prompt, but louder"), and to
+`skills/quality/verification-before-completion/` (Verification Tax framing
+from arXiv:2609.04681 — measure agents by production-qualified change) were
+adapted from the X-scout knowledge-scout digest of 2026-09-12 (Discord thread
+#xTreand, cron job f933f5a8d591). Full cited analysis:
+`docs/research/agentic-ai/2026-09-12-write-path-control-skills-sandboxes.md`.
+
 ## Original work
 
 The following were created independently in this repo:
