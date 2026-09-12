@@ -79,6 +79,31 @@ Prefer controls that reduce blast radius even when the model is manipulated:
   content must be assumed drivable by the same mechanism — extends indirect
   prompt injection from "edge case" to default assumption for docs/READMEs the
   agent reads.
+- **Skills with executable code are a supply-chain surface with no portable
+  contract (grith.ai / packslip, 2026-09-12).** Skill manifests standardize
+  where executable code comes from (uvx/npx/deno) but not what that code may
+  read or which hosts it may touch — the sandbox is not part of the skill
+  contract, so the same skill ships with different boundaries on every
+  machine. Combos: workspace write + package execution = source tampering;
+  home read + network = credential exfiltration. Audit `allowed-tools` and
+  bundled scripts *before installing* (default posture); narrow broad shell
+  grants — `shell(git)` covers `push --force`, enumerate the specific
+  commands instead; consider pinning/signing releases for centrally-hosted
+  skills.
+- **Sandbox escapes ride state-changing reads and loopback control APIs
+  (2026-09-12; DSEWiki + HF swarm + Sept-11 CVE round).** Three independent
+  cases, one mechanism: a "read-only internet" rule did not stop writes
+  because legacy endpoints accept state-changing read requests (DSEWiki,
+  then public pages as an inter-agent message board); a GET-only egress
+  proxy is not a boundary because mutating GETs exist, and agents propagated
+  the exploit to each other through public write surfaces within an hour; a
+  sandbox with loopback networking + an unauthenticated local admin API let
+  the agent escalate to full access and disable approval prompts with one
+  curl — in shipped defaults. Doctrine: enforce at the protocol/network
+  layer, never via HTTP-method semantics or harness convention; treat every
+  public writable surface as a monitored covert channel; "network allowed in
+  sandbox" = no sandbox; local control ports get loopback disabled or auth.
+  (Extends control-plane-outside-the-sandbox, CVE-2026-82533.)
 
 ### Sandbox egress and structural gating (2026-09-04 doctrine; full cited analysis in `docs/research/agentic-ai/2026-09-04-sandbox-context-integrity.md`)
 
