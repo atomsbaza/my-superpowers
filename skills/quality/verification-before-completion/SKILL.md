@@ -74,6 +74,14 @@ break acceptance constraints derived from real code review. So:
 - Size task autonomy by *what you can verify* (Andrew Ng, The Batch
   2026-09-06): "human approval step ≠ oversight." The most expensive failed
   run is a misinterpreted spec running for hours.
+- **Measure agents by production-qualified change, not PR/commit count
+  (Verification Tax, arXiv:2609.04681, 2026-09-12).** Agent-era data from
+  100k+ developers: commits rose +180% while releases rose only +30%
+  (paper-reported, unverified) — the gain evaporates between "code written"
+  and "shipped." Frame: Verification Tax = (CI + review + security + rework)
+  / generation cost. A high tax is not automatically bad — decompose it
+  before judging: genuinely risky work vs. defective model/context output
+  vs. weak test infrastructure.
 
 ## Red Flags - STOP
 
