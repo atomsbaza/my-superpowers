@@ -76,6 +76,15 @@ After each turn, the hook injects one of these into your next context:
   leads to an outcome the contract accepts," not "what do I do next" — and
   keep tools that *propose* work separate from tools that *execute* it, so
   proposals are gated before execution.
+- **Classify failure before rerunning (2026-09-12).** When the agent forgets
+  constraints, picks the wrong tool, or loops until budget death, the
+  environment was underspecified — it is not "the model being dumb". The
+  fix sequence: classify the failure (missing contract? missing capability?
+  weak evidence gate?), fix that gap in the harness, then rerun the *exact*
+  failing case. Never "same prompt, but louder" — a louder rerun reproduces
+  the same failure at higher cost. Harness layers to check in order: task
+  contract, context compilation, permissioned tool gateway, durable state,
+  evidence gates, trace + recovery.
 - **Same agent + same context re-checking itself is a confidence loop, not
   verification (2026-09-10).** Verification must come from a different vantage:
   the checker hook, a fresh context, or an on-disk check — not the same session
