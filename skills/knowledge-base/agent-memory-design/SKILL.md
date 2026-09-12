@@ -140,6 +140,31 @@ see the research note):
   not a second brain); start with a small source set (cost is hard to
   predict); put an approval gate between every stage.
 
+- **Embed abstractions, not raw content — and merge, don't add (Memora,
+  Microsoft Research + Cambridge, 2026-09-12).** Memory collapse comes from
+  embedding raw content into the vector store (fragmentation + wrong
+  retrieval), not from small context windows. Embed only a short (~6–8-word)
+  primary abstraction plus cue-anchor tags; keep the full content stored but
+  un-embedded; new data on an existing topic *merges* into the original
+  entry instead of spawning duplicates; retrieval is iterative navigation,
+  not one-shot top-k.
+- **Write-path control for agent-writable memory (OWASP ASI06 / MemoryTrap,
+  2026-09-12).** A memory the agent "believes because it was written" is a
+  persistence vulnerability: an ordinary workflow (clone repo → install a
+  suggested dependency) planted a payload into persistent memory + global
+  hooks + the system prompt, surviving across sessions, projects, and
+  reboots. Anything the agent writes into memory/vault needs provenance
+  (who wrote what, when), validation at *write* time (not read time), and an
+  audit trail for every memory file. (Independent confirmation of the
+  impact-log audit-trail pattern.)
+- **AGENTS.md/context files are a table of contents, not an encyclopedia
+  (OpenAI harness-engineering, 2026-09-12).** One giant context file fails
+  because context is the scarce resource — the file squeezes out the actual
+  task/code/docs and the agent misses constraints or optimizes the wrong
+  thing. Keep context files as index + pointers into knowledge stored in the
+  repo; knowledge that lives only in a person's head is invisible to the
+  agent. (Reinforces the non-inferable-only authoring rule above.)
+
 ## References
 
 - `docs/research/agentic-ai/2026-09-01-agent-memory-and-context.md` — full cited analysis with all sources
@@ -153,3 +178,4 @@ see the research note):
 - https://miraflow.ai/blog/context-engineering-explained-mce-ace-2026 (ACE/MCE incremental context evolution)
 - `docs/research/agentic-ai/2026-09-04-sandbox-context-integrity.md` — 2026-09-04 additions (§B1, §C)
 - `docs/research/agentic-ai/2026-09-10-security-boundaries-memory-lifecycle.md` — 2026-09-10 additions (quarantine, decision acceptance checks, sprawl counter-patterns; sources: x.com/0xCodio/status/2096982132644106507, x.com/i/article/2097362674078331148, x.com/tomcrawshaw01/status/2097308735639265725)
+- `docs/research/agentic-ai/2026-09-12-write-path-control-skills-sandboxes.md` — 2026-09-12 additions (abstraction-first embedding, write-path control, context-files-as-index; sources: x.com/marfinxx/status/2098184256677699929, x.com/mem0ai/article/2074509697689002254, openai.com/index/harness-engineering)
