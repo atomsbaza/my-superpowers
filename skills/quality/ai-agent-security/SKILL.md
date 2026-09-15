@@ -104,6 +104,15 @@ Prefer controls that reduce blast radius even when the model is manipulated:
   public writable surface as a monitored covert channel; "network allowed in
   sandbox" = no sandbox; local control ports get loopback disabled or auth.
   (Extends control-plane-outside-the-sandbox, CVE-2026-82533.)
+- **Validate per-step constraints; step-indexed traces (2026-09-15,
+  Microsoft AgentRx).** Agents often crash many steps *after* the root
+  cause: a misinterpreted tool output at step 04 silently corrupts state
+  and the visible failure lands at step 42. Evaluate per-step predicates
+  (schema/state consistency — e.g. claimed item count matches the array
+  actually returned) and index traces by step; observability that only
+  logs, without evaluating constraints each step, is debugging theater.
+  (Percentages quoted in the source thread are engagement-bait — not
+  citable.)
 
 ### Sandbox egress and structural gating (2026-09-04 doctrine; full cited analysis in `docs/research/agentic-ai/2026-09-04-sandbox-context-integrity.md`)
 
