@@ -176,6 +176,25 @@ After agents return:
 3. **Run full suite** - Verify all fixes work together
 4. **Spot check** - Agents can make systematic errors
 
+## Context mode: fork vs isolated (2026-09-15, LangChain Deep Agents)
+
+Pick the subagent's context mode per role — the axis is *history vs
+neutrality*:
+
+- **`fork`** — pass the supervisor's full state to the subagent. Use when
+  the task *continues* existing work (implement the fix that was already
+  diagnosed): the agent needs the history and re-deriving it wastes tokens
+  and invites drift.
+- **`isolated`** — start from an empty context with exactly the handoff
+  material you construct (the default in this skill). Required for
+  verifiers/reviewers: inheriting the supervisor's reasoning makes the
+  review non-independent — the reviewer confirms the author's story instead
+  of testing the work.
+
+Never give a reviewer a forked context; never make an implementer re-read
+from scratch what the supervisor already knows. (This is also the
+context-level reason cross-model review beats same-model review.)
+
 ## Real-World Impact
 
 From debugging session (2025-10-03):
