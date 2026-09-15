@@ -124,6 +124,21 @@ see the research note):
   decision-making) until a cooldown + cold review; ~40% (case-reported,
   unverified) evaporate during quarantine because they were startled
   reactions, not lessons. Never write a rule from a single event.
+- **Context hygiene: cut in blocks, convert rules to principles (2026-09-15).**
+  A Claude Code session loads ~7,850 tokens before the first keystroke
+  (system prompt, memory, skill descriptions, context files) while people
+  optimize a 45-token prompt. Safe cuts: remove whole *blocks*, never single
+  sentences (smaller cuts are below eval noise); convert *absolute rules into
+  principles* ("never multi-line comments" → "match surrounding comment
+  density") — rules written for weaker models are now overhead plus
+  contradiction. And stop teaching tools by examples: examples constrain the
+  exploration space — design expressive parameters instead.
+- **Tool-output pruning + token engineering levers (2026-09-15).** At the
+  system level, four levers dominate prompt compression: (1) prune
+  intermediate tool outputs — never replay a 3,000-line terminal dump every
+  turn; summarize completed steps; (2) size thinking budgets to query
+  difficulty; (3) route easy tasks off reasoning models; (4) right-size with
+  continuous evals at the gateway.
 - **Import rejected decisions with an acceptance-check question (2026-09-10).**
   Agents repeat corrected mistakes because every session starts with zero
   organizational knowledge. When importing a decision — especially a rejection
