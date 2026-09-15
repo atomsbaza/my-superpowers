@@ -432,6 +432,24 @@ adapted from the X-scout knowledge-scout digest of 2026-09-12 (Discord thread
 #xTreand, cron job f933f5a8d591). Full cited analysis:
 `docs/research/agentic-ai/2026-09-12-write-path-control-skills-sandboxes.md`.
 
+## Adapted from X-scout digest (2026-09-15)
+
+Extensions to `skills/execution/loop/` (long-horizon budgeting as r^H from
+arXiv:2609.01660 — context compression accelerates agent rot, so reduce
+dependent steps instead; fork-vs-isolated subagent context modes from
+LangChain Deep Agents), to `skills/execution/dispatching-parallel-agents/`
+(fork-vs-isolated context-mode selection per subagent role), to
+`skills/knowledge-base/agent-memory-design/` (context-hygiene cutting rules —
+block cuts, absolute-rule→principle conversion, examples→parameters for tool
+docs — plus the four token-engineering levers incl. tool-output pruning),
+to `skills/quality/ai-agent-security/` (per-step constraint validation +
+step-indexed traces from Microsoft AgentRx), and to
+`skills/debugging/diagnose/` (restate-the-problem-before-coding gate from
+Lauren Tan's pstack workflow) were adapted from the X-scout knowledge-scout
+digest of 2026-09-15 (Discord thread #xTreand, cron job f933f5a8d591). Full
+cited analysis:
+`docs/research/agentic-ai/2026-09-15-harness-context-lifecycle-subagent-boundaries.md`.
+
 ## Original work
 
 The following were created independently in this repo:
