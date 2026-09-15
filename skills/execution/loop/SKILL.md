@@ -90,6 +90,21 @@ After each turn, the hook injects one of these into your next context:
   the checker hook, a fresh context, or an on-disk check — not the same session
   re-reading its own output. Related: cross-model review beats same-model
   review (see AGENTS.md orchestrator conventions).
+- **Budget long workflows as r^H — and do NOT compensate by compressing
+  context (2026-09-15, arXiv:2609.01660).** Across 9 models and 10,664
+  trajectories, long-horizon task success follows a geometric law in the
+  number of dependent steps, collapsing from ~100% to near 0% within ~16
+  steps — and *shortening the context window makes rot faster* (logit slope
+  −0.69 vs −0.44), refuting "lost-in-the-middle" as a justification for
+  aggressive compression. The fix is fewer dependent steps: split the task
+  with checkpoint/resume, keep the steps you keep well-fed.
+- **Fork vs isolated subagent context (2026-09-15, LangChain Deep Agents).**
+  `fork` passes the supervisor's whole state to the subagent — use when the
+  work continues an existing task (implementing an already-diagnosed fix;
+  no re-reading files). `isolated` starts empty — use for verifiers and
+  reviewers, because inheriting the supervisor's reasoning makes the review
+  non-independent. Decide per role: does it need *history* or *neutrality*?
+  (This is the context-level reason cross-model review works.)
 
 ## How the maker-checker works
 
