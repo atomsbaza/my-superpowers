@@ -24,6 +24,15 @@ When exploring the codebase, use the project's domain glossary to get a clear me
 
 ## Phase 1 — Build a feedback loop
 
+**Before dispatching or diving in: restate the problem (2026-09-15, pstack
+workflow).** If an agent is doing the diagnosis, force it to restate the
+problem in its own natural language *before* it touches code. Three wins:
+the messy conversation collapses into a structured problem statement,
+misunderstandings surface before any code exists, and your own biases and
+wrong assumptions don't get injected into its context. This gate costs one
+turn and catches the most expensive failure class (solving the wrong
+problem well).
+
 **This is the skill.** Everything else is mechanical. If you have a fast, deterministic, agent-runnable pass/fail signal for the bug, you will find the cause — bisection, hypothesis-testing, and instrumentation all just consume that signal. If you don't have one, no amount of staring at code will save you.
 
 Spend disproportionate effort here. **Be aggressive. Be creative. Refuse to give up.**
