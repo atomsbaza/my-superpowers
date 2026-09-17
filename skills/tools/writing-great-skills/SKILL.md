@@ -80,3 +80,23 @@ Use these to diagnose issues the user may be having with the skill.
 - **Sediment** — stale layers that settle because adding feels safe and removing feels risky. The default fate of any skill without a pruning discipline.
 - **Sprawl** — a skill simply too long, even when every line is live and unique. Hurts readability and maintainability and wastes tokens. The cure is the ladder: disclose **reference** behind pointers, and split by **branch** or sequence so each path carries only what it needs.
 - **No-op** — a line the model already obeys by default, so you pay load to say nothing. The test: does it change behaviour versus the default? A weak leading word (_be thorough_ when the agent is already thorough-ish) is a no-op; the fix is a stronger word (_relentless_), not a different technique.
+
+## Library-level hygiene
+
+Pruning inside a skill is not enough; the skill *pool* has its own failure
+mode (2026-09-17, arXiv:2608.14036):
+
+- **Procedural anchoring is most of the value.** ~65.7% of the benefit of
+  agent skills comes from the *sequence* they enforce (check this first,
+  run tests after editing), not from injecting new knowledge (paper number,
+  unverified). When a skill's value is its process, protect the order of
+  steps — that order is the product.
+- **The pool has a selection cliff.** Growing a skill pool from 5 to 100
+  collapsed correct-skill selection from ~29.6% to ~3.3% (paper numbers,
+  unverified): more skills means more wrong-skill fires, which is worse
+  than missing skills.
+- **Prune before add.** Before adding a new skill to a library, audit which
+  existing skills actually fired last month; prune the dead ones, or demote
+  keep-but-rarely-fire skills to user-invoked (`disable-model-invocation`)
+  so they cost zero context load. Extension edits to existing skills beat
+  new skills — one more skill grows the pool that selection must search.
