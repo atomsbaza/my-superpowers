@@ -98,6 +98,16 @@ see the research note):
   definition of done → make illegal states unrepresentable. Field data
   (14 months): 4,000 lines of prose replaced by 13 hooks (~1,300 lines) —
   cost doesn't vanish, it moves and becomes auditable.
+- **Compaction must promote down, not just summarize (2026-09-17, Anthropic
+  agent-memory playbook via x.com/adiix_official/status/2099883923543130281).**
+  The playbook's L1 working → L2 episodic → L3 semantic → L4 procedural →
+  L5 meta layering makes one operational point most setups miss: when a
+  context window is about to compact or a session ends, the important
+  contents must be *promoted into a lower layer* (a memory file, a skill,
+  a knowledge note) before the context dies — a summary that stays in
+  conversation is still in the layer that's about to be destroyed. Audit
+  every consolidation job for a real promote path: did the durable claim
+  land in a file, or only in a chat summary?
 - **Context-file and skill hygiene** (2026-09-05): a context file is paid on
   every run — every line must name the failure it prevents or be deleted
   (~150-line ceiling; a fake command is worse than silence); stale
