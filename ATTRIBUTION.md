@@ -450,6 +450,26 @@ digest of 2026-09-15 (Discord thread #xTreand, cron job f933f5a8d591). Full
 cited analysis:
 `docs/research/agentic-ai/2026-09-15-harness-context-lifecycle-subagent-boundaries.md`.
 
+## Adapted from X-scout digest (2026-09-17)
+
+Extensions to `skills/execution/loop/` (context-trim floor — persist
+protocol-critical state first, never cut retained context below ~50%, from
+arXiv:2609.16461; clean-trace-is-not-ground-truth from "Corrupt Plans, Clean
+Traces" + scratchpad-persistence predictor), to
+`skills/quality/ai-agent-security/` (state-borne cross-session injection —
+review gate before the persistent-store boundary, provenance re-checked at
+use — from XSPI, arXiv:2606.04425; Framing Gap arXiv:2608.27092 re-cited
+from the primary paper), to `skills/tools/writing-great-skills/`
+(library-level hygiene: procedural anchoring, pool-selection cliff,
+prune-before-add — arXiv:2608.14036), to `skills/tools/session-promoter/`
+(checkable-memory rule, empty-digest-is-success, propose-never-self-edit —
+from mielony.com's cron-driven self-improvement pattern), and to
+`skills/knowledge-base/agent-memory-design/` (compaction-must-promote-down
+from the Anthropic agent-memory playbook) were adapted from the X-scout
+knowledge-scout digest of 2026-09-17 (Discord thread #xTreand, cron job
+f933f5a8d591). Full cited analysis:
+`docs/research/agentic-ai/2026-09-17-context-budgets-skill-pools-state-injection.md`.
+
 ## Original work
 
 The following were created independently in this repo:
