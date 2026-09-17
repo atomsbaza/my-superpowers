@@ -113,6 +113,19 @@ Prefer controls that reduce blast radius even when the model is manipulated:
   logs, without evaluating constraints each step, is debugging theater.
   (Percentages quoted in the source thread are engagement-bait — not
   citable.)
+- **State-borne injection activates across sessions (2026-09-17, XSPI,
+  arXiv:2606.04425).** Injection payloads planted in persistent state
+  (memory, filesystem, notes) switch on in the *next* session, and guardrails
+  that scan messages caught only 0–15% at planting time and 0.4–36% at
+  activation time (paper numbers, unverified). The control point is the
+  boundary *into* persistent state: external content (web pages, tool
+  output, untrusted repos) passes a review gate and gets explicit
+  provenance before it may enter a memory store, vault, or notes file —
+  and provenance is re-checked at use time, so "it's already in the store"
+  never counts as vetted. Treat any instruction found inside stored state
+  as untrusted input, not as configuration. (Pairs with payload-blind
+  exfiltration defense, arXiv:2608.27092 — cited from the primary paper as
+  of 2026-09-17.)
 
 ### Sandbox egress and structural gating (2026-09-04 doctrine; full cited analysis in `docs/research/agentic-ai/2026-09-04-sandbox-context-integrity.md`)
 
