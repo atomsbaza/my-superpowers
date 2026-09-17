@@ -105,6 +105,23 @@ After each turn, the hook injects one of these into your next context:
   reviewers, because inheriting the supervisor's reasoning makes the review
   non-independent. Decide per role: does it need *history* or *neutrality*?
   (This is the context-level reason cross-model review works.)
+- **Context trimming has a floor — keep protocol-critical state first
+  (2026-09-17, arXiv:2609.16461).** Comparing five trimming strategies:
+  naive recency/summarization saves ~60% of tokens but drops task success
+  to 67–77%, while protocol-aware trimming with adaptive budgets holds 96%
+  at 56% savings; a retained-context budget ≤25% raises failure odds ~11×
+  vs ≥50% (paper numbers, unverified). When compacting or checkpointing,
+  persist protocol-critical state (tool state, unresolved dependencies,
+  current plan) before trimming anything, and never cut retained context
+  below ~50%. Complements the r^H rule above: fewer dependent steps first,
+  then trim above the floor.
+- **A clean trace is not ground truth (2026-09-17, "Corrupt Plans, Clean
+  Traces").** Attackers can plant a corrupted plan while the chain-of-
+  thought trace stays clean — and separately, scratchpad persistence is the
+  strongest predictor of long-horizon success. Judge loop iterations by
+  on-disk state (the persisted scratchpad/checkpoint), never by a
+  well-written transcript; the checker hook exists precisely because
+  self-reported narration can diverge from reality.
 
 ## How the maker-checker works
 
