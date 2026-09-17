@@ -83,6 +83,28 @@ Pick the matching directory. If `memory/` doesn't exist inside it, create it.
 
 If nothing extractable was found: "Nothing to promote from this session."
 
+An empty result is a **success state, not a failure** (2026-09-17,
+mielony.com cron self-improvement pattern): a reflection pass that finds
+something every time is generating content, not reflecting. Do not pad the
+report to have something to show.
+
+Every promoted memory must be **checkable**: include (or reference) the
+command or observable that would verify the claim ("run `pytest -k foo`",
+"the skill fired in session log X"). A proposal without a runnable check is
+a wish, not a memory.
+
+Two hard limits, from the same source:
+
+- **Propose, never self-edit instruction sets.** The promoter writes memory
+  files; it does not edit skills, hooks, or CLAUDE.md on its own authority.
+  Self-editing instruction sets have no audit trail and drift compounds.
+  Skill changes go through the maintainer (or this repo's propose-and-stop
+  flow).
+- **Verify each signal against real files before promoting.** A failure
+  pattern, repeated tool call, or "skill loaded but unused" signal from the
+  session transcript is a hypothesis — confirm against the on-disk files
+  it concerns before writing it down.
+
 ## When to use
 
 Invoke `/session-promoter` before ending any session where:
