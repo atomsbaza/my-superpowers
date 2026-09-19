@@ -104,6 +104,18 @@ Two hard limits, from the same source:
   pattern, repeated tool call, or "skill loaded but unused" signal from the
   session transcript is a hypothesis — confirm against the on-disk files
   it concerns before writing it down.
+- **Auto-inject what you promote (2026-09-19, agentmemory #381).** A
+  promoted memory that is only *available* for recall is dead — the next
+  session must think to look it up, and it won't. After writing the file
+  and MEMORY.md pointer, verify the pointer actually lands in the layer
+  loaded at session start (push layer); if the project loads only a subset,
+  rank by relevance × confidence and keep the pointer list to what fits.
+- **Promote instructive traces into blocking eval cases (2026-09-19,
+  1minutesignal).** Don't archive every session's friction; select traces
+  that teach (repeated tool-call chains, business-impacting failures,
+  regressions mapping to product invariants) and convert them into eval
+  cases that can block release. Weekly ritual: triage traces → write the
+  rubric → add to the eval set → run on every agent change.
 
 ## When to use
 
