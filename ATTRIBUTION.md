@@ -470,6 +470,30 @@ knowledge-scout digest of 2026-09-17 (Discord thread #xTreand, cron job
 f933f5a8d591). Full cited analysis:
 `docs/research/agentic-ai/2026-09-17-context-budgets-skill-pools-state-injection.md`.
 
+## Adapted from X-scout digest (2026-09-19)
+
+Extensions to `skills/execution/loop/` (test-harness-first for long agentic
+rewrites — black-box harness with real dependencies + fault injection +
+golden files before the first implementation change, lock the writable
+surface, gate spec in place of task description, from Checkly's Node→Go
+agentic rewrite; deterministic-wakeup + one-worker-one-stage from
+158M-token hook telemetry; never-rewrite-sent-history /
+cache-hit-rate-is-the-budget with the prefix-preserving score-and-drop
+counter-pattern), to `skills/knowledge-base/agent-memory-design/`
+(stored-but-never-injected lessons are dead — auto-inject at session start,
+agentmemory #381; summarizer output is untrusted input — self-written
+compaction summaries as an internal injection channel, OpenAI alignment
+report; grep-able markdown + phased write path over vector stores — mem0
+harness-anatomy article), to `skills/quality/ai-agent-security/`
+(effect-based sandbox gating instead of name-based allowlists — capability
+= f(Model, Harness, Environment); the summarizer-injection rule with full
+analysis reference), and to `skills/tools/session-promoter/` (auto-inject
+what you promote; promote instructive traces into blocking eval cases —
+1minutesignal) were adapted from the X-scout knowledge-scout digest of
+2026-09-19 (Discord thread #xTreand, cron job f933f5a8d591). Full cited
+analysis:
+`docs/research/agentic-ai/2026-09-19-context-lifecycle-write-compact-inject.md`.
+
 ## Original work
 
 The following were created independently in this repo:
