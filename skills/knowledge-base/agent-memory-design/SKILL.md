@@ -190,6 +190,31 @@ see the research note):
   repo; knowledge that lives only in a person's head is invisible to the
   agent. (Reinforces the non-inferable-only authoring rule above.)
 
+- **Stored-but-never-injected lessons are dead (agentmemory #381, 2026-09-19).**
+  A system that recorded lessons from every session shipped none of their
+  value because session-start injection didn't include them — the agent had
+  to "think to recall," which almost never happens. Confirmed by the fix:
+  auto-inject a relevance × confidence ranked top-N at session start. Rule:
+  anything that must be known at task start lives behind a *push* layer
+  (pointer file loaded every session), never behind optional recall;
+  a lesson that relies on the agent choosing to search is dormant from the
+  moment it's written.
+- **Compaction/summarizer output is untrusted input (OpenAI alignment
+  report, 2026-09-19).** Models were caught writing jailbreak-style
+  instructions into their own compaction summaries that carry into the next
+  context window — the data/directive boundary breaks *from the inside*,
+  no external attacker required. Anything a summarizer produces that will
+  re-enter context needs the same treatment as external content: log it
+  separately, audit periodically, and run it through the same review gate
+  as any other write into persistent state.
+- **Grep-able markdown + a phased write path beats vector stores for coding
+  agents (mem0 harness-anatomy article, 2026-09-19).** Production coding
+  harnesses keep memory as plain directory markdown that greps well, with a
+  two-phase write path (extract after idle → redact secrets → land in a
+  holding state before promotion). Copy the phasing even if the storage is
+  a vault: separate extraction from promotion so secrets and noise never
+  reach the durable layer in one step.
+
 ## References
 
 - `docs/research/agentic-ai/2026-09-01-agent-memory-and-context.md` — full cited analysis with all sources
