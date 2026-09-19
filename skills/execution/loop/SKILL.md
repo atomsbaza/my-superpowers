@@ -105,8 +105,38 @@ After each turn, the hook injects one of these into your next context:
   reviewers, because inheriting the supervisor's reasoning makes the review
   non-independent. Decide per role: does it need *history* or *neutrality*?
   (This is the context-level reason cross-model review works.)
-- **Context trimming has a floor — keep protocol-critical state first
-  (2026-09-17, arXiv:2609.16461).** Comparing five trimming strategies:
+- **Test-harness-first for long agentic tasks (2026-09-19, Checkly
+  Node→Go rewrite).** Before porting or rewriting a large system with an
+  agent, build a black-box test harness *first*: real dependencies (e.g. a
+  real Postgres), fault injection, golden files — a deterministic pass/fail
+  signal that tests the external contract, not internals, so the agent can
+  refactor without breaking the signal. Lock the writable surface so the
+  agent cannot edit the harness to pass. Put the gate spec — how to run the
+  harness, what pass looks like, what to do on failure — into the context
+  file in place of a task description. A harness that runs in CI pays
+  twice: guidance for the agent, evidence at deploy time.
+- **Don't poll workers — wake deterministically; one worker, one stage
+  (2026-09-19, 158M-token telemetry).** Zero-token hook telemetry on a
+  158M-token run: an idle supervisor asked its worker "done yet?" 89 times
+  (66 timeouts) — 6.5% of the whole run spent hearing "not yet"; a
+  declarative "don't poll" rule fails when the platform provides no
+  wake-on-completion, so the fix is a deterministic watchdog (timer or
+  completion hook), never conversational polling. Separately, one worker
+  reused across 4 stages consumed 49% of tokens re-sending accumulated
+  history every step — spawn a fresh worker with clean context per stage
+  (extends the fork-vs-isolated rule above: same stage continuing work =
+  fork; new stage = isolated, fresh spawn).
+- **Never rewrite sent history — the cache is the budget (2026-09-19).**
+  Editing or deleting individual turns after the fact (score-and-drop
+  "shrinkers") breaks two things: frontier APIs send reasoning as encrypted
+  payloads that require intact history (delete → immediate degradation),
+  and prompt-cache writes cost far more than reads (~60%+ of the bill in
+  one practitioner's data) — editing any point invalidates every cached
+  entry after it. The real cost driver is cache hit rate, not token count.
+  Compact only via flows that keep the surviving prefix byte-identical
+  (e.g. tiny-classifier keep/drop that never rewrites what stays, 1M→86K
+  tokens in ~1s in the field report), or checkpoint-and-resume from
+  compiled state (the r^H rule above). Comparing five trimming strategies:
   naive recency/summarization saves ~60% of tokens but drops task success
   to 67–77%, while protocol-aware trimming with adaptive budgets holds 96%
   at 56% savings; a retained-context budget ≤25% raises failure odds ~11×
