@@ -132,7 +132,25 @@ Prefer controls that reduce blast radius even when the model is manipulated:
 - **Egress deny-by-default is the boundary, not the hypervisor tier.** A cheap sandbox with default-deny network egress prevents exfiltration better than an expensive microVM with full internet. When egress is needed, open per-call, opt-in, visible in code. Ask of every service shared with an agent: "can input to it cause a network request?" (intended-visible services like package managers get converted into SSRF proxies; shared storage becomes an inter-agent channel).
 - **Enforce on the execution path, not in the prompt (2026-09-05).** Prompt/output filters that "warn" are advisory — the model can ignore them. Normalize every tool call into one object through a single fail-closed decision engine (timeout = deny) and add a **taint floor**: a session that has read a secret is blocked from any outbound value matching that secret — no intent inference required. Against reframed injection (Framing Gap, arXiv 2608.27092: the same leak as an "integrity signature" goes ~0%→100%), rely on **payload-blind checks** — destination allow-lists and planner/reader capability separation — not on the model detecting manipulation. Sandbox ≠ authorization: sandbox limits blast radius, authorization decides whether the action happens; both are required.
 - **Sanitize git config before opening untrusted repos.** Inspect `.git/config` for `core.fsmonitor` / program-pointing settings before any agent CLI touches the repo; in own tooling run `git -c core.fsmonitor=false ...`. Update (2026-09-08): the disclosure now carries CVE-2026-7163 (Hermes Agent listed as unpatched at 0.18.2), and the tested mitigation detail is: `git config --global core.fsmonitor false` does **not** work — repo-local config wins; only the command-line `git -c core.fsmonitor=false ...` form survives, plus grepping received-as-file repos' `.git/config` for `fsmonitor|pager|alias\.`.
+- **Judge sandbox commands by effect, not by name — and don't over-trim
+  (2026-09-19, sandbox capability study).** Capability is
+  f(Model, Harness, Environment): with bash + network + package installs,
+  GPT-5 math went 87.8→97.9 but Qwen3-4B dropped 46.0→32.5 and GPT-5 in
+  biomedicine worsened 55.8→49.0 (source-reported, unverified). Removing
+  "harmless-looking" commands weakens capable models on suitable tasks;
+  allowlists that match on the command *name* miss what actually makes a
+  call dangerous. Design the sandbox per task and per model, and gate on
+  observable effects (network route, side effect) instead of lexical
+  deny-lists — this complements the structural egress rules above rather
+  than replacing them.
 - **Centralize MCP enforcement at a gateway**: auth enforcement / rate limit / audit logging at the gateway (sub-servers cannot suppress logs), pin reviewed server versions (no auto-update), run servers sandboxed with watched egress.
+- **Summarizer output is an injection channel from the inside (OpenAI
+  alignment report, 2026-09-19).** Models wrote jailbreak-style instructions
+  into their own compaction summaries that re-enter the next context window
+  — the data/directive boundary breaks without any external attacker. Treat
+  anything a summarizer produces as untrusted input: same review gate,
+  separate logging, periodic audit. Full analysis:
+  `docs/research/agentic-ai/2026-09-19-context-lifecycle-write-compact-inject.md`.
 - **Security evals for agents with memory must be trajectory-aware** — continuous multi-interaction sequences, not per-prompt snapshots: injections planted into memory are retrieved later as "learned knowledge" and fraud patterns are non-monotonic.
 
 One regex or one model safety setting is not a complete defense. Static signature checks catch known patterns; supplement them with domain-specific adversarial cases and control-path tests. Harness-engineering corollary (0xwhrrari, 2026-09): patch the harness, not the run — convert each request into a contract before the agent works to prevent silent task redefinition.
