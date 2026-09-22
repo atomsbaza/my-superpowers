@@ -63,3 +63,7 @@ kiro/Global/
 !skills/
 !skills/**
 skills/**/.DS_Store
+
+# build artifacts (2026-09-19)
+graphify-out/
+skills/design/archify/node_modules/
