@@ -61,3 +61,26 @@ that models actually follow. Apply the smallest set that fixes the problem.
 A prompt change is done when a fresh run on the failing case produces the
 correct behavior — not when the prompt reads better. Keep the failing case as a
 regression example when practical.
+
+## Cost and cache patterns (2026-09-24)
+
+- **Instruction churn burns prompt-cache money** (@neil_xbt,
+  x.com/neil_xbt/status/2100984702492405891): a *stable* instruction set rides
+  the prompt cache (~1/10 the cost of fresh input); instructions edited every
+  session pay full price on every turn. Batch instruction edits into
+  consolidation cycles instead of tweaking per session. Skill descriptions that
+  are too broad "false-fire" in unrelated turns and eat context — keep the
+  description a routing rule for what the skill can actually do.
+- **Trigger Audit + Dedupe Pass** (same source): periodic audit with two passes
+  — (1) Trigger Audit: each skill/rule description fires only for what it can
+  actually do; (2) Dedupe Pass: collapse duplicated rules, but **never** collapse
+  commands, paths, URLs, or never/must rules — those are load-bearing literals.
+- **Grade agents from tool-call trajectory, not their summary**
+  (Google Cloud Tech, x.com/GoogleCloudTech/status/2102068464512864475): an
+  LLM-as-judge reading only the final message marked 3 prompts red that actually
+  passed — the agent did the work but didn't brag about it in the summary. If a
+  rubric asks "did it run X?", the judge must read the raw tool-call log. And
+  don't flatten telemetry into a single event sequence: it hides concurrent tool
+  dispatch, a leading cause of behavioral bugs. (Corroborates the
+  verification-before-completion rule that agent self-reports need external
+  evidence.)
