@@ -494,6 +494,28 @@ what you promote; promote instructive traces into blocking eval cases —
 analysis:
 `docs/research/agentic-ai/2026-09-19-context-lifecycle-write-compact-inject.md`.
 
+## Adapted from X-scout digest (2026-09-24)
+
+Extensions to `skills/knowledge-base/agent-memory-design/` (Constraint
+Pinning with quantified decay — violations 0%→30% after compaction, rules
+surviving summaries obeyed 0%, pinned verbatim re-injection ~47 tokens/rule
+returns 0%, arXiv 2606.22528; fixed-interval summarization is the worst
+default — dependency-graph eviction Kiz8 + SelfCompact arXiv 2606.23525;
+memory is an expirable cache and curation-not-storage is the hard problem —
+Doug Turnbull; shared task contract with state_version compare-and-swap;
+git-native memory trust tier — OKF Agent Memory; Claude Code auto-memory
+retrieval is filename-based — mem0; Model-Harness-Fit; harness decay /
+build to delete), to `skills/tools/prompt-engineering-patterns/`
+(instruction churn burns prompt-cache money — stable instructions ride the
+cache at ~1/10 cost, over-broad skill descriptions false-fire; Trigger
+Audit + Dedupe Pass with never-collapse literals — commands, paths, URLs,
+never/must rules; grade agents from tool-call trajectory, not summaries —
+Google Cloud Tech, plus don't flatten telemetry and hide concurrent
+dispatch), and the full cited analysis
+`docs/research/agentic-ai/2026-09-24-instruction-context-lifecycle.md` were
+adapted from the X-scout knowledge-scout digest of 2026-09-24 (Discord
+thread #xTreand, cron job f933f5a8d591).
+
 ## Original work
 
 The following were created independently in this repo:
