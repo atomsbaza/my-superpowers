@@ -199,6 +199,38 @@ Any autonomous loop (this one included) must declare, before starting:
   per-action authorization (zero-trust harness) — a loop can verify its own
   work and still need external permission to act.
 
+- **Instrument the compaction boundary — that's where long runs actually
+  die (2026-10-01).** Long agent runs rarely fail at tool calls; they fail
+  when a summary blurs the original goal into vagueness and the agent
+  re-guesses or loops (every action looks locally reasonable; the
+  trajectory as a whole is unexplainable). Countermeasures: pin goal +
+  acceptance criteria *verbatim* and re-inject after every compaction;
+  count retry budget in "context remaining," not attempt counts — retries
+  that cross a compaction boundary work from an ever-worse spec; and
+  treat subagent handoffs as another lossy compaction layer, never
+  lossless (dev.to/grunzai/your-agent-did-not-forget-your-instructions-it-compressed-them-out-1kfp).
+  Extends the trim-floor rule above: the floor protects *how much* stays;
+  pinning protects *what* stays.
+- **Never prune mid-history; never swap models mid-session (2026-10-01).**
+  Cache write costs dominate (>60% of real spend reported): deleting a
+  message mid-history invalidates every cached token after it — more
+  expensive than leaving it — and the model loses context it already
+  reasoned with. Use the harness's default compaction or clear between
+  tasks. KV cache is bound to model weights: switching model/effort
+  mid-session re-reads the whole context uncached
+  (x.com/tamarajtran/status/2100694549362553153).
+- **Test-harness techniques don't transfer through prompts (2026-10-01,
+  Dan Luu 26-condition study).** Instructing agents to "use TDD /
+  property-based testing / fuzzing / TLA+" failed across nearly every
+  technique — agents wrote their usual unit tests inside the technique's
+  vocabulary or applied it superficially, and TDD made results *worse*
+  (more tests, missed hard cases, passing tests enforcing wrong behavior).
+  What worked: humans built the structural harness first — a separate
+  test crate, AGENTS.md rules forbidding changes to public interfaces —
+  then let the agent fill in. Rule: never delegate a testing *technique*
+  via prompt; provide the structure and verify the agent actually used it
+  (danluu.com/agentic-testing). Reinforces the evidence-gate rule above.
+
 ## Setup instructions (for humans)
 
 The loop skill requires a Stop hook. Add this to your project's
