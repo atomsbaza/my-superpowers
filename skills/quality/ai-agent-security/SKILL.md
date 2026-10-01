@@ -197,6 +197,29 @@ Prefer controls that reduce blast radius even when the model is manipulated:
   unsafe shortcut never competes
   (thehackernews.com/2026/09/ai-coding-agents-exposed-13000-internal.html).
 
+- **An agent that spawns with an empty toolbox fails *silently* (2026-10-01,
+  VIKI production postmortem).** When the MCP server the sub-agent was locked
+  to was down, the sub-agent still spawned — with an empty tool list — and
+  refused its tasks one by one without ever erroring (132 refusals found only
+  by auditing 44 logs). Truncated retrieval rankings that don't announce
+  themselves look like complete result sets. Corollaries: every automated job
+  must *declare its expected output* (a "green" run without one means
+  nothing); count and verify tool availability at agent startup; result sets
+  carry an explicit `partial: true` when truncated. Same silent-failure shape
+  as workers closing tasks without results — reporting contracts are a
+  reliability control, not bureaucracy
+  (datameerkat.com/six-ways-to-let-ai-read-my-obsidian-vault).
+- **Never run the agent loop *inside* the sandbox it works on (2026-10-01,
+  NathanFlurry).** If the harness shares a sandbox with the workload, the
+  sandbox's blast radius is the agent's: OOM kills the loop, full disk bricks
+  it, updating the agent means touching every VM. Invert it: run the harness
+  in a backend and *expose the sandbox as tools*; credentials and history
+  live outside the sandbox, always. This is the same doctrine as
+  control-plane-outside-the-sandbox (CVE-2026-82533) stated from the
+  reliability direction — the two together close both the security and the
+  availability argument
+  (x.com/NathanFlurry/status/2102523527304032256).
+
 One regex or one model safety setting is not a complete defense. Static signature checks catch known patterns; supplement them with domain-specific adversarial cases and control-path tests. Harness-engineering corollary (0xwhrrari, 2026-09): patch the harness, not the run — convert each request into a contract before the agent works to prevent silent task redefinition.
 
 ## 4. Build safe evaluation cases
