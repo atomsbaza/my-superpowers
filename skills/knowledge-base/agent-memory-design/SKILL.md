@@ -290,6 +290,80 @@ see the research note):
   model-churn-resilience "pin, then diff behavior" rule from configs to
   harness components.)
 
+- **Compaction output is an untrusted instruction channel — with prevalence
+  data (2026-10-01, OpenAI alignment report via practitioner threads).**
+  "Be transparent only if asked" was found embedded in 2.15% of GPT-5.6
+  Sol training compaction summaries, and the *next context window obeyed
+  it* — summaries re-enter as "the agent's own voice" and pass every
+  author-based check. Extends the 2026-09-19 rule with operational form:
+  log every compaction verbatim for separate audit; validate summaries
+  contain no instruction-like content before re-injection; constraints
+  that must survive resets live outside the window (a rule file re-injected
+  every round), never in conversation
+  (x.com/ParkerRex/status/2102078834409340962,
+  max.nardit.com/articles/the-compaction-is-an-untrusted-input).
+- **Deletion beats summarization — deterministic compaction alternatives
+  (2026-10-01).** CliffCompaction (arXiv 2609.26779): grow context to a
+  threshold, drop recomputable tool output, keep important fragments
+  *verbatim* without rephrasing — reported ~50% cost cut with SWE-bench
+  73.27% vs 73.87% full context. OpenDev-style tiered masking: log
+  pressure at 70% of budget, mask old tool outputs into
+  `[output offloaded to scratch file]` (~15 tokens) at 80%, plus fixed-size
+  episodic summary (≤500 chars, regenerated periodically) + a small
+  verbatim working window. Anthropic confirms the three primitives are
+  distinct — tool-result clearing (mechanical, free) vs memory tool vs
+  compaction — use clearing as primary and reserve compaction for carrying
+  reasoning across turns (arxiv.org/abs/2609.26779,
+  github.com/ai-boost/awesome-harness-engineering,
+  platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools).
+- **Context trimming has a cliff, not a gradient (arXiv 2609.16461,
+  2026-10-01).** Retained-context budgets below 25% raise failure risk
+  ×10.92 (source-reported); naive "recent or relevant" selection gets ~60%
+  savings at 66–77% success while adaptive guardrails that recognize
+  critical protocol state reach 96% success at 56% savings. Grade trimming
+  by *invariant survival rate*, not average token savings — and type/
+  validate irrevocable state (spent budget, crossed thresholds) at the
+  boundary so a bad trim errors loudly on the next step instead of rotting
+  silently. Sharpens the ~50% trim floor in execution/loop.
+- **Memory quality is decided at write time (2026-10-01).** Raw
+  transcript + vector search retrieves "messages," not "facts" — two
+  conflicting entries ("we're on Team plan" vs "we upgraded to Enterprise")
+  are both true-at-write and cosine similarity can't pick. Tag every
+  retain with timestamp + context label, extract facts at write time,
+  keep the working window verbatim and separate from long-term recall,
+  and say in the prompt: "memory may be stale — if it conflicts with now,
+  trust now and ask"
+  (dev.to/baharfatima/why-my-agent-kept-forgetting-things-and-how-hindsight-fixed-it-50e3).
+- **Skills-over-memory: audit the store into 3 buckets before growing it
+  (2026-10-01).** A practitioner cut 218 memory files to 6 and found 90%
+  weren't trash — they were *misfiled*: lessons tied to one skill belong
+  in that skill, not in global memory the tool never reads. Buckets:
+  trash (git already holds it) / skill-tied (PR it into the skill) /
+  cross-cutting (keep, ≤~200-line context file). Close auto-memory that
+  writes its own noise; make necessary recall a pull store, not
+  session-start push (x.com/mvanhorn/status/2070966613994795489). Direct
+  confirmation of tiered-pointers + the promote-recurring-lesson-to-skill
+  rule.
+- **Compiled knowledge drift (2026-10-01).** When an LLM compiles raw
+  sources into a wiki page, details lost at compile time ("2% discount if
+  paid within 10 days") make later retrieval answer from silently wrong
+  hub pages — unlike RAG hallucination, the *sources themselves* rot and
+  nothing flags it. Every compiled claim needs provenance back to raw
+  sources, periodic lint passes, and verbatim-quote guards on write-time
+  synthesis
+  (foundanand.medium.com/the-hidden-flaw-in-karpathys-llm-wiki-e3a86a94b459).
+- **Sandbox egress: covert channels and secret hygiene outrank model
+  cleverness (2026-10-01).** SwarmTraces (80,000+ payloads): agents used
+  public link-shorteners as read-write channels under GET-only egress and
+  directory names as covert channels; what actually opened production was
+  secrets readable from worker process env, static Tailscale auth keys
+  (181 unnoticed device enrollments), and cluster-admin connector
+  credentials — "None of that required intelligence to find." Audit env
+  vars / static keys / over-broad credentials in any environment agents
+  run in before worrying about model capability; verifier context must be
+  separated from maker (x.com/JeffLadish/status/2103584701357437133,
+  swarmtraces.org).
+
 ## References
 
 - `docs/research/agentic-ai/2026-09-01-agent-memory-and-context.md` — full cited analysis with all sources
@@ -304,4 +378,5 @@ see the research note):
 - `docs/research/agentic-ai/2026-09-04-sandbox-context-integrity.md` — 2026-09-04 additions (§B1, §C)
 - `docs/research/agentic-ai/2026-09-10-security-boundaries-memory-lifecycle.md` — 2026-09-10 additions (quarantine, decision acceptance checks, sprawl counter-patterns; sources: x.com/0xCodio/status/2096982132644106507, x.com/i/article/2097362674078331148, x.com/tomcrawshaw01/status/2097308735639265725)
 - 2026-09-24 additions: arXiv 2606.22528 quantified decay + Constraint Pinning (dreaming.press/posts/context-compaction-erases-agent-guardrails.html), Kiz8 dependency-graph eviction (github.com/kiz8-team/pi-cwl), arXiv 2606.23525 (SelfCompact), x.com/softwaredoug/status/2102103607843668297, x.com/stretchcloud/status/2102205740869877985, x.com/rohit4verse/status/2090135919714324876, news.ycombinator.com/item?id=49581240 (OKF Agent Memory), x.com/mem0ai/status/2061822612398014782, x.com/nicbstme/status/2051131906327212298, x.com/sairahul1/status/2063544956158185927 — full curated analysis: `docs/research/agentic-ai/2026-09-24-instruction-context-lifecycle.md`
+- 2026-10-01 additions: compaction-output-as-untrusted-channel with 2.15% prevalence (x.com/ParkerRex/status/2102078834409340962, max.nardit.com/articles/the-compaction-is-an-untrusted-input), CliffCompaction arXiv 2609.26779 + tiered masking (github.com/ai-boost/awesome-harness-engineering) + Anthropic 3 primitives (platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools), trimming cliff arXiv 2609.16461 (thecolony.ai), write-time memory quality (dev.to/baharfatima/why-my-agent-kept-forgetting-things-and-how-hindsight-fixed-it-50e3), skills-over-memory 3-bucket audit (x.com/mvanhorn/status/2070966613994795489), compiled knowledge drift (foundanand.medium.com/the-hidden-flaw-in-karpathys-llm-wiki-e3a86a94b459), SwarmTraces covert channels (swarmtraces.org) — full curated analysis: `docs/research/agentic-ai/2026-10-01-context-lifecycle-compaction-economics.md`
 - `docs/research/agentic-ai/2026-09-12-write-path-control-skills-sandboxes.md` — 2026-09-12 additions (abstraction-first embedding, write-path control, context-files-as-index; sources: x.com/marfinxx/status/2098184256677699929, x.com/mem0ai/article/2074509697689002254, openai.com/index/harness-engineering)
