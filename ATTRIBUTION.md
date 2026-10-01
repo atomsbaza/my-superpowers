@@ -539,12 +539,15 @@ channels + secret hygiene outranks model cleverness; allowlist =
 capability grant — resolved-IP validation, read-only /etc/hosts, log
 attempted bypasses, approval prompts are not a control — 93% approve
 rate; agent-authored skills as exfiltration + behavior-spread channel —
-gitshot), and to `skills/execution/loop/` (instrument the compaction
+gitshot; silent empty-toolbox spawn + declare-expected-output (VIKI
+postmortem); never run the agent loop inside its own sandbox —
+NathanFlurry), and to `skills/execution/loop/` (instrument the compaction
 boundary — pin goal + acceptance criteria verbatim after every
 compaction; never prune mid-history / never swap models mid-session;
 test-harness techniques don't transfer through prompts — Dan Luu
 26-condition study), with the full cited analysis
-`docs/research/agentic-ai/2026-10-01-context-lifecycle-compaction-economics.md`,
+`docs/research/agentic-ai/2026-10-01-context-lifecycle-compaction-economics.md`
+and `docs/research/agentic-ai/2026-10-01-vault-as-production-viki-postmortem.md`,
 were adapted from the X-scout knowledge-scout digests of 2026-09-25
 through 2026-10-01 (Discord thread #xTreand, cron job f933f5a8d591).
 
