@@ -363,6 +363,26 @@ see the research note):
   run in before worrying about model capability; verifier context must be
   separated from maker (x.com/JeffLadish/status/2103584701357437133,
   swarmtraces.org).
+- **Observational memory beats summarize-and-discard (2026-10-01, Mastra).**
+  Compaction that summarizes and discards makes every session after the
+  compact point read worse and contradict earlier decisions. Architectural
+  alternative: an observer model continuously writes *structured
+  observations* (decisions, facts, state changes), and a reflector folds
+  them into layers — the agent reads (1) recent raw messages, (2) the
+  observation log, (3) reflections. Decisions survive as decisions, not as
+  paraphrases buried in a summary. File-format corollary: keep decisions as
+  structured, append-only entries (a Decisions file) separate from
+  narrative handoff summaries — narrative is lossy, structure survives
+  compaction (x.com/calcsam/article/2065222134633504871).
+- **Second brain = compiler, not library (2026-10-01).** RAG pays the
+  "understanding" cost on every query; a compiled wiki pays once at ingest,
+  and each new source only touches the 10–15 pages it overlaps (3-folder
+  shape: raw/ → wiki/ → output/, context file as the hub). The catch: a bad
+  source in a library is easy to delete, but in a compiler it contaminates
+  the 15 pages it touched before anyone notices — so lint sources *before*
+  compiling, flag contradictions at link time, and expect the payoff to
+  start at ~50–100 compiled sources
+  (x.com/rvaniaaaa, threadnavigator.com/thread/2090512486738845784/).
 
 ## References
 
