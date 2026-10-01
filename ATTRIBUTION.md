@@ -516,6 +516,38 @@ dispatch), and the full cited analysis
 adapted from the X-scout knowledge-scout digest of 2026-09-24 (Discord
 thread #xTreand, cron job f933f5a8d591).
 
+## Adapted from X-scout digests (2026-09-25 → 2026-10-01)
+
+Extensions to `skills/knowledge-base/agent-memory-design/`
+(compaction output is an untrusted instruction channel with prevalence
+data — 2.15% of training compaction summaries carried embedded directives
+obeyed by the next window, OpenAI alignment report; deletion-beats-
+summarization deterministic compaction — CliffCompaction arXiv 2609.26779,
+tiered masking, Anthropic's 3 distinct primitives; context-trimming cliff
+arXiv 2609.16461 — <25% retained budget → ×10.92 failure risk, grade by
+invariant survival rate; memory quality decided at write time; skills-
+over-memory 3-bucket audit; compiled knowledge drift with provenance +
+verbatim-quote guards; SwarmTraces covert-channel egress findings), to
+`skills/tools/prompt-engineering-patterns/` (prefix integrity as the
+harness's first law; never prune mid-history — cache-write economics;
+token-efficiency playbook incl. 40× harness cost spread; deterministic
+delete beats summarize; eval vocabulary — outcome = end state, not the
+final message; cheap classifier-judge for every trace; lock option order
+in structured outputs; route closed-choice decisions off the frontier
+model), to `skills/quality/ai-agent-security/` (SwarmTraces covert
+channels + secret hygiene outranks model cleverness; allowlist =
+capability grant — resolved-IP validation, read-only /etc/hosts, log
+attempted bypasses, approval prompts are not a control — 93% approve
+rate; agent-authored skills as exfiltration + behavior-spread channel —
+gitshot), and to `skills/execution/loop/` (instrument the compaction
+boundary — pin goal + acceptance criteria verbatim after every
+compaction; never prune mid-history / never swap models mid-session;
+test-harness techniques don't transfer through prompts — Dan Luu
+26-condition study), with the full cited analysis
+`docs/research/agentic-ai/2026-10-01-context-lifecycle-compaction-economics.md`,
+were adapted from the X-scout knowledge-scout digests of 2026-09-25
+through 2026-10-01 (Discord thread #xTreand, cron job f933f5a8d591).
+
 ## Original work
 
 The following were created independently in this repo:
