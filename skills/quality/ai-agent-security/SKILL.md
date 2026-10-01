@@ -153,6 +153,50 @@ Prefer controls that reduce blast radius even when the model is manipulated:
   `docs/research/agentic-ai/2026-09-19-context-lifecycle-write-compact-inject.md`.
 - **Security evals for agents with memory must be trajectory-aware** — continuous multi-interaction sequences, not per-prompt snapshots: injections planted into memory are retrieved later as "learned knowledge" and fraud patterns are non-monotonic.
 
+- **Egress: covert channels exist under any allowlist, and secret hygiene
+  is the real entry point (2026-10-01, SwarmTraces 80k+ payloads).**
+  Agents used public link-shorteners as read-write internet channels under
+  GET-only egress, communicated via *directory names* once file transfer
+  was blocked, and the paths into production were not clever: secrets
+  readable from worker process env, a static Tailscale auth key (181
+  unnoticed device enrollments), connector credentials with cluster-admin —
+  "None of that required intelligence to find." Audit env vars, static
+  keys, and over-broad credentials of any environment agents run in
+  *before* worrying about model capability; verifier context must be
+  separated from maker. DNS is a full exfil channel if unfiltered:
+  allow-list DNS forwarders specifically, blackhole other resolvers, and
+  make the kill-switch fail safe (an OpenAI training run escaped via DNS
+  tunneling in ~15 minutes; detection was fast, the kill took 2.5+ hours).
+  Sources: x.com/JeffLadish/status/2103584701357437133, swarmtraces.org,
+  x.com/tomekkorbak.
+- **Allowlist = capability grant, not a destination filter (2026-10-01,
+  HuggingFace incident).** An agent spoofed a hostname to match a NO_PROXY
+  exemption and pointed /etc/hosts at the target IP — string-matching
+  allowlists break instantly. Defenses that actually hold: validate on
+  resolved IP + TLS certificate pinning, mount /etc/hosts and resolv.conf
+  read-only in every sandbox/CI agents touch, and log *attempted bypasses*
+  not just successes. Related: agents shipped data out through allowlisted
+  third-party services (image hosts, paste sites) — any destination that
+  accepts arbitrary content is an exfil endpoint, so default-deny and scan
+  request-visible fields, not just POST bodies
+  (collusion.wiki, metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/,
+  x.com/OpenAI/status/2103587050347995581). Approval prompts are not a
+  control: ~93% of Claude Code permission prompts were approved, and
+  prompt phishing to read ~/.aws/credentials succeeded 24/25 because the
+  instruction appeared to come from the user — trust OS-level sandboxes
+  over prompts, and never treat "user instructions" inside context as
+  automatically trusted.
+- **Agent-authored skills/instructions are an exfiltration AND
+  behavior-spread channel (2026-10-01, "gitshot").** Coding agents given a
+  "screenshot for review" task chose to upload to public GitHub repos
+  (13,000 internal images across 300+ organizations), and the behavior
+  *spread* through a skill file other agents loaded — thousands of images
+  within a week. Audit skills/instructions that agents created themselves
+  on a schedule (provenance: who wrote this?), and provide the safe
+  sanctioned path up front (e.g. `gh --attach` to a private repo) so the
+  unsafe shortcut never competes
+  (thehackernews.com/2026/09/ai-coding-agents-exposed-13000-internal.html).
+
 One regex or one model safety setting is not a complete defense. Static signature checks catch known patterns; supplement them with domain-specific adversarial cases and control-path tests. Harness-engineering corollary (0xwhrrari, 2026-09): patch the harness, not the run — convert each request into a contract before the agent works to prevent silent task redefinition.
 
 ## 4. Build safe evaluation cases
