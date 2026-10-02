@@ -212,7 +212,8 @@ The conversation's source list included a docs mirror describing `availableModel
 - **Pins added** to agents that previously inherited the main model: `qa-execution-operator` → haiku; `qa-incident-investigator`, `qa-requirements-risk-analyst`, `qa-test-architect`, `quality-engineering` → opus. These five are plain files in `~/.claude/agents/` (Kiro import), not symlinks into this repo.
 - **Existing tiers** (unchanged): Opus for debugger, security-engineer, solution-architect, sre, swift-reviewer, tech-lead, ai-engineer; Sonnet for engineer, code-reviewer, docs, research, ui-reviewer and similar; Haiku for wiki-updater.
 - **Default session model:** `"model": "sonnet"` in `~/.claude/settings.json`.
-- **Open item:** an `availableModels` entry was added to user settings before the correction in §4.1; it has no effect.
+- **Fable guard (hook, not a setting):** since `availableModels` cannot be set in user settings, `~/.claude/hooks/no-fable-subagent.sh` runs as a PreToolUse hook on `Agent|Task`. It blocks (exit 2) a subagent that would run on Fable, either through an explicit `model` or by inheriting a Fable main session. It resolves the model in the documented order (call-site `model`, then the agent file's frontmatter, then the main model, read from the transcript with `settings.json` as fallback) and honours the same `orchestrator-off` escape hatch as `orchestrator-only.sh`. A hook only blocks use; Fable stays selectable in `/model`. Verified with nine synthetic payloads; **not yet verified against a live `Agent` call**, so the payload field names (`tool_input.model`, `subagent_type`) and whether a settings change reloads without a new session are assumptions.
+- **Cleanup:** the ineffective `availableModels` entry that was briefly added to user settings was removed.
 
 ## 6. Open questions and how to resolve them
 
