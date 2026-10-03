@@ -35,6 +35,7 @@ Assess at least these applicable paths:
 - **Startup command hijack via repo config:** agents run `git status`/`git log` for context when opening a project; git config `core.fsmonitor` (and similar program-pointing settings) in an untrusted repo's `.git/config` executes on the host before the trust prompt, outside the sandbox (GitSpawn disclosure, Sep 2026 — Claude Code patched, several agent CLIs unpatched). Scope refined (2026-09-05): `clone/fetch/pull` do not load the target's config and are safe; the risk is pre-built `.git` directories (zip archives, shared drives) — re-clone instead of extract-and-open.
 - **Classifier-passing attack chains:** each step of an attack can look benign to a permission classifier while the chain exfiltrates — e.g. the agent refuses to run a fetched binary but writes its own decoder; module shadowing (`struct.py`) hijacks the import chain. Classifier approval is not evidence of safety.
 - **gitignore is not a sandbox:** gitignore filters git's index, not other readers — an agent with shell access can `cat .env` regardless; `npm test` exit 0 proves the process started, not that tests passed. Verify from JSONL traces (what was actually opened) rather than the agent's summary.
+- **Annotations ≠ behavior (MCP server grading, 2026-10):** static scans and self-declared annotations miss "tool phones home to a third party you've never heard of." Grade servers behaviorally: install in gVisor, call every tool with schema-generated args (no LLM — reproducibility), plant canary credentials in every secret-looking env var, then watch DNS/egress. In 20 popular servers: 4 contacted undeclared hosts (mostly third-party telemetry), 0 leaked canaries. Canary pitfall: never use `AWS_REGION`-style vars — SDKs construct hostnames from them (false positives) (dev.to/agentavow/we-started-running-every-mcp-server-we-grade-heres-what-20-popular-ones-actually-did-53ik).
 
 Separate observed behavior, inferred risk, and unverified assumptions in the report.
 
@@ -223,6 +224,23 @@ Prefer controls that reduce blast radius even when the model is manipulated:
 One regex or one model safety setting is not a complete defense. Static signature checks catch known patterns; supplement them with domain-specific adversarial cases and control-path tests. Harness-engineering corollary (0xwhrrari, 2026-09): patch the harness, not the run — convert each request into a contract before the agent works to prevent silent task redefinition.
 
 ## 4. Build safe evaluation cases
+
+**Prove permission boundaries — negative tests are the only evidence.**
+"Agent declined" proves nothing: it changes with the next prompt. Record
+each forbidden-action attempt in one of four states — unexposed /
+runner-rejected / agent-declined / executed — and count only the first two
+as enforcement (wpnews.pro/news/a-coding-agent-s-permissions-need-a-negative-test).
+Method: throwaway repo + fixture paths holding dummy tokens, attempt each
+forbidden action one at a time; also test the patch-apply and
+stop/reconnect paths separately (an agent blocked from writing files
+directly can still propose patches another component applies). For spawned
+sub-agents, prove child policy ⊆ parent boundary with an SMT solver
+(openshell-prover/Z3 pattern): solver searches for a concrete request the
+child allows but the parent forbids — real finds include `git-remote-https`
+policies that permit clone but also permit push, and one interpreter entry
+in a rule extending reach to everything the interpreter can invoke; tools
+that answer "unsupported" beat tools that silently pass
+(dev.to/ianwieds/stop-eyeballing-your-agents-permissions-prove-them-57kd).
 
 Use versioned, non-sensitive fixtures that exercise:
 
