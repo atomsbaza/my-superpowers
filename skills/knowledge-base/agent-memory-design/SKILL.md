@@ -363,6 +363,43 @@ see the research note):
   run in before worrying about model capability; verifier context must be
   separated from maker (x.com/JeffLadish/status/2103584701357437133,
   swarmtraces.org).
+- **Single-file profile memory beats vector search for agent identity
+  (2026-10-03, Arize Alyx).** One profile file (~8k chars) loaded into
+  context every request — no read-time retrieval at all. Admission rule
+  for every entry: durable (still true next month) / not re-discoverable
+  by a tool call / useful across sessions. Two failure modes found in
+  production: (a) compaction silently dropped a user preference — give
+  user-authored entries a high-priority prefix like `[user]`; (b) the
+  agent wrote its own mistake back into memory as a "convention" — audit
+  the memory file itself, not just the agent's answers. Trigger
+  compaction ~1k tokens *below* the ceiling: a compaction target that
+  can't be reached drops the most recent writes instead
+  (arize.com/blog/alyx-agent-long-term-memory-architecture/).
+- **Chat IS the memory: compress inline, keep constant size (2026-10-03,
+  VictorTaelin optmem).** Harness with one tool (spawn) and no chat
+  history: an append-only log compressed *during* the session ("nap,
+  don't sleep" — never batch-at-sleep) into a constant-size memory
+  context where detail fades with age and nothing is deleted. Inline
+  compression plus a fixed-size ceiling eliminates context bloat by
+  construction instead of fighting it with retrieval
+  (x.com/VictorTaelin/status/2105182389961908544).
+- **File-as-context: let the model edit its context like a file — with a
+  diff guard (2026-10-03, Context Language Models, UW+Meta, arXiv
+  2609.37725).** Instead of append-only transcript + mid-run
+  summarization, the model edits its context file with bash (delete stale
+  search results, fold 20 tool calls into 2 lines, update a scoreboard
+  header); beats Codex-style summarization (59.4% vs 53.4%
+  BrowseComp-Plus) at ~21% fewer FLOPs, and the model can author its own
+  "skill document" for context management selected on a dev split — no
+  retraining needed. Three caveats for agent builders: (1) arbitrary
+  edits destroy the prefix cache — prefer suffix reuse and expect append
+  to be cheaper than mid-file edits; (2) the model can plant misleading
+  instructions for itself in the file — gate self-edits behind a diff
+  review; (3) edited context does not survive across tasks — cross-task
+  memory stays a memory-tool job. CC BY-NC license: pattern is usable,
+  code is not (arxiv.org/abs/2609.37725,
+  x.com/RulinShao/status/2105282444270448647). Full analysis:
+  `docs/research/agentic-ai/2026-10-03-single-file-memory-self-edited-context.md`.
 - **Observational memory beats summarize-and-discard (2026-10-01, Mastra).**
   Compaction that summarizes and discards makes every session after the
   compact point read worse and contradict earlier decisions. Architectural
@@ -399,4 +436,5 @@ see the research note):
 - `docs/research/agentic-ai/2026-09-10-security-boundaries-memory-lifecycle.md` — 2026-09-10 additions (quarantine, decision acceptance checks, sprawl counter-patterns; sources: x.com/0xCodio/status/2096982132644106507, x.com/i/article/2097362674078331148, x.com/tomcrawshaw01/status/2097308735639265725)
 - 2026-09-24 additions: arXiv 2606.22528 quantified decay + Constraint Pinning (dreaming.press/posts/context-compaction-erases-agent-guardrails.html), Kiz8 dependency-graph eviction (github.com/kiz8-team/pi-cwl), arXiv 2606.23525 (SelfCompact), x.com/softwaredoug/status/2102103607843668297, x.com/stretchcloud/status/2102205740869877985, x.com/rohit4verse/status/2090135919714324876, news.ycombinator.com/item?id=49581240 (OKF Agent Memory), x.com/mem0ai/status/2061822612398014782, x.com/nicbstme/status/2051131906327212298, x.com/sairahul1/status/2063544956158185927 — full curated analysis: `docs/research/agentic-ai/2026-09-24-instruction-context-lifecycle.md`
 - 2026-10-01 additions: compaction-output-as-untrusted-channel with 2.15% prevalence (x.com/ParkerRex/status/2102078834409340962, max.nardit.com/articles/the-compaction-is-an-untrusted-input), CliffCompaction arXiv 2609.26779 + tiered masking (github.com/ai-boost/awesome-harness-engineering) + Anthropic 3 primitives (platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools), trimming cliff arXiv 2609.16461 (thecolony.ai), write-time memory quality (dev.to/baharfatima/why-my-agent-kept-forgetting-things-and-how-hindsight-fixed-it-50e3), skills-over-memory 3-bucket audit (x.com/mvanhorn/status/2070966613994795489), compiled knowledge drift (foundanand.medium.com/the-hidden-flaw-in-karpathys-llm-wiki-e3a86a94b459), SwarmTraces covert channels (swarmtraces.org) — full curated analysis: `docs/research/agentic-ai/2026-10-01-context-lifecycle-compaction-economics.md`
+- 2026-10-03 additions: single-file profile memory (arize.com/blog/alyx-agent-long-term-memory-architecture/), chat-IS-the-memory inline compression (x.com/VictorTaelin/status/2105182389961908544), file-as-context with diff guard + suffix-reuse cache economics (arXiv 2609.37725, x.com/RulinShao/status/2105282444270448647) — full curated analysis: `docs/research/agentic-ai/2026-10-03-single-file-memory-self-edited-context.md`
 - `docs/research/agentic-ai/2026-09-12-write-path-control-skills-sandboxes.md` — 2026-09-12 additions (abstraction-first embedding, write-path control, context-files-as-index; sources: x.com/marfinxx/status/2098184256677699929, x.com/mem0ai/article/2074509697689002254, openai.com/index/harness-engineering)
