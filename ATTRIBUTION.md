@@ -551,6 +551,27 @@ and `docs/research/agentic-ai/2026-10-01-vault-as-production-viki-postmortem.md`
 were adapted from the X-scout knowledge-scout digests of 2026-09-25
 through 2026-10-01 (Discord thread #xTreand, cron job f933f5a8d591).
 
+## Adapted from X-scout digest (2026-10-03)
+
+Extensions to `skills/knowledge-base/agent-memory-design/`
+(single-file profile memory beats vector search for agent identity —
+Arize Alyx, durable/re-discoverable/cross-session admission rule,
+[user] priority prefix, audit-the-memory-file rule, compaction trigger
+~1k below the ceiling; chat-IS-the-memory inline compression with
+constant-size memory — VictorTaelin optmem; file-as-context with a diff
+guard — Context Language Models arXiv 2609.37725, 59.4% vs 53.4% at
+~21% fewer FLOPs, prefix-cache/suffix-reuse caveat, self-planted
+instructions), and to `skills/quality/ai-agent-security/` (MCP
+behavioral grading with canary credentials in a gVisor sandbox — 4/20
+servers with undeclared telemetry, never canary AWS_REGION-style vars;
+permission negative-test doctrine — 4-state taxonomy where
+agent-declined proves nothing; SMT/Z3 counterexample proving of
+child-policy ⊆ parent-boundary — openshell-prover), with the full cited
+analysis
+`docs/research/agentic-ai/2026-10-03-single-file-memory-self-edited-context.md`,
+were adapted from the X-scout knowledge-scout digest of 2026-10-03
+(Discord thread #xTreand, cron job f933f5a8d591).
+
 ## Original work
 
 The following were created independently in this repo:
