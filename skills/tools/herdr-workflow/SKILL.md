@@ -94,11 +94,11 @@ Use when the user asks for a Codex review (see the user's rule: Codex is allowed
 
 Claude plans, briefs, reviews and integrates; Codex writes and edits the code. Roles and loop: `~/.claude/rules/model-routing.md`. Mechanics:
 
-1. Worktree per task, in the current workspace: `herdr worktree create --workspace <id> --branch <task-slug> --base <ref> --label <slug> --no-focus`; use the returned root pane. Confirm the target is a Git repo first.
-2. `herdr agent start implementer-<task-slug> --kind codex --pane <root-pane-id>`.
+1. **Everything stays in the user's current workspace and tab** (user decision 2026-10-05: no extra spaces). When the current workspace is itself a Git worktree, `herdr worktree create --workspace <id> ...` is fine. When it is not (e.g. a `~/Work` workspace), do NOT use `herdr worktree create --cwd` (it opens new workspaces): create the worktree with plain git, `git -C <repo> worktree add ~/.herdr/worktrees/<repo>/<task-slug> -b <task-slug> <base>`, then add a pane to the current workspace: `herdr pane split --pane <an existing pane in this workspace> --direction down --cwd <worktree-path> --no-focus`.
+2. **One Codex agent per independent task**, in its own pane and worktree, `herdr agent start implementer-<task-slug> --kind codex --pane <pane-id>`. Independent tasks run in parallel; do not pile unrelated tasks into one agent. Keep reusing the same agent only for review rounds of the SAME task.
 3. Prompt with a brief (see template) and `--wait --timeout <ms>`; a timeout is not a failure, so use `herdr agent wait` slices and never resend.
 4. Review the real diff: `git -C <worktree> diff <base>...HEAD`, read the changed files, run the verification yourself. The handoff is a claim, not evidence.
-5. Findings go back to the same agent (max 3 rounds). Then integrate (merge) and clean up: `herdr pane close`, `git -C <worktree> status --porcelain` clean, `herdr worktree remove`.
+5. Findings go back to the same agent (max 3 rounds unless the user sets a different goal). Then integrate (merge) and clean up: `herdr pane close <pane>`, `git -C <worktree> status --porcelain` clean, then `git -C <repo> worktree remove <worktree>` (or `herdr worktree remove --workspace <id>` if herdr created it).
 
 Brief template (keep it short, no secrets, no personal data):
 ```
