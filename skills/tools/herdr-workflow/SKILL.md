@@ -90,6 +90,27 @@ Use when the user asks for a Codex review (see the user's rule: Codex is allowed
 4. Treat the findings as advisory: verify each against the code yourself before changing anything, fix confirmed ones directly, then re-prompt the **same** reviewer for a follow-up pass (cap 3 rounds), and close the pane afterwards.
 5. Do not use the `codex:codex-rescue` subagent as a substitute: it only starts a background task and hands back a task id, not findings.
 
+## Codex as implementer (the user's standard code workflow, 2026-10-04)
+
+Claude plans, briefs, reviews and integrates; Codex writes and edits the code. Roles and loop: `~/.claude/rules/model-routing.md`. Mechanics:
+
+1. Worktree per task, in the current workspace: `herdr worktree create --workspace <id> --branch <task-slug> --base <ref> --label <slug> --no-focus`; use the returned root pane. Confirm the target is a Git repo first.
+2. `herdr agent start implementer-<task-slug> --kind codex --pane <root-pane-id>`.
+3. Prompt with a brief (see template) and `--wait --timeout <ms>`; a timeout is not a failure, so use `herdr agent wait` slices and never resend.
+4. Review the real diff: `git -C <worktree> diff <base>...HEAD`, read the changed files, run the verification yourself. The handoff is a claim, not evidence.
+5. Findings go back to the same agent (max 3 rounds). Then integrate (merge) and clean up: `herdr pane close`, `git -C <worktree> status --porcelain` clean, `herdr worktree remove`.
+
+Brief template (keep it short, no secrets, no personal data):
+```
+Task: <one sentence goal>.   Work only in this worktree; do not push, merge or touch other branches.
+Context/principles: <project rules that matter, e.g. amounts come from parsers not AI; Swift 6 strict concurrency>.
+Files in scope: <paths>.   Out of scope: <what not to touch>.
+Acceptance criteria: <observable, testable>.
+Tests: write the regression/unit test first (<where>), then the fix. Run: <lint cmd>, <unit test cmd>.
+Use your own skills/subagents where relevant. When done reply with: changed files, tests run + results, remaining risks.
+```
+If a build/test would collide with another run (shared simulator), run only lint and unit tests; Claude runs the UI suite on the integrated tree.
+
 ## Parallel work and handoff
 
 Assign non-overlapping responsibilities and worktrees. For example: one `implementer` changes code, one `reviewer` reviews the implementation worktree without editing it, and one `tester` validates it in a separate worktree or isolated environment.
