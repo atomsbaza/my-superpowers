@@ -21,9 +21,9 @@ TypeSafe's policy (checked 2026-10-04, docs.typesafe.ai/legal): it will not trai
 
 **Never send** (to any `jev_*` tool): real bank slips or their OCR text, anything from a `.private/` or `*-private/` corpus, names/account numbers/emails/phones/addresses of real people, secrets (keys, tokens, `.env`, certificates, passwords), employer or customer code and data, details of an unfixed vulnerability, anything the user marked private. Do not rely on redaction by hand for personal data: use synthetic data instead.
 
-**May send, minimal and bounded:** diffs, file excerpts and scrubbed test logs from the user's personal projects under `~/Work/Apple/` and from public open-source checkouts (`~/Work/oss/`); public web text; the project's own docs, README, changelog; synthetic fixtures. Send the smallest excerpt that carries the judgment (a diff, not the repo).
+**May send, minimal and bounded:** diffs, file excerpts and scrubbed test logs from any project under `~/Work/` (this is the user's personal machine and everything there is personal work, confirmed 2026-10-04); public web text; the project's own docs, README, changelog; synthetic fixtures. Send the smallest excerpt that carries the judgment (a diff, not the repo).
 
-**Ask the user once per repo** before sending anything from any other project (work/company repos in particular), and remember the answer for that repo. When unsure, do not send.
+**Ask the user first** before sending code from anywhere outside `~/Work/` (another machine, a mounted work drive, a repo cloned for an employer or client) and remember the answer for that repo. When unsure, do not send.
 
 ## Stage map
 
