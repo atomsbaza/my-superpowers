@@ -98,6 +98,8 @@ a license audit):
 ## Original skills (2026-09-05)
 
 - `skills/tools/kirocrew-claude-backend/` — original work; procedures verified against KiroCrew upstream `d3e67b7e9` (2026-09-04) on macOS.
+- `skills/tools/kirocrew-memory/` — original work (2026-10-04); read commands and the `kc_memory.py` writer verified against the installed Kiro Crew (`MemoryStore.write_projects` compare-and-swap).
+- `skills/tools/jev-workflow/` — original work (2026-10-04); tool behaviour calibrated against `jev-1.13.0` via the `mcp__jev__*` tools; data-handling terms from docs.typesafe.ai/legal.
 
 ## Curated external workflow adaptations (2026-08-21)
 

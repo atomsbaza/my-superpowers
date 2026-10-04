@@ -204,6 +204,8 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 | `changelog-writer` | Generate changelogs/release notes from commits, PR titles, and issues — Keep a Changelog format, semver suggestions |
 | `chrome-extension-development` | Manifest V3 Chrome extension development — security, performance, best practices |
 | `herdr-workflow` | Coordinate Codex/Claude/Kiro CLI agents through Herdr — panes, worktree isolation, parallel implementer/reviewer/tester roles, handoff |
+| `kirocrew-memory` | Read and update the Kiro Crew memory (projects, history, learning log) from Claude Code — read commands plus a safe writer (backup, compare-and-swap section write, log append) |
+| `jev-workflow` | Use the Jev MCP tools as a cheap second-opinion judge across the dev workflow — screen external text, verify claims before "done", pre-review diffs, triage test failures, check docs against code — with a data boundary and calibration notes |
 | `wayfinder` | Codebase exploration and architecture mapping |
 | `xcodebuildmcp-cli` | Reference for driving XcodeBuildMCP from the CLI for Apple platform builds |
 | `graphify` | Turn any input (code, docs, papers, images, videos) into a persistent knowledge graph with god nodes, community detection, query/path/explain tools |

@@ -21,6 +21,8 @@ Use this skill for the team conventions below. Do not use Herdr controls unless 
 - Give each live agent a name that starts with its role — `implementer`, `reviewer`, `tester`, or a clear equivalent — never the bare issue/task title or slug alone; a name without a role prefix doesn't say what the agent is for. Herdr rejects a duplicate live name, so whenever more than one task pipeline may run at once, append the task slug: `implementer-<task-slug>`, `reviewer-<task-slug>` (e.g. `implementer-1834`, not `1834-worktree-remove-error`).
 - Require a dedicated Git worktree for every coding agent that might modify code. Create or open it with `--workspace <current-workspace-id>` so it remains in the current Herdr workspace. A read-only research or review agent may use the primary checkout only when its task is not tied to a specific in-progress worktree (e.g. general codebase questions). When reviewing or testing a specific implementer's in-progress work, point that agent's pane `--cwd` at the **implementer's own worktree** so it sees the actual uncommitted changes — the primary checkout will not show them.
 - When `herdr worktree create` or `herdr worktree open` creates a dedicated worktree, use the returned root pane directly for the agent. Do not split another pane after opening or creating that worktree; split only when reusing an existing workspace that has no worktree-created root pane.
+- Before `herdr worktree create` or `herdr worktree open`, confirm the target directory is a Git repository or worktree (`git -C <path> rev-parse --git-dir`). A non-repo target fails with `not_git_worktree` after a wasted workspace-create cycle — scaffold or clone the workspace first.
+- Run every task command with the worktree as its working directory (`--cwd` on the pane, or `cd` in the agent prompt). A command run from the lead's own cwd hits the wrong tree or fails outright (`ENOENT package.json`).
 - Never close, interrupt, or repurpose a pane, worktree, tab, or session not created for the current task.
 - Never put credentials, tokens, or other secrets in `herdr agent prompt` text — prompt text and pane output are persisted and readable. Have agents source secrets from their environment or existing config instead.
 - Before creating a new pane, agent, or worktree, check what already exists (`herdr pane layout`, `herdr worktree list`, or equivalent) and reuse or clean up rather than accumulating parallel resources unboundedly.
@@ -73,6 +75,20 @@ Use this skill for the team conventions below. Do not use Herdr controls unless 
 - On `blocked`, run `herdr agent get <name>` and `herdr agent read <name> --source recent-unwrapped --lines 120`; route the question or approval to the lead/user. Do not blindly send approval keys.
 - On timeout or `unknown`, inspect output first. Do not resend a prompt until it is clear whether the agent is still working.
 - On `agent_prompt_stalled`, inspect `herdr agent get <name>` and `herdr agent read <name>` before retrying. The agent may already be idle for a different reason; do not resend the same prompt blindly.
+
+## Wait without resending
+
+`herdr agent prompt ... --wait --timeout <ms>` can time out (`timed out waiting for agent status`) while the agent is still `working`: the timeout only ends the wait, not the work. Never resend the prompt. Check `herdr agent get <name>`, then wait again with `herdr agent wait <name> --until idle --until done --timeout <ms>` (repeat in slices, or run the wait in the background) and read the result with `herdr agent read <name> --source recent-unwrapped --lines 200`. A long review (several minutes) is normal.
+
+## Code review with a Codex reviewer
+
+Use when the user asks for a Codex review (see the user's rule: Codex is allowed as a second reviewer for code reviews, never an automatic gate).
+
+1. Pick the tree: a reviewer of uncommitted work points `--cwd` at the tree that holds the changes (the primary checkout, or the implementer's worktree). No new worktree is needed because the reviewer must not edit.
+2. Split a pane with `--no-focus`, start `reviewer-<task-slug>` with `--kind codex`, and prompt it read-only: list the commit range and `git diff` scope, the intent of the change, the concrete risk areas, and ask for high-confidence findings only (file:line, failure scenario, fix; new vs pre-existing; zero findings is fine).
+3. If tests or a simulator run are in progress, forbid builds and test runs in the prompt (shared DerivedData / simulator).
+4. Treat the findings as advisory: verify each against the code yourself before changing anything, fix confirmed ones directly, then re-prompt the **same** reviewer for a follow-up pass (cap 3 rounds), and close the pane afterwards.
+5. Do not use the `codex:codex-rescue` subagent as a substitute: it only starts a background task and hands back a task id, not findings.
 
 ## Parallel work and handoff
 
