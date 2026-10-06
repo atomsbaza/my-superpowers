@@ -89,7 +89,10 @@ After each turn, the hook injects one of these into your next context:
   verification (2026-09-10).** Verification must come from a different vantage:
   the checker hook, a fresh context, or an on-disk check — not the same session
   re-reading its own output. Related: cross-model review beats same-model
-  review (see AGENTS.md orchestrator conventions).
+  review (see AGENTS.md orchestrator conventions). The same applies to the
+  **stop condition**: "are we done?" must be judged by a fresh/other model or
+  an on-disk check, never by the agent doing the work (Loop Engineering,
+  x.com/addyosmani/status/2064127981161959567; 2026-10-06).
 - **Budget long workflows as r^H — and do NOT compensate by compressing
   context (2026-09-15, arXiv:2609.01660).** Across 9 models and 10,664
   trajectories, long-horizon task success follows a geometric law in the
