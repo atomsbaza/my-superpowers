@@ -574,6 +574,31 @@ analysis
 were adapted from the X-scout knowledge-scout digest of 2026-10-03
 (Discord thread #xTreand, cron job f933f5a8d591).
 
+## Adapted from X-scout digest (2026-10-06)
+
+Extensions adapted from the X-scout knowledge-scout digest of 2026-10-06
+(Discord thread #xTreand, cron job f933f5a8d591); full cited analysis:
+`docs/research/agentic-ai/2026-10-06-context-governance-sandbox-loop.md`:
+
+- `skills/knowledge-base/agent-memory-design/` — rule provenance /
+  "catastrophic remembering" ratchet (1,867-repo scan —
+  x.com/rohanpaul_ai/status/2096977144111132908); nested
+  `.claude/agent-memory` dirs silently destroying the prompt cache
+  (x.com/areshawns/status/2095422606174490807); Markdown-brain
+  write-lane split with human-approved specs/decisions (liao.gg +
+  news.ycombinator.com/item?id=49945933); silent-truncation as the
+  universal memory-harness failure (mem0 9-harness teardown —
+  x.com/mem0ai/status/2061822612398014782).
+- `skills/quality/ai-agent-security/` — per-user sandbox doctrine with
+  three mount points + ABAC short-lived credentials scoped per S3 prefix
+  (Fintool, x.com/nicbstme/status/2015174818497437834) incl. the
+  OpenRouter provider-sandbox benchmark as build-vs-buy reference;
+  procedural sediment — agents need a built-in right to push back
+  (x.com/KirkMarple/status/2106268824265957796).
+- `skills/execution/loop/` — fresh-judge stop condition ("are we done?"
+  decided by a different model/context, never the working agent — Loop
+  Engineering, x.com/addyosmani/status/2064127981161959567).
+
 ## Original work
 
 The following were created independently in this repo:
