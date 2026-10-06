@@ -420,6 +420,45 @@ see the research note):
   compiling, flag contradictions at link time, and expect the payoff to
   start at ~50–100 compiled sources
   (x.com/rvaniaaaa, threadnavigator.com/thread/2090512486738845784/).
+- **Rule provenance: context rules are a ratchet ("catastrophic remembering",
+  2026-10-06).** A scan of 1,867 GitHub repos found agents remember rules
+  longer than maintainers remember why the rules exist — a rule whose origin
+  is forgotten cannot be safely deleted, so stale rules only accumulate and
+  steer every session. Operational form: every rule added to a context file
+  carries provenance (date + the bug/commit/event that motivated it); a rule
+  without provenance is a deletion candidate, not an authority. Complements
+  the non-inferable-only authoring rule: provenance is what makes eventual
+  removal possible (x.com/rohanpaul_ai/status/2096977144111132908).
+- **Nested agent-memory dirs silently destroy the prompt cache
+  (2026-10-06).** Claude Code rebuilds the system prompt from the shell's
+  cwd; subagent `.claude/agent-memory` directories scattered through a repo
+  (~25 root-resolution candidates observed) move the cache breakpoint on
+  every invocation → chronic cache misses, paid in tokens, no error
+  anywhere. Check `find . -path '*/.claude/agent-memory' -not -path
+  './.claude/*'`; merge finds into the repo root + gitignore. Generalizes:
+  keep agent state at one fixed path, never scattered per-cwd
+  (x.com/areshawns/status/2095422606174490807).
+- **Markdown brain: agents need documentation, not RAG memory — with a
+  write-lane split (2026-10-06, liao.gg).** RAG-style memory fails five
+  ways: similarity ranking misses context, old memories treated as truth,
+  the agent can't find what it doesn't know exists, not auditable, and
+  expensive (full-history retrieval: p95 latency +91%). Working alternative:
+  a structured workspace (instructions/specs/decisions/research/indexes)
+  with the loop consult → build → update-while-freshest — git-native,
+  PR-reviewable. HN caveat (280+ comments): agents authoring their own specs
+  invent nice-to-haves nobody asked for — **specs/decisions are
+  human-approved; agents update only low-risk layers** (indexes, research
+  notes). Retrieval stays necessary for three cases: personal
+  conversational memory, multi-year archives, cross-project relations
+  (liao.gg/blog/agents-dont-need-memory, news.ycombinator.com/item?id=49945933).
+- **Silent truncation is the universal memory-harness failure (2026-10-06,
+  mem0 harness teardown — mechanism only, vendor numbers unverified).**
+  Across 9 harnesses (Claude Code, Codex, Hermes, Copilot, Devin, …) the
+  same shape breaks the same way: small local storage, keyword-only
+  retrieval, and — the shared failure — a file that isn't selected produces
+  no warning at all. Design consequence: fail visibly (log what was
+  dropped), and never expect a keyword index to find a fact paraphrased
+  differently from its filename (x.com/mem0ai/status/2061822612398014782).
 
 ## References
 
@@ -437,4 +476,5 @@ see the research note):
 - 2026-09-24 additions: arXiv 2606.22528 quantified decay + Constraint Pinning (dreaming.press/posts/context-compaction-erases-agent-guardrails.html), Kiz8 dependency-graph eviction (github.com/kiz8-team/pi-cwl), arXiv 2606.23525 (SelfCompact), x.com/softwaredoug/status/2102103607843668297, x.com/stretchcloud/status/2102205740869877985, x.com/rohit4verse/status/2090135919714324876, news.ycombinator.com/item?id=49581240 (OKF Agent Memory), x.com/mem0ai/status/2061822612398014782, x.com/nicbstme/status/2051131906327212298, x.com/sairahul1/status/2063544956158185927 — full curated analysis: `docs/research/agentic-ai/2026-09-24-instruction-context-lifecycle.md`
 - 2026-10-01 additions: compaction-output-as-untrusted-channel with 2.15% prevalence (x.com/ParkerRex/status/2102078834409340962, max.nardit.com/articles/the-compaction-is-an-untrusted-input), CliffCompaction arXiv 2609.26779 + tiered masking (github.com/ai-boost/awesome-harness-engineering) + Anthropic 3 primitives (platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools), trimming cliff arXiv 2609.16461 (thecolony.ai), write-time memory quality (dev.to/baharfatima/why-my-agent-kept-forgetting-things-and-how-hindsight-fixed-it-50e3), skills-over-memory 3-bucket audit (x.com/mvanhorn/status/2070966613994795489), compiled knowledge drift (foundanand.medium.com/the-hidden-flaw-in-karpathys-llm-wiki-e3a86a94b459), SwarmTraces covert channels (swarmtraces.org) — full curated analysis: `docs/research/agentic-ai/2026-10-01-context-lifecycle-compaction-economics.md`
 - 2026-10-03 additions: single-file profile memory (arize.com/blog/alyx-agent-long-term-memory-architecture/), chat-IS-the-memory inline compression (x.com/VictorTaelin/status/2105182389961908544), file-as-context with diff guard + suffix-reuse cache economics (arXiv 2609.37725, x.com/RulinShao/status/2105282444270448647) — full curated analysis: `docs/research/agentic-ai/2026-10-03-single-file-memory-self-edited-context.md`
+- 2026-10-06 additions: rule provenance / ratchet (x.com/rohanpaul_ai/status/2096977144111132908), nested agent-memory cache damage (x.com/areshawns/status/2095422606174490807), Markdown-brain write-lane split (liao.gg/blog/agents-dont-need-memory, news.ycombinator.com/item?id=49945933), silent-truncation teardown (x.com/mem0ai/status/2061822612398014782) — full curated analysis: `docs/research/agentic-ai/2026-10-06-context-governance-sandbox-loop.md`
 - `docs/research/agentic-ai/2026-09-12-write-path-control-skills-sandboxes.md` — 2026-09-12 additions (abstraction-first embedding, write-path control, context-files-as-index; sources: x.com/marfinxx/status/2098184256677699929, x.com/mem0ai/article/2074509697689002254, openai.com/index/harness-engineering)
