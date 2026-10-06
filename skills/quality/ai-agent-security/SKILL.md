@@ -221,6 +221,27 @@ Prefer controls that reduce blast radius even when the model is manipulated:
   availability argument
   (x.com/NathanFlurry/status/2102523527304032256).
 
+- **Per-user sandbox with three mount points + credentials scoped by prefix,
+  not by trust (2026-10-06, Fintool financial-services, 2 years).** The
+  author caught an LLM running `rm -rf` on the server while "cleaning up
+  temp files" — per-user sandboxing is not optional. Working shape: isolated
+  env per user + three mount points (private read-write / shared read-only /
+  public read-only) + AWS ABAC **short-lived credentials scoped per S3
+  prefix** per user. Corollary doctrines from the same write-up: "context is
+  the product" (normalize many schemas into one context the model can reason
+  over, rather than tuning the model) and skills-as-product. Read the
+  provider sandbox benchmarks (OpenRouter server-side code execution vs
+  OpenAI/Anthropic/Google native) before building your own
+  (x.com/nicbstme/status/2015174818497437834,
+  openrouter.ai/blog/insights/server-side-code-execution-tools-for-ai-agents-compared/).
+- **Procedural sediment: an agent that never pushes back accumulates wrong
+  direction (2026-10-06, Kirk Marple, Codex vs Claude in production).**
+  Coding agents break from process shape more than model capability: an
+  agent that obeys every instruction progressively encodes wrong directions
+  into the system until they sediment. Build an escalation path and the
+  right to challenge direction into the agent's operating rules — not just
+  a list of commands (x.com/KirkMarple/status/2106268824265957796).
+
 One regex or one model safety setting is not a complete defense. Static signature checks catch known patterns; supplement them with domain-specific adversarial cases and control-path tests. Harness-engineering corollary (0xwhrrari, 2026-09): patch the harness, not the run — convert each request into a contract before the agent works to prevent silent task redefinition.
 
 ## 4. Build safe evaluation cases
