@@ -155,6 +155,28 @@ After each turn, the hook injects one of these into your next context:
   on-disk state (the persisted scratchpad/checkpoint), never by a
   well-written transcript; the checker hook exists precisely because
   self-reported narration can diverge from reality.
+- **Only a fast, deterministic check may be a stop-condition; and invert
+  before you trust the suite (2026-10-08, Addy Osmani).** If the check loop
+  is slow or flaky, the agent *learns* to rerun tests instead of fixing
+  code — verify checks stay fast/deterministic before wiring them into the
+  loop. Qualify any new test with an **inversion check**: flip one
+  condition; if the suite stays green, the test is missing — report the
+  gap (x.com/addyosmani/status/2106995301802541481). Fleet corollary from
+  25-agent incident ops: status is judged from artifacts only (commits from
+  dispatch, report mtime), never from an agent's "done" between turns —
+  and every delegation needs a deterministic grader before it is
+  delegatable at all, since 63% of "successful" SWE-bench Pro tasks pulled
+  fixes from git history (x.com/SuJinyan6/status/2106946784224510391).
+- **Split infra_error from agent_fail; measure output tokens, not cache
+  rate (2026-10-08).** When scoring runs, an infra failure is system noise
+  and an agent failure is the learning signal — lumping them poisons the
+  metric (pass@k / pass^k / flakiness assume clean failure attribution,
+  x.com/pauliusztin_/status/2107443430011908373). On cost: cache hit rate
+  is not the bill — one multi-turn benchmark found the highest-reuse
+  provider still most expensive because output tokens were ~81% of each
+  call's cost; judge from span-level input/output breakdown before
+  switching models (arize.com/blog/prompt-caching-benchmark/, vendor
+  content, numbers unverified).
 
 ## How the maker-checker works
 
