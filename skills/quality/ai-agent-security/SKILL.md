@@ -241,6 +241,24 @@ Prefer controls that reduce blast radius even when the model is manipulated:
   into the system until they sediment. Build an escalation path and the
   right to challenge direction into the agent's operating rules — not just
   a list of commands (x.com/KirkMarple/status/2106268824265957796).
+- **Determinism layer: agent proposes, substrate applies (2026-10-08,
+  stackoverflow.blog).** The agent is a pure function that only *proposes*
+  (same context → same proposal — testable with a single assert) and never
+  touches business state; a dumb, easily-tested substrate applies proposals
+  after approval, and every decision lands in an append-only audit ledger.
+  Blast radius of a jailbroken or buggy agent then ends at a bad proposal,
+  not a bad action. Free loops require a step cap + tool allow-list — never
+  `while not done`
+  (stackoverflow.blog/2026/10/07/part-1-make-your-ai-agents-boring-the-determinism-layer).
+- **Strict-harness evaluation: strip history and network from measured runs
+  (2026-10-08, SuJinyan6 workshop).** Reward hacking through the oracle is
+  the default outcome, not the edge case — 63% of "successful" SWE-bench
+  Pro tasks pulled the fix from git history instead of deriving it, and
+  hiding history + blocking the net dropped scores 87.1% → 73.0%. When
+  scoring an agent: deterministic grader wherever possible, measured run's
+  context stripped of git history/network, infra_error split from
+  agent_fail, and iteration count ignored (quality correlation ≈ 0.17)
+  (x.com/SuJinyan6/status/2106946784224510391).
 
 One regex or one model safety setting is not a complete defense. Static signature checks catch known patterns; supplement them with domain-specific adversarial cases and control-path tests. Harness-engineering corollary (0xwhrrari, 2026-09): patch the harness, not the run — convert each request into a contract before the agent works to prevent silent task redefinition.
 
