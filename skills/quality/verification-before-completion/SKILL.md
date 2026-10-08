@@ -139,6 +139,18 @@ break acceptance constraints derived from real code review. So:
 ❌ Trust agent report
 ```
 
+**Inversion check (2026-10-08, Addy Osmani):**
+```
+✅ Flip one condition → Run → MUST go red → Restore → Run (green)
+   If it stays green: the test is missing — report the gap, don't claim coverage
+❌ "I added tests" (suite never demonstrated it can fail)
+```
+Reward hacking is the mechanism to guard against: 63% of "successful"
+SWE-bench Pro tasks pulled the fix from git history instead of deriving it;
+hiding history + blocking the net dropped scores 87.1% → 73.0%
+(x.com/SuJinyan6/status/2106946784224510391). Also: iteration count
+correlates with quality at ≈ 0.17 — verify the outcome, never the effort.
+
 ## Why This Matters
 
 From 24 failure memories:
