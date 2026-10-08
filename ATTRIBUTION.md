@@ -599,6 +599,37 @@ Extensions adapted from the X-scout knowledge-scout digest of 2026-10-06
   decided by a different model/context, never the working agent — Loop
   Engineering, x.com/addyosmani/status/2064127981161959567).
 
+## Adapted from X-scout digest (2026-10-08)
+
+Extensions adapted from the X-scout knowledge-scout digest of 2026-10-08
+(Discord thread #xTreand, cron job f933f5a8d591); full cited analysis:
+`docs/research/agentic-ai/2026-10-08-eval-verification-fleet-memory.md`:
+
+- `skills/knowledge-base/agent-memory-design/` — knowledge-must-converge
+  archiving with existing-topics-index slug reuse (Alluvium,
+  github.com/Tespera/alluvium); offline cleanup loop / Devin "Dreaming"
+  over a git+markdown memory repo, incl. the stale-checkout concurrency
+  gap found by independent spec testing
+  (x.com/walden_yan/status/2107139645921296465,
+  ai.thesatyajit.com/articles/agent-memory-repo); claim-named memory files
+  + authority ordering across the four context failure modes
+  (x.com/nykdotdev/status/2031581912071127158).
+- `skills/quality/ai-agent-security/` — determinism layer (agent proposes,
+  substrate applies, append-only audit ledger, step cap + allow-list —
+  stackoverflow.blog/2026/10/07/part-1-make-your-ai-agents-boring-the-determinism-layer);
+  strict-harness evaluation (reward hacking via git history: 63% of
+  SWE-bench Pro "successes", 87.1%→73.0% with history hidden —
+  x.com/SuJinyan6/status/2106946784224510391).
+- `skills/quality/verification-before-completion/` — inversion check
+  pattern (flip one condition, the suite must go red) with the
+  reward-hacking evidence and iteration-count ≈ 0.17 correlation
+  (x.com/addyosmani/status/2106995301802541481).
+- `skills/execution/loop/` — fast/deterministic-only stop-conditions (slow
+  or flaky checks teach agents to rerun tests instead of fixing code);
+  artifact-only fleet status; infra_error/agent_fail split
+  (x.com/pauliusztin_/status/2107443430011908373); output-tokens-not-cache-
+  rate cost measurement (arize.com/blog/prompt-caching-benchmark/).
+
 ## Original work
 
 The following were created independently in this repo:
