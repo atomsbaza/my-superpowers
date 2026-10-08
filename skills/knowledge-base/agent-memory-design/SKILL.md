@@ -459,6 +459,27 @@ see the research note):
   no warning at all. Design consequence: fail visibly (log what was
   dropped), and never expect a keyword index to find a fact paraphrased
   differently from its filename (x.com/mem0ai/status/2061822612398014782).
+- **Knowledge must converge, not accumulate (2026-10-08, Alluvium +
+  Devin "Dreaming").** Vault rot's root cause is accumulation without
+  convergence: when archiving a session into a knowledge base, read the
+  existing-topics index *first* and reuse the existing slug — "atomic-write"
+  extends the old page instead of minting "atomic-file-write" — and lint for
+  near-duplicates periodically (github.com/Tespera/alluvium). Memory needs an
+  offline cleanup loop, not just better retrieval: merge duplicates, expire
+  notes no session used, synthesize lessons no session stated — the Devin
+  "Dreaming" daily background session over a git+markdown memory repo
+  (x.com/walden_yan/status/2107139645921296465,
+  github.com/AgentMemoryRepo/agentmemoryrepo). Spec gap found by independent
+  testing: git rejects *every* push from a stale checkout, not just
+  same-line edits — design the concurrency model explicitly instead of
+  trusting "git handles merges" (ai.thesatyajit.com/articles/agent-memory-repo).
+- **Name memory files as claims, not categories (2026-10-08, nyk).** Four
+  context failure modes — pollution / distraction / confusion (too many
+  tools) / clash (CLAUDE.md contradicting README → the agent picks at
+  random). Fixes: explicit authority ordering (system prompt > docs >
+  history), and claim-named files — `we chose PostgreSQL because queries
+  are relational.md` beats `decisions.md` because the title itself decides
+  whether reading on is worth it (x.com/nykdotdev/status/2031581912071127158).
 
 ## References
 
@@ -477,4 +498,5 @@ see the research note):
 - 2026-10-01 additions: compaction-output-as-untrusted-channel with 2.15% prevalence (x.com/ParkerRex/status/2102078834409340962, max.nardit.com/articles/the-compaction-is-an-untrusted-input), CliffCompaction arXiv 2609.26779 + tiered masking (github.com/ai-boost/awesome-harness-engineering) + Anthropic 3 primitives (platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools), trimming cliff arXiv 2609.16461 (thecolony.ai), write-time memory quality (dev.to/baharfatima/why-my-agent-kept-forgetting-things-and-how-hindsight-fixed-it-50e3), skills-over-memory 3-bucket audit (x.com/mvanhorn/status/2070966613994795489), compiled knowledge drift (foundanand.medium.com/the-hidden-flaw-in-karpathys-llm-wiki-e3a86a94b459), SwarmTraces covert channels (swarmtraces.org) — full curated analysis: `docs/research/agentic-ai/2026-10-01-context-lifecycle-compaction-economics.md`
 - 2026-10-03 additions: single-file profile memory (arize.com/blog/alyx-agent-long-term-memory-architecture/), chat-IS-the-memory inline compression (x.com/VictorTaelin/status/2105182389961908544), file-as-context with diff guard + suffix-reuse cache economics (arXiv 2609.37725, x.com/RulinShao/status/2105282444270448647) — full curated analysis: `docs/research/agentic-ai/2026-10-03-single-file-memory-self-edited-context.md`
 - 2026-10-06 additions: rule provenance / ratchet (x.com/rohanpaul_ai/status/2096977144111132908), nested agent-memory cache damage (x.com/areshawns/status/2095422606174490807), Markdown-brain write-lane split (liao.gg/blog/agents-dont-need-memory, news.ycombinator.com/item?id=49945933), silent-truncation teardown (x.com/mem0ai/status/2061822612398014782) — full curated analysis: `docs/research/agentic-ai/2026-10-06-context-governance-sandbox-loop.md`
+- 2026-10-08 additions: knowledge-must-converge / slug-reuse archiving (github.com/Tespera/alluvium), offline cleanup loop / Devin Dreaming over git+markdown memory + stale-checkout concurrency gap (x.com/walden_yan/status/2107139645921296465, github.com/AgentMemoryRepo/agentmemoryrepo, ai.thesatyajit.com/articles/agent-memory-repo), claim-named memory files + authority ordering (x.com/nykdotdev/status/2031581912071127158) — full curated analysis: `docs/research/agentic-ai/2026-10-08-eval-verification-fleet-memory.md`
 - `docs/research/agentic-ai/2026-09-12-write-path-control-skills-sandboxes.md` — 2026-09-12 additions (abstraction-first embedding, write-path control, context-files-as-index; sources: x.com/marfinxx/status/2098184256677699929, x.com/mem0ai/article/2074509697689002254, openai.com/index/harness-engineering)
