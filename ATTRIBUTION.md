@@ -630,6 +630,38 @@ Extensions adapted from the X-scout knowledge-scout digest of 2026-10-08
   (x.com/pauliusztin_/status/2107443430011908373); output-tokens-not-cache-
   rate cost measurement (arize.com/blog/prompt-caching-benchmark/).
 
+## Adapted from X-scout digest (2026-10-13)
+
+Extensions adapted from the X-scout knowledge-scout digest of 2026-10-13
+(Discord thread #xTreand, cron job f933f5a8d591); full cited analysis:
+`docs/research/agentic-ai/2026-10-13-eval-instrument-memory-writeback-skill-leakage.md`:
+
+- `skills/quality/model-churn-resilience/` — eval-instrument recording
+  (log resolved model ID + judge-prompt hash + CLI version per run,
+  regrade before reword, "no sentence for a single flip", series gate;
+  dev.to/oliverzehentleitner/the-model-changed-my-skill-didnt-the-score-still-dropped-mlj)
+  and never switch reasoning effort mid-session (prompt-cache
+  invalidation — x.com/kunchenguid/status/2103335401515819238).
+- `skills/knowledge-base/agent-memory-design/` — memory without writeback
+  is dead weight (append-only bullet distillation + skeptic gate;
+  ani.computer/writings/self-improving-fleet), compliance_count over
+  used_count + fire-the-hook-once
+  (joeyhipolito.dev/log/2026-02-23-memory-in-practice), memory doesn't
+  transfer across harnesses + freeze the snapshot + verify-on-read
+  (x.com/nicbstme/status/2050301124314563025), shared facts need
+  owner + expiry + source link and memory ≠ permission
+  (x.com/0xwhrrari/status/2107093781807775896).
+- `skills/quality/ai-agent-security/` — skill-marketplace credential
+  leakage via stdout-side-channel debug logging (arXiv 2604.03070,
+  github.com/AgentSkillsPrivacy/SkillLeakBench).
+- `skills/quality/verification-before-completion/` — separate
+  comprehension from judgment; AI reviews of untrusted text are evidence,
+  not gates (arXiv 2610.11087).
+- `skills/execution/loop/` — compare agents per-task not by aggregate
+  score (38.94% vs 31.86%, 32/113 outcomes flipped;
+  x.com/Oluwaphilemon1/status/2100036836068340157); human message ≠ stop
+  command steering gate (x.com/altryne/status/2103310152938230256).
+
 ## Original work
 
 The following were created independently in this repo:
