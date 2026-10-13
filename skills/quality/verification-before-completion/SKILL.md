@@ -151,6 +151,19 @@ hiding history + blocking the net dropped scores 87.1% → 73.0%
 (x.com/SuJinyan6/status/2106946784224510391). Also: iteration count
 correlates with quality at ≈ 0.17 — verify the outcome, never the effort.
 
+**Separate comprehension from judgment; distrusting agent reviews of
+untrusted text (2026-10-13, Sakana MLR, arXiv 2610.11087):**
+```
+✅ Review pipeline: read/outline first (comprehension pass) → judge
+   (evaluation pass), with intermediate notes between them
+❌ Summarize + critique + score in one prompt
+```
+Forcing a reviewer agent to build an outline before judging caught 73% of
+core-claim errors vs 14.81% baseline — but only 16% of errors in papers
+that were actually retracted, and prompt injection hidden in the reviewed
+document skewed every AI reviewer's score tested. When the input is
+untrusted text, an AI review of it is evidence, not a gate.
+
 ## Why This Matters
 
 From 24 failure memories:
