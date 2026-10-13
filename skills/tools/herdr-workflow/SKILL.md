@@ -76,6 +76,16 @@ Use this skill for the team conventions below. Do not use Herdr controls unless 
 - On timeout or `unknown`, inspect output first. Do not resend a prompt until it is clear whether the agent is still working.
 - On `agent_prompt_stalled`, inspect `herdr agent get <name>` and `herdr agent read <name>` before retrying. The agent may already be idle for a different reason; do not resend the same prompt blindly.
 
+## Get notified when a pane agent finishes (added 2026-10-13: mandatory)
+
+Codex, Cursor and other pane agents are separate processes: unlike an Agent-tool subagent they do NOT report back by themselves, so a finished agent sits `idle` unseen (this cost a 55-minute silent gap on 2026-10-13). Whenever you give a pane agent work, the SAME step must also arm a completion notification:
+
+- Send the prompt with a blocking wait in the background: run `herdr agent prompt <name> "<short prompt pointing at the brief file>" --wait --until idle --until done --timeout 7200000` with the Bash tool's `run_in_background: true`. `--wait` matches the first state observed AFTER the submission, so a stale `idle` from before the prompt does not end it. The harness then wakes you with a task notification when the agent finishes (or the timeout ends the wait: a timeout is not a failure, check `herdr agent get`).
+- Do not send the prompt first and wait separately (the stale `idle`/`done` status returns at once), and never poll with sleep loops.
+- When the notification arrives: read the handoff (`herdr agent read <name> --source recent-unwrapped --lines 120`), then review the real diff.
+- Tell the user when an agent finished, in the same turn the notification arrives.
+- Quote the prompt text safely (no backticks or `$()` inside double quotes; put long briefs in a file and point at it).
+
 ## Wait without resending
 
 `herdr agent prompt ... --wait --timeout <ms>` can time out (`timed out waiting for agent status`) while the agent is still `working`: the timeout only ends the wait, not the work. Never resend the prompt. Check `herdr agent get <name>`, then wait again with `herdr agent wait <name> --until idle --until done --timeout <ms>` (repeat in slices, or run the wait in the background) and read the result with `herdr agent read <name> --source recent-unwrapped --lines 200`. A long review (several minutes) is normal.
