@@ -105,6 +105,19 @@ Prefer controls that reduce blast radius even when the model is manipulated:
   public writable surface as a monitored covert channel; "network allowed in
   sandbox" = no sandbox; local control ports get loopback disabled or auth.
   (Extends control-plane-outside-the-sandbox, CVE-2026-82533.)
+- **Skill-marketplace credential leakage rides debug logging through stdout
+  (2026-10-13, SkillsMP study, arXiv 2604.03070 / ASE 2026).** 17,022
+  marketplace skills analyzed: 520 leaked credentials across 1,708
+  instances, 84% negligence, 89.6% of leaked keys worked immediately — the
+  dominant mechanism is agent frameworks piping tool stdout into the context
+  window, making `print`/log statements a side channel for anything they
+  touch; and forks keep serving the secret even after the upstream fix (50+
+  repos did). Install-gate addition: before installing a third-party skill,
+  scan its bundled scripts for `print`/`log`/`console` statements that
+  touch env vars or secrets, check whether the framework surfaces skill
+  stdout into context, and prefer upstream over forks — a fork does not
+  inherit security fixes automatically
+  (arxiv.org/abs/2604.03070, github.com/AgentSkillsPrivacy/SkillLeakBench).
 - **Validate per-step constraints; step-indexed traces (2026-09-15,
   Microsoft AgentRx).** Agents often crash many steps *after* the root
   cause: a misinterpreted tool output at step 04 silently corrupts state
