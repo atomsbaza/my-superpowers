@@ -480,6 +480,37 @@ see the research note):
   history), and claim-named files — `we chose PostgreSQL because queries
   are relational.md` beats `decisions.md` because the title itself decides
   whether reading on is worth it (x.com/nykdotdev/status/2031581912071127158).
+- **Memory that never gets read back is dead weight — and measure
+  compliance, not retrieval (2026-10-13).** A 13-agent fleet kept good
+  uptime with 5 empty memory files: the pipeline had consolidation but no
+  *writeback* — nothing re-injected distilled lessons into prompts/skills.
+  Fix shape: a scheduled job distills "lessons of the day" into
+  append-only bullets (never rewrite the whole prompt — LLM self-rewrites
+  cause context collapse) gated by a skeptic pass before landing
+  (ani.computer/writings/self-improving-fleet). Audit counterpart: judge a
+  memory layer by `compliance_count` (did the agent actually follow it?),
+  never `used_count` (was it retrieved?) — and after wiring any hook, fire
+  it once for real before trusting the config: a misconfigured hook fails
+  silently (joeyhipolito.dev/log/2026-02-23-memory-in-practice).
+- **Memory does not transfer across harnesses; freeze the snapshot
+  (2026-10-13, nicbstme).** Models are post-trained against their harness's
+  memory layer (Claude ↔ MEMORY.md index + system-reminders; GPT ↔ Codex's),
+  so porting 64 accumulated entries to another harness loses the read
+  discipline — Model-Harness-Fit applies to memory format too. Two
+  operational rules: (1) never inject dynamic memory into the system prompt
+  mid-session — freeze the snapshot at boot (or put updates in a user
+  message) or every write invalidates the prompt cache; (2) a memory entry
+  citing a path or function name is only a claim from write time — verify
+  on read, every time
+  (x.com/nicbstme/status/2050301124314563025).
+- **Shared facts need owner + expiry + source link (2026-10-13,
+  0xwhrrari).** In team/agent-shared memory, a fact without an owner, an
+  expiry, and a source link must not be written; corrected facts resurrect
+  from old summaries unless derived context carries the source ID/version;
+  and memory is not permission — memory says what context the agent has,
+  permission says what it may do, so re-check a saved fact against the
+  requester's actual access before using it
+  (x.com/0xwhrrari/status/2107093781807775896).
 
 ## References
 
@@ -499,4 +530,5 @@ see the research note):
 - 2026-10-03 additions: single-file profile memory (arize.com/blog/alyx-agent-long-term-memory-architecture/), chat-IS-the-memory inline compression (x.com/VictorTaelin/status/2105182389961908544), file-as-context with diff guard + suffix-reuse cache economics (arXiv 2609.37725, x.com/RulinShao/status/2105282444270448647) — full curated analysis: `docs/research/agentic-ai/2026-10-03-single-file-memory-self-edited-context.md`
 - 2026-10-06 additions: rule provenance / ratchet (x.com/rohanpaul_ai/status/2096977144111132908), nested agent-memory cache damage (x.com/areshawns/status/2095422606174490807), Markdown-brain write-lane split (liao.gg/blog/agents-dont-need-memory, news.ycombinator.com/item?id=49945933), silent-truncation teardown (x.com/mem0ai/status/2061822612398014782) — full curated analysis: `docs/research/agentic-ai/2026-10-06-context-governance-sandbox-loop.md`
 - 2026-10-08 additions: knowledge-must-converge / slug-reuse archiving (github.com/Tespera/alluvium), offline cleanup loop / Devin Dreaming over git+markdown memory + stale-checkout concurrency gap (x.com/walden_yan/status/2107139645921296465, github.com/AgentMemoryRepo/agentmemoryrepo, ai.thesatyajit.com/articles/agent-memory-repo), claim-named memory files + authority ordering (x.com/nykdotdev/status/2031581912071127158) — full curated analysis: `docs/research/agentic-ai/2026-10-08-eval-verification-fleet-memory.md`
+- 2026-10-13 additions: memory writeback or dead weight + compliance_count over used_count + fire-the-hook-once (ani.computer/writings/self-improving-fleet, joeyhipolito.dev/log/2026-02-23-memory-in-practice), memory doesn't transfer across harnesses + freeze the snapshot + verify-on-read (x.com/nicbstme/status/2050301124314563025), shared facts need owner + expiry + source link, memory ≠ permission (x.com/0xwhrrari/status/2107093781807775896) — full curated analysis: `docs/research/agentic-ai/2026-10-13-eval-instrument-memory-writeback-skill-leakage.md`
 - `docs/research/agentic-ai/2026-09-12-write-path-control-skills-sandboxes.md` — 2026-09-12 additions (abstraction-first embedding, write-path control, context-files-as-index; sources: x.com/marfinxx/status/2098184256677699929, x.com/mem0ai/article/2074509697689002254, openai.com/index/harness-engineering)
