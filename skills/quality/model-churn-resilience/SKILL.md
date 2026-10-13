@@ -43,3 +43,14 @@ fail **silently** — nothing errors, the workflow just gets worse or stops.
 - X-scout knowledge digest 2026-09-02 (items 19; sources: byteiota.com,
   explainx.ai, claudefa.st, 2026-09-01/02) — curated in
   `docs/research/agentic-ai/2026-09-02-model-churn-and-agent-sandboxes.md`.
+- **Eval-instrument recording + mid-session effort switches (2026-10-13).**
+  Two additions from the X-scout digest of 2026-10-13: (a) when an eval score
+  drops but the skill/agent didn't change, check the *instrument* before
+  rewording — model aliases swap versions behind your back, so log the
+  resolved model ID, judge-prompt hash, and CLI version on every run, and
+  regrade before rewording (dev.to/oliverzehentleitner/the-model-changed-my-skill-didnt-the-score-still-dropped-mlj).
+  (b) Never switch reasoning effort mid-session: it changes the request
+  shape/system prompt and invalidates the prompt cache for the rest of the
+  run (x.com/kunchenguid/status/2103335401515819238) — decide effort at
+  spawn time; a cache miss at a pipeline boundary (new context) is
+  acceptable, one mid-context is not.
