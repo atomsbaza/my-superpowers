@@ -142,6 +142,7 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 | `receiving-code-review` | Handle review feedback rigorously, not blindly |
 | `improve-codebase-architecture` | Find refactoring and architecture opportunities |
 | `verification-before-completion` | Run checks before claiming work is done — evidence-backed, with external itemized checklists (beats generic verify instructions, arXiv 2607.17937), self-report failure statistics (75% of failed runs report success; acceptance checks beyond green tests), and the Verification Tax framing (measure by production-qualified change, decompose (CI+review+security+rework)/generation cost, arXiv 2609.04681) |
+| `test-verdict-triage` | After a full-suite/CI run: read the verdict from the log (FAIL / PASS / NO RESULT), compare failures against clean main, rerun alone to separate load flakes from regressions |
 | `good-enough` | Detects the Esthetics Trap — finds the value ceiling, audits remaining effort as VALUE vs AESTHETICS, and recommends ship/defer |
 | `pragmatic-review` | Scores a proposal against the Engineering Diagnostic Matrix (scale strategy, tech choice, quality definition, reaction to AI) and outputs concrete adjustments |
 | `security-review` | Security checklist for auth, user input, secrets, API endpoints, and payment/sensitive features |
@@ -361,6 +362,6 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 **Original work in this repo:**
 `loop`, `tdd-loop`, `spec-writer`, `circuit-breaker`, `secrets-guardrail`, `verify-before-stop`,
 `session-promoter`, `research`, `diagnose`, `improve-codebase-architecture`, `session-summary`,
-`handoff`, `management-talk`, `learning-pairing`
+`handoff`, `management-talk`, `learning-pairing`, `test-verdict-triage`
 
 See [ATTRIBUTION.md](ATTRIBUTION.md) for full details.
