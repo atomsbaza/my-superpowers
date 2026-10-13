@@ -247,6 +247,7 @@ Claude Code agent definitions live in `agents/` (one flat `.md` each).
 | `docs` | Writes and maintains documentation: new READMEs/API docs/changelogs plus keeping existing docs aligned with implementation. |
 | `research` | Web research agent — structured markdown report with cited sources. |
 | `engineer` | Implements all code and file changes — the delegate for an orchestrator-only main model. |
+| `haiku-engineer` | Pinned to Haiku: implements small, well-scoped, low-risk code changes (user policy 2026-10-11) with explicit STOP conditions and no git writes; hard or security-sensitive code stays with Codex. The delegation hook can recognise it by agent type. |
 | `wiki-updater` | Updates the Obsidian project vault after significant work. |
 
 #### Architecture & Platform Agents
