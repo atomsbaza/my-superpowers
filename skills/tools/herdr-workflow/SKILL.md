@@ -111,6 +111,25 @@ Use your own skills/subagents where relevant. When done reply with: changed file
 ```
 If a build/test would collide with another run (shared simulator), run only lint and unit tests; Claude runs the UI suite on the integrated tree.
 
+## Cursor as an additional agent (added 2026-10-13)
+
+Cursor is an optional agent kind (`--kind cursor`, executable `cursor-agent`, logged in, default model `composer-2.5`). Codex stays the default implementer; reach for Cursor only here:
+
+- **Second-opinion review** from a different model family than the author: `reviewer-<task-slug>`, read-only, same prompt rules as "Code review with a Codex reviewer".
+- **Fallback or parallel implementation** of a well-scoped task when Codex is unavailable, rate-limited or failed twice, or the user asks for Cursor.
+- **Read-only exploration or planning** of a codebase.
+
+Not for: security gates, permission/approval logic, concurrency, data integrity, migrations, money, process spawn/kill paths, or ambiguous requirements. Hard diagnosis still goes to Opus. When unsure, Codex.
+
+Mechanics (everything else is unchanged: role-prefixed name, dedicated worktree for anything that can edit, brief template, read the real diff, 3 rounds, cleanup):
+
+- Reviewer or explorer: `herdr agent start reviewer-<task-slug> --kind cursor --pane <pane-id> -- --mode plan --trust` (`--mode plan` and `--mode ask` are read-only; no `--force`).
+- Implementer: `herdr agent start implementer-<task-slug> --kind cursor --pane <pane-id> -- --sandbox enabled --trust`. No `--force`/`--yolo` unless the user approves it for an isolated worktree. A `blocked` state is Cursor asking for approval: handle it per "Handle agent state", do not blindly approve.
+- Do not use Cursor's own `-w/--worktree` (it creates trees under `~/.cursor/worktrees`, outside the convention above); create the worktree as for Codex and pass it as the pane `--cwd`.
+- Pass `--model <id>` only when the user asks for one (`cursor-agent --list-models`).
+- Data boundary: Cursor is a third-party cloud service, so the same boundary as Jev and Codex applies: only `~/Work` code, never real slips, `.private/` folders, personal data or secrets.
+- Status: flags checked against `cursor-agent --help` on 2026-10-13, but not yet exercised through `herdr agent start`. On first real use confirm the pane reaches ready and that `--sandbox enabled` still lets it run the project's lint/test commands; record the outcome here.
+
 ## Parallel work and handoff
 
 Assign non-overlapping responsibilities and worktrees. For example: one `implementer` changes code, one `reviewer` reviews the implementation worktree without editing it, and one `tester` validates it in a separate worktree or isolated environment.
