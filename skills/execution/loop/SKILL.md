@@ -177,6 +177,24 @@ After each turn, the hook injects one of these into your next context:
   call's cost; judge from span-level input/output breakdown before
   switching models (arize.com/blog/prompt-caching-benchmark/, vendor
   content, numbers unverified).
+- **Compare agents/models per-task, never by aggregate score alone
+  (2026-10-13).** The same 4-bit model ran the same agent benchmark twice
+  with identical config: 38.94% vs 31.86% aggregate — but 32 of 113 tasks
+  flipped outcome. In an agent loop one token difference changes an edit,
+  which changes the state every later step builds on, so non-determinism
+  compounds through state instead of averaging out. A 7-point aggregate gap
+  may be the system's own noise; the honest comparison is the per-task
+  outcome diff (which tasks flipped and why), then the aggregate
+  (x.com/Oluwaphilemon1/status/2100036836068340157). Pairs with the
+  single-run-per-config limitation: treat small deltas as directional
+  only.
+- **Human message ≠ stop command (2026-10-13, altryne).** Long-running
+  agents stall every time a human types at them — even a greeting reads as
+  an interrupt. Add a steering gate to the operating rules: a human message
+  counts as steering only when it starts/changes/cancels/continues the
+  task; anything else gets a normal reply and the loop keeps its
+  task/checkpoint state
+  (x.com/altryne/status/2103310152938230256).
 
 ## How the maker-checker works
 
