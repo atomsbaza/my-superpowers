@@ -206,6 +206,9 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 |---|---|
 | `frontend-design` | Guidance for distinctive, intentional visual design — aesthetic direction, typography, avoiding templated defaults |
 | `archify` | Polished interactive architecture/workflow/sequence/dataflow/lifecycle diagrams as standalone HTML — typed JSON spec, deterministic validate+deliver, theme/pan/zoom/route-trace built in |
+| `figcraft-screen-check` | Draw app screens in FigCraft through its MCP tools (live vs headless server, screenshot-after-every-section loop, tool gotchas, delegating the drawing) |
+| `figcraft-tokens` | Freeze a project's design tokens from code into a shared brief before drawing; Liquid Glass settings for FigCraft; brief pattern for drawing agents |
+| `figcraft-handoff` | Package approved FigCraft screens (PNG, spec, SwiftUI mapping) into a build brief for Codex/Claude and compare the built screen with the design |
 
 ### Tools
 

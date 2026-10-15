@@ -130,6 +130,7 @@ a license audit):
 
 - `skills/tools/kirocrew-claude-backend/` — original work; procedures verified against KiroCrew upstream `d3e67b7e9` (2026-09-04) on macOS.
 - `skills/tools/kirocrew-memory/` — original work (2026-10-04); read commands and the `kc_memory.py` writer verified against the installed Kiro Crew (`MemoryStore.write_projects` compare-and-swap).
+- `skills/design/figcraft-screen-check/`, `skills/design/figcraft-tokens/`, `skills/design/figcraft-handoff/` — original work (2026-10-16); behaviour observed with FigCraft 0.6.0 app and `figcraft-cli` 0.5.1 through the `figcraft` / `figcraft-live` MCP servers while designing the SpendLens screens; no upstream FigCraft skill exists (searched 2026-10-16). The SwiftUI mapping idea ("the screenshot is the source of truth", structural reference not literal source) follows the approach in Figma's `figma-swiftui` skill (figma/mcp-server-guide); no text was copied.
 - `skills/tools/jev-workflow/` — original work (2026-10-04); tool behaviour calibrated against `jev-1.13.0` via the `mcp__jev__*` tools; data-handling terms from docs.typesafe.ai/legal.
 
 ## Curated external workflow adaptations (2026-08-21)
