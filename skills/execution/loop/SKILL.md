@@ -195,6 +195,52 @@ After each turn, the hook injects one of these into your next context:
   task; anything else gets a normal reply and the loop keeps its
   task/checkpoint state
   (x.com/altryne/status/2103310152938230256).
+- **Async subagent completion arrives as a queued message, never a
+  mid-plan interrupt (2026-10-15, LangChain async-deep-agents).** When a
+  spawned subagent finishes while the parent is still running, deliver the
+  result as a normal message on the parent thread that the parent checks
+  between steps — interrupting mid-plan causes race conditions more often
+  than it helps, and a parent paused on human approval must not cancel the
+  human interrupt to resume for a child. Read `parent_thread_id` (or any
+  correlation id) from *state*, not config, so the notifier survives
+  interrupts (x.com/hwchase17/status/2109938151472890070,
+  github.com/langchain-ai/async-deep-agents). Extends don't-poll: the
+  deterministic wake is a queued completion message, not a conversational
+  one.
+- **Inject realistic tool failures and test whether the agent notices
+  (2026-10-15, Agent-Reflex, arXiv 2610.17953).** Replaying agents across
+  9 benchmarks: ~1 in 7 tool results is an error (down service, permission,
+  timeout), and a frontier model dropped ~80% → ~60% when tools returned
+  wrong values (source-reported, unverified). Cheap transferable test: wrap
+  your tools to fail realistically sometimes (timeout, empty result, 403)
+  and measure whether the agent detects it and recovers; treat "user
+  changes direction mid-task" as a primary scenario, not an edge case. The
+  repo's 1,170 mined recovery rules (github.com/RUC-NLPIR/Agent-Reflex)
+  read as a free catalogue of how tool-agents break.
+- **Offload binary decisions to a small decision model (2026-10-15,
+  HN practitioner thread).** Ranking search results, filtering retrieval
+  noise, checking prompt injection — jobs that were one-shot LLM calls in
+  the main agent — moved to a small decision model: 5–10 s saved per round,
+  lower bill, precision flat, and the main agent stops carrying filter
+  context (news.ycombinator.com/item?id=50072702). If the output is
+  yes/no or a ranking, it's a filter sub-step, not main-agent work.
+- **Put the model router in the harness, not the gateway (2026-10-15,
+  LangChain).** A 3-tier router (fast/balanced/performance) classifying
+  from the thread's first message cut average cost 64% with merged-PR rate
+  flat (29.2% vs 27.3% — hard outcome, not sparse thumbs-up). A gateway
+  doesn't know task context; the harness does, so tier criteria come from
+  your own task mix. Method: label real traces into task types first
+  (x.com/hwchase17/status/2110041909284745578).
+- **Context inertia: don't let momentum in the window pick the hypothesis
+  (2026-10-15, dbreunig).** An agent anchors on a wrong early hypothesis
+  and debugs in the wrong direction for hours instead of backtracking
+  (real case: blamed package versioning; the bug was an endpoint/grader API
+  mismatch). Harness countermeasure: real backtrack points (checkpoint/
+  snapshot before major decisions) and an operating rule to compare
+  alternative hypotheses when evidence doesn't converge
+  (x.com/dbreunig/status/2110245047493173467). Pairs with the
+  same-error-2+-turns rule above: the fundamentally-different-approach
+  reset is also how you escape inertia.
 
 ## How the maker-checker works
 
