@@ -512,6 +512,34 @@ see the research note):
   requester's actual access before using it
   (x.com/0xwhrrari/status/2107093781807775896).
 
+- **Memory with a paper trail: epistemic status + source + sign-off
+  (2026-10-15, barlark.com/2026/10/14/agent-memory-with-a-paper-trail).**
+  Design memory around "what happens when the agent misremembers", not
+  "how do we remember more": every write carries an epistemic-status
+  marker, a citation back to the primary source, and passes human sign-off
+  before commit. Wrong memory is compounding liability — the agent believes
+  it as fact and nobody knows it exists. Memory write is a review surface,
+  like code. (Operationalizes the write-path provenance rule above.)
+- **Grade memory provenance by roll-forward; remember workflows, use
+  fresh numbers (2026-10-15, Ramp end-to-end evals).** Test memory the way
+  it's used: the agent closes this month, records what it learned, and is
+  graded *next month* in a simulated world with realistically dirty data
+  (clean data is a trap). Field numbers (source-reported, unverified):
+  workflow-type memory gained +5.7, but memory leaking last month's
+  period-specific numbers dropped the task 75% → 25%. Rule: memory should
+  hold "how the system works", never stale period values — and grade
+  memory provenance (workflow vs period-specific) as a measurable failure
+  mode (dev.to/dailycontext/building-better-agents-through-end-to-end-evals-pgh).
+- **Offload, don't truncate; own the memory files; diet the base prompt
+  (2026-10-15, LangChain Deep Agents).** Anti-rot set: offload large
+  results to files (truncation is lossy, offload is recoverable);
+  summarization must be recoverable; subagents isolate noisy work; memory
+  lives in markdown files *you own* so it survives model/provider swaps.
+  On the prompt side, stripping the base system prompt and cutting tool
+  descriptions 43% cut base tokens 65% with no score drop — measure base
+  tokens, then cut what evals prove useless
+  (langchain.com/blog/context-engineering-deep-agents-remember).
+
 ## References
 
 - `docs/research/agentic-ai/2026-09-01-agent-memory-and-context.md` — full cited analysis with all sources
@@ -531,4 +559,5 @@ see the research note):
 - 2026-10-06 additions: rule provenance / ratchet (x.com/rohanpaul_ai/status/2096977144111132908), nested agent-memory cache damage (x.com/areshawns/status/2095422606174490807), Markdown-brain write-lane split (liao.gg/blog/agents-dont-need-memory, news.ycombinator.com/item?id=49945933), silent-truncation teardown (x.com/mem0ai/status/2061822612398014782) — full curated analysis: `docs/research/agentic-ai/2026-10-06-context-governance-sandbox-loop.md`
 - 2026-10-08 additions: knowledge-must-converge / slug-reuse archiving (github.com/Tespera/alluvium), offline cleanup loop / Devin Dreaming over git+markdown memory + stale-checkout concurrency gap (x.com/walden_yan/status/2107139645921296465, github.com/AgentMemoryRepo/agentmemoryrepo, ai.thesatyajit.com/articles/agent-memory-repo), claim-named memory files + authority ordering (x.com/nykdotdev/status/2031581912071127158) — full curated analysis: `docs/research/agentic-ai/2026-10-08-eval-verification-fleet-memory.md`
 - 2026-10-13 additions: memory writeback or dead weight + compliance_count over used_count + fire-the-hook-once (ani.computer/writings/self-improving-fleet, joeyhipolito.dev/log/2026-02-23-memory-in-practice), memory doesn't transfer across harnesses + freeze the snapshot + verify-on-read (x.com/nicbstme/status/2050301124314563025), shared facts need owner + expiry + source link, memory ≠ permission (x.com/0xwhrrari/status/2107093781807775896) — full curated analysis: `docs/research/agentic-ai/2026-10-13-eval-instrument-memory-writeback-skill-leakage.md`
+- 2026-10-15 additions: memory paper trail — epistemic status + source citation + human sign-off per write (barlark.com/2026/10/14/agent-memory-with-a-paper-trail), roll-forward memory grading + workflow-vs-period-specific provenance (Ramp, dev.to/dailycontext/building-better-agents-through-end-to-end-evals-pgh), offload-not-truncate + owned-markdown memory + base-token diet (langchain.com/blog/context-engineering-deep-agents-remember) — full curated analysis: `docs/research/agentic-ai/2026-10-15-loop-evals-memory-audit.md`
 - `docs/research/agentic-ai/2026-09-12-write-path-control-skills-sandboxes.md` — 2026-09-12 additions (abstraction-first embedding, write-path control, context-files-as-index; sources: x.com/marfinxx/status/2098184256677699929, x.com/mem0ai/article/2074509697689002254, openai.com/index/harness-engineering)
