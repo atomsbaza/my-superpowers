@@ -145,6 +145,18 @@ Required before declaring done:
 
 **Then ask: what would have prevented this bug?** If the answer involves architectural change (no good test seam, tangled callers, hidden coupling) hand off to the `/improve-codebase-architecture` skill with the specifics. Make the recommendation **after** the fix is in, not before — you have more information now than when you started.
 
+### Watch for context inertia (2026-10-15, dbreunig)
+
+A named failure mode of agent debugging: the first hypothesis anchors hard and
+the investigation drifts for hours in the wrong direction instead of
+backtracking — a real case blamed package versioning while the bug was an
+endpoint/grader API mismatch (x.com/dbreunig/status/2110245047493173467).
+During Phase 3 (hypotheses), when evidence doesn't converge on the leading
+theory, *re-rank all hypotheses from scratch* instead of elaborating the
+current one: "what would I check if I had just seen this repro with no
+history?" Momentum accumulated in the session is evidence about the session,
+not about the bug.
+
 ## Writing the regression test
 
 ### After Phase 5 (fix validated)
