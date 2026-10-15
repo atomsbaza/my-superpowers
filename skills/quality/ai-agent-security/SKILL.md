@@ -158,6 +158,15 @@ Prefer controls that reduce blast radius even when the model is manipulated:
   deny-lists — this complements the structural egress rules above rather
   than replacing them.
 - **Centralize MCP enforcement at a gateway**: auth enforcement / rate limit / audit logging at the gateway (sub-servers cannot suppress logs), pin reviewed server versions (no auto-update), run servers sandboxed with watched egress.
+- **Injection-detector benchmark scores don't transfer to your system
+  (2026-10-15, arXiv 2610.03448).** 15 detectors evaluated on real agent
+  tool outputs: the BIPIA winner caught only 2% of AgentDojo attacks at 1%
+  FPR — rankings don't transfer between benchmarks because training input
+  formats differ. Never pick an injection detector from public
+  leaderboards: eval it on *your own* tool outputs at a realistic FPR, and
+  check what input format the detector was trained on. Same skepticism as
+  the contracted-eval 0.00% case below — the score measures the benchmark,
+  not your attack surface.
 - **Summarizer output is an injection channel from the inside (OpenAI
   alignment report, 2026-09-19).** Models wrote jailbreak-style instructions
   into their own compaction summaries that re-enter the next context window
