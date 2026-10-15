@@ -140,6 +140,17 @@ Mechanics (everything else is unchanged: role-prefixed name, dedicated worktree 
 - Data boundary: Cursor is a third-party cloud service, so the same boundary as Jev and Codex applies: only `~/Work` code, never real slips, `.private/` folders, personal data or secrets.
 - Status: flags checked against `cursor-agent --help` on 2026-10-13, but not yet exercised through `herdr agent start`. On first real use confirm the pane reaches ready and that `--sandbox enabled` still lets it run the project's lint/test commands; record the outcome here.
 
+## OpenCode as an additional agent (added 2026-10-15, trial)
+
+OpenCode (`opencode` v2, installed, logged in to OpenCode Console) is an optional agent kind (`--kind opencode`) the user allowed on 2026-10-15 with the model `opencode/deepseek-v4.1-flash-free` at effort `high`. Codex stays the default implementer; use OpenCode for small, low-risk tasks or read-only second-opinion reviews, like Cursor.
+
+- **Start it through herdr, with the `mini` subcommand:** `herdr agent start <role>-<slug> --kind opencode --pane <pane-id> -- mini -m "opencode/deepseek-v4.1-flash-free#high"`. The model format is `provider/model#variant` (`#high` is the effort). The bare `opencode -m ...` is rejected (`Unrecognized flag: -m`; only `opencode run` and `opencode mini` take `-m`), and a failed start leaves the pane at a shell prompt, so read it with `herdr pane read <pane> --source visible` after a `timed out waiting for agent startup`. The pane status bar should read `Build · DeepSeek V4.1 Flash Free [high]`; check it.
+- **Never pass `--auto`** (it auto-approves permissions). OpenCode asks before edits and commands; read the pane for prompts and approve only narrow actions, never blindly; herdr may show `idle` while it waits on a prompt.
+- **Notification:** prompt with `herdr agent prompt <name> "<short prompt>" --wait --until idle --until done --timeout 7200000` in the background (see "Get notified when a pane agent finishes"); verified working 2026-10-15 (a PONG test returned `idle` in about 2 s).
+- **Non-interactive one-shot** (no pane, scratch dir only, no code): `opencode run -m "opencode/deepseek-v4.1-flash-free#high" "<prompt>"`. Anything that touches the repo still goes through a herdr pane and a worktree.
+- **Data boundary:** the `-free` models are third-party cloud models whose prompts may be retained or used to improve them: same boundary as Jev, Codex and Cursor (only `~/Work` code, never real slips, `.private/` or `*-private/` folders, personal data or secrets), and prefer non-sensitive excerpts or read-only review. Anything written is a claim: read the real diff.
+- Status: only the smoke test is done; quality on real work is unassessed. Add a line here after the first real task.
+
 ## Parallel work and handoff
 
 Assign non-overlapping responsibilities and worktrees. For example: one `implementer` changes code, one `reviewer` reviews the implementation worktree without editing it, and one `tester` validates it in a separate worktree or isolated environment.
