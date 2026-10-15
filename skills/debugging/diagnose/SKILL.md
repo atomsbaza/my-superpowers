@@ -157,6 +157,22 @@ current one: "what would I check if I had just seen this repro with no
 history?" Momentum accumulated in the session is evidence about the session,
 not about the bug.
 
+### Attack the premise after repeated failed fixes (adapted from pstack, 2026-10-16)
+
+When two or more fixes that share one premise have failed the same gate, suspect
+the premise, not the fixes. Before writing the next fix:
+
+1. Write the premise down: the one sentence every failed fix assumed.
+2. Find an observation that would come out differently if the premise were false,
+   and make it. Look at how the failures are distributed, not only how large they are.
+3. If the evidence contradicts the premise, look for what the failures have in
+   common that the premise did not predict. If it confirms the premise, ask the
+   next "why": the earlier fixes may have treated a consequence.
+4. Prefer removing the condition that puts a part on the losing side over adding
+   a mechanism that cleans up after it.
+
+Do not start the next fix until the premise is written down and tested.
+
 ## Writing the regression test
 
 ### After Phase 5 (fix validated)

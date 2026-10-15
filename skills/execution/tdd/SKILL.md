@@ -109,3 +109,19 @@ After all tests pass, look for refactor candidates:
 [ ] No speculative features added
 ```
 
+## Bug fix with a regression test
+
+When the job is a bug fix rather than a new feature, make the broken behavior executable before touching production code. The goal is one focused test that fails before the fix and passes after it.
+
+1. Pin down the intended behavior, the current behavior, and the smallest observable reproduction.
+2. Pick the narrowest check the codepath already uses (unit, component, or integration). Do not build a new harness just to satisfy the workflow.
+3. Write the smallest test that would have caught the bug. It encodes intended behavior, not the current implementation.
+4. Run it before the fix and confirm it fails for the intended reason. A pass, or a failure for an unrelated reason, means the test or the reproduction is wrong.
+5. Make the smallest production change that satisfies it, then rerun.
+
+Prefer no new test over a bad one. A bad test mostly exercises mocks, encodes implementation details, depends on timing or global state, or needs expensive infrastructure for a small fix. When a failing test is impractical, use the closest executable check instead: a targeted script, a manual reproduction command, browser automation, a snapshot comparison, or a log assertion.
+
+Guardrails: never edit a test just to match a wrong implementation, and never weaken an existing assertion unless the expected behavior genuinely changed and you can say why. Keep fixture churn out of the fix. If the bug is flaky, make the test deterministic first. If it points at a broader class of failures, land the focused regression first and add sibling coverage after.
+
+Report the evidence: the failing-before test or check with the failure it produced, and the passing-after run with any nearby validation. If you could not show failing-before, say why and name the check you used instead.
+

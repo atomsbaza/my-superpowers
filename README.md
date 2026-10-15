@@ -127,13 +127,26 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 | `subagent-driven-development` | Execute plans task-by-task with fresh subagents + 2-stage review |
 | `dispatching-parallel-agents` | Run independent tasks in parallel — with fork-vs-isolated context-mode selection per subagent role |
 | `benchmark-sprint` | Parallel agent fleet tests N architectural variants simultaneously and returns a comparison report — 3 days of manual benchmarking in 20 minutes |
-| `tdd` | Red-green-refactor loop, integration-test-first workflow |
+| `tdd` | Red-green-refactor loop, integration-test-first workflow — plus a bug-fix regression-test flow: failing-before/passing-after evidence, prefer no test over a bad one (pstack) |
+| `show-me-your-work` | Append-only TSV decision log for long or unattended runs (what, why, evidence, result), with a spreadsheet-safe `scripts/log.sh`, a transcript audit, and a cross-model review of the trail (pstack) |
 
 ### Quality & Review
 
 | Skill | What it does |
 |---|---|
-| `scrutinize` | Outsider sanity check — "should this exist and does it do what it claims?" |
+| `scrutinize` | Outsider sanity check — "should this exist and does it do what it claims?" — with a multi-model mode (Act on / Consider / Noted / Dismissed buckets, agreement map) and a structural-simplification lens (pstack `interrogate`) |
+| `correct` | Turn a repeated agent mistake into something the repo prevents: architecture first, then types, a lint whose error names the fix, a test, docs last; proves each check fails on a real past mistake (pstack) |
+| `blast-radius` | Find what a change breaks beyond the diff and prove the one fact it is safe because of by running real code, graded on a 5-step "how sure are you" ladder (pstack) |
+| `benchmark-checklist` | Vet a perf number before reporting it: limiter, tuning, limits, errors, repeatability, relevance, did the work happen (pstack) |
+| `principle-prove-it-works` | Verify the real artifact, not a proxy or self-report, before declaring done (pstack) |
+| `principle-fix-root-causes` | Trace a symptom to the first wrong decision; a guard is a fix only for a legitimate state (pstack) |
+| `principle-test-behavior-not-implementation` | Test passes only if observable behavior holds: break-the-behavior and change-the-internals checks (pstack) |
+| `principle-boundary-discipline` | Validate at system boundaries, trust internal types, keep business logic in pure functions (pstack) |
+| `principle-type-system-discipline` | Brand primitives, parse external data at boundaries, derive types from authoritative schemas (pstack) |
+| `principle-laziness-protocol` | Consolidate decisions, minimize the diff (pstack) |
+| `principle-subtract-before-you-add` | Remove dead code and redundant guards first, then build on the simpler base (pstack) |
+| `principle-explain-the-number` | Before trusting a measured number, name its limiter and rule out that it measured something else (pstack) |
+| `principle-encode-lessons-in-structure` | Same instruction twice means encode it as a lint, flag, or check instead of more text (pstack) |
 | `ponytail` | Force the laziest solution that works — YAGNI, stdlib over custom, native over deps (lite/full/ultra) |
 | `verify-before-stop` | Always-on regression guard: runs tests on git-changed files before every session end |
 | `circuit-breaker` | Loop Stop hook with stuck-detection: escalates to human when the same error repeats N times |
@@ -158,7 +171,7 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 
 | Skill | What it does |
 |---|---|
-| `diagnose` | Disciplined bug investigation loop — with a restate-the-problem-before-coding gate (pstack) and a context-inertia guard (re-rank hypotheses from scratch when evidence doesn't converge — don't elaborate the anchored first theory) |
+| `diagnose` | Disciplined bug investigation loop — with a restate-the-problem-before-coding gate (pstack) a context-inertia guard (re-rank hypotheses from scratch when evidence doesn't converge — don't elaborate the anchored first theory), and an attack-the-premise step (after two fixes with one shared premise fail the same gate, write the premise down and test it before the next fix) |
 | `post-mortem` | Write the canonical record of a fixed bug |
 
 ### Git & Branches
@@ -174,6 +187,12 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 | Skill | What it does |
 |---|---|
 | `session-summary` | Summary of current work session from git + context |
+| `wait-what` | Re-pitch the last message in plain, simple words (ASD-STE100 + `CONTEXT.md` language when present); also covers pstack's `bro` |
+| `ketchup` | Catch the user up on what changed in the chat since their last message: plain words, small visuals, action items with a recommendation (pstack) |
+| `sharpen` | Before starting, find the expert approach and what the user is really after; loosen constraints that don't serve the goal (pstack) |
+| `in-your-own-words` | Restate the user's goals and problem in your own words (pstack) |
+| `unslop` | Cut AI tells from any writing: filler, AI vocabulary, mannered prose, em dashes, chatbot phrases (pstack) |
+| `technical-writing` | Layered doc standard: Diátaxis mode, Google developer style, STE rules, Global English, rhythm and specificity (pstack) |
 | `handoff` | Compact conversation for another agent to pick up |
 | `management-talk` | Rewrite technical content for leadership audiences |
 | `business-impact` | Translate a technical proposal into quantified business terms: revenue at risk, churn %, uptime hours, cost per hour of downtime |
@@ -347,6 +366,14 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 
 **Adapted from [mattpocock/skills](https://github.com/mattpocock/skills)** by Matt Pocock:
 `codebase-design`, `domain-modeling`, `grill-with-docs`, `to-issues`, `writing-great-skills`, `wayfinder`
+
+**Adapted from [cursor/plugins `pstack`](https://github.com/cursor/plugins/tree/main/pstack)** by Lauren Tan (MIT):
+`correct`, `blast-radius`, `benchmark-checklist`, `show-me-your-work`, `unslop`, `technical-writing`,
+`ketchup`, `sharpen`, `in-your-own-words`, `principle-prove-it-works`, `principle-fix-root-causes`,
+`principle-test-behavior-not-implementation`, `principle-boundary-discipline`,
+`principle-type-system-discipline`, `principle-laziness-protocol`, `principle-subtract-before-you-add`,
+`principle-explain-the-number`, `principle-encode-lessons-in-structure`; merged into existing skills:
+`tdd`, `wait-what`, `scrutinize`, `diagnose`
 
 **Adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)** (MIT):
 `ponytail`

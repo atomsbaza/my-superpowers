@@ -55,6 +55,37 @@ by Matt Pocock:
 **skills/tools/**
 - `writing-great-skills`
 
+## cursor/plugins (pstack)
+
+The following skills were adapted from the `pstack` plugin in
+[cursor/plugins](https://github.com/cursor/plugins/tree/main/pstack) (v0.15.25) by Lauren Tan,
+licensed under MIT (Copyright (c) 2026 Lauren Tan). Cursor-specific parts were removed or
+rewritten (Cursor model slugs, `~/.cursor/rules`, references to pstack skills not installed here).
+Principle skills lost their `disable-model-invocation` flag so they trigger by description.
+
+**skills/quality/**
+- `correct`, `blast-radius`, `benchmark-checklist`
+- `principle-prove-it-works`, `principle-fix-root-causes`, `principle-test-behavior-not-implementation`,
+  `principle-boundary-discipline`, `principle-type-system-discipline`, `principle-laziness-protocol`,
+  `principle-subtract-before-you-add`, `principle-explain-the-number`, `principle-encode-lessons-in-structure`
+
+**skills/communication/**
+- `unslop`, `technical-writing`, `ketchup`, `sharpen`, `in-your-own-words`
+
+**skills/execution/**
+- `show-me-your-work` (includes `scripts/log.sh`, copied unchanged)
+
+Merged into existing skills (ideas and wording adapted, no new skill):
+- `tdd` — bug-fix regression-test section (pstack `tdd`)
+- `communication/wait-what` — plain-words restate (pstack `bro`)
+- `quality/scrutinize` — multi-model mode and structural lens (pstack `interrogate`)
+- `debugging/diagnose` — attack-the-premise step (pstack `principle-attack-the-premise`)
+
+Not taken: pstack's `poteto-mode`, `setup-pstack`, `poteto-help`, `automate-me`, `arena`, `swarm`,
+`reflect`, `recall`, `why`, `how`, `teach`, `architect`, `typescript-best-practices` and the remaining
+principles. They depend on Cursor tooling (Task subagents with Cursor model slugs, `~/.cursor/rules`)
+or on MCP sources this setup does not have.
+
 ## DietrichGebert/ponytail
 
 `skills/quality/ponytail/` was adapted from [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail),

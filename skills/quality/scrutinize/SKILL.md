@@ -100,3 +100,35 @@ Complete and seal your own Steps 2–3 notes **before** reading subagent output.
 
 - `code-reviewer`: logic errors, edge cases, security issues in the changed lines
 - `silent-failure-hunter`: swallowed errors, misleading success states, unsafe fallbacks along the changed paths
+
+## Multi-model mode (adapted from pstack `interrogate`, 2026-10-16)
+
+Use when the change is large, risky, or the user asks for an adversarial or multi-model review. The signal comes from model diversity, not assigned personas.
+
+1. Run the same review prompt on two or more reviewers from different model families (for example Opus through the Agent tool and Codex through `herdr-workflow`). Give each the stated intent from Step 1, the diff, and the structural lens below. Reviewers read only. Do not auto-apply anything.
+2. Merge findings that describe the same issue and note who raised each one. A finding two models raise independently is the strongest signal. Read a lone finding, but weight it less. Record disagreements.
+3. Act as the lead reviewer, not a neutral aggregator. Put each finding in one bucket with a one-line reason: **Act on** (would block a real PR), **Consider** (legitimate, unclear if worth the cost now), **Noted** (valid, not actionable), **Dismissed** (wrong or missing context).
+
+Filters for step 3:
+
+- **Nitpick gravity.** Reviewers pad when they find nothing critical. If every finding is a nit, the code is probably fine, so say so.
+- **Hypothetical vs. actual.** "What if this is null" counts only if a caller can pass null. Trace the call site. Dismiss it if the type or an upstream check prevents it.
+- **Premature abstraction.** Does this code need to change in a second way? If not, the abstraction is premature.
+- **"I would have done it differently"** is not a finding without a concrete problem.
+- **Missing-context signals.** Dismiss findings about code the author did not touch, patterns the rest of the codebase already uses, or constraints the reviewer could not see.
+- Do not dismiss a finding because it is uncomfortable. Be most careful with security and correctness findings, even from a single model.
+
+Add an **Agreement map** to the report: where the models agreed, where they diverged, and what that pattern says.
+
+### Structural lens (optional, for ambitious changes)
+
+Alongside correctness, ask whether the change misses a simplification that behaves the same and deletes complexity: whole branches, helpers, modes, or layers that could disappear.
+
+- A file that crosses from under 1,000 to over 1,000 lines needs a strong reason; prefer extracting a module.
+- New one-off conditionals or special cases in unrelated flows are a design problem. Move the logic into a helper or module.
+- Flag pass-through helpers, identity wrappers, and cast-heavy contracts that add indirection without clarity.
+- Question unnecessary optionality, `any`, or silent fallbacks that hide an unclear invariant.
+- Logic belongs in the canonical layer; reuse the existing helper instead of a one-off.
+- Independent work run serially for no reason, or updates that can leave state half-applied, are smells when the cleaner structure is obvious.
+
+Do not approve only because behavior looks correct. Give explicit, actionable feedback and do not soften a major maintainability issue into a mild suggestion.
