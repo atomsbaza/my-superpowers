@@ -662,6 +662,36 @@ Extensions adapted from the X-scout knowledge-scout digest of 2026-10-13
   x.com/Oluwaphilemon1/status/2100036836068340157); human message ≠ stop
   command steering gate (x.com/altryne/status/2103310152938230256).
 
+## Adapted from X-scout digest (2026-10-15)
+
+Extensions adapted from the X-scout knowledge-scout digest of 2026-10-15
+(Discord thread #xTreand, cron job f933f5a8d591); full cited analysis:
+`docs/research/agentic-ai/2026-10-15-loop-evals-memory-audit.md`:
+
+- `skills/execution/loop/` — async-subagent completion delivered as a
+  queued message on the parent thread, never a mid-plan interrupt;
+  correlation ids in state (LangChain async-deep-agents;
+  x.com/hwchase17/status/2109938151472890070); realistic tool-failure
+  injection to test whether the agent notices and recovers (arXiv
+  2610.17953, github.com/RUC-NLPIR/Agent-Reflex); binary-decision offload
+  to a small decision model (news.ycombinator.com/item?id=50072702);
+  model router in the harness not the gateway
+  (x.com/hwchase17/status/2110041909284745578); context-inertia escape
+  (x.com/dbreunig/status/2110245047493173467).
+- `skills/quality/ai-agent-security/` — injection-detector benchmark
+  scores don't transfer; eval on your own tool outputs at a realistic FPR
+  (arXiv 2610.03448).
+- `skills/knowledge-base/agent-memory-design/` — memory with a paper
+  trail: epistemic status + source citation + human sign-off per write
+  (barlark.com/2026/10/14/agent-memory-with-a-paper-trail); roll-forward
+  memory grading, remember workflows use fresh numbers (Ramp;
+  dev.to/dailycontext/building-better-agents-through-end-to-end-evals-pgh);
+  offload-not-truncate + owned-markdown memory + base-token diet
+  (langchain.com/blog/context-engineering-deep-agents-remember).
+- `skills/debugging/diagnose/` — context-inertia guard: re-rank all
+  hypotheses from scratch when evidence doesn't converge
+  (x.com/dbreunig/status/2110245047493173467).
+
 ## Original work
 
 The following were created independently in this repo:
