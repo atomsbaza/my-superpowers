@@ -43,6 +43,15 @@ Design guidance, from Apple's description of the material and not verified in Fi
   extra code. That is *unverified*: confirm against the SDK or Apple docs before a brief says "do not rebuild by hand"
   (see `figcraft-handoff`).
 
+## Dark variants
+
+Variable modes exist (`variable.createCollection` with modes, `variable.bind`, `variable.setMode` on a frame), which would make Dark a
+mode switch, but binding every layer was not tried. What worked: duplicate each Light frame (`edit.duplicate`, `dx` 3600, same y) and
+recolour the twin layer by layer with a fixed Light-to-Dark colour table in the shared brief (paper, card, line, ink, muted,
+indigo, status colours and their text variants, tints, glass fill, category colours). Rules that mattered: the label on a filled
+indigo button flips to the dark paper colour; switch knobs stay white; scrims keep their translucent black; every id passed
+explicitly; screenshot each twin beside its Light frame. 34 frames took about 25 minutes with up to 4 agents in parallel.
+
 ## Brief pattern for a drawing agent
 
 Shared file (above) plus one short file per batch (3 to 4 screens): which source files to read for real labels, the frame names

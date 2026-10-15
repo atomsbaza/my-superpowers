@@ -22,6 +22,15 @@ approved frame is the visual spec, and that skill's new-user review still applie
 - The two servers hold different documents. Tell a drawing agent which one to use and not to touch the other.
 - The control port is loopback only and the docs show no token, so any local process could drive the app while it is open this way.
   Quit and relaunch normally when the live session is over.
+- Live mode needs a visible window. With the Mac screen locked every live call (even `inspect_document`) fails with "timed out
+  waiting for the UI (is the window visible?)", `caffeinate` or not. Overnight or unattended drawing must use the headless server.
+- Headless documents can be bound to a file path (the headless session had the master file path from an earlier save). Never call
+  `save_file` without an explicit `path` when more than one file is in play; save headless work to its own file and merge later
+  (open it in the live app and copy frames, or `file.import`; the merge was not done yet when this was written).
+- Headless is faster (about 3 to 10 minutes per batch of 4 to 7 frames against about 28 minutes live with timeouts), and several
+  agents drawing in parallel on separate rows worked when every call used explicit ids (4 at once, no collisions seen).
+- The headless font has no Thai glyphs: Thai text renders as boxes, so draw labels in English or find a Thai font first.
+- `inspect_document` on a big page returns about 70k characters: use `depth: 1`, or `get_node` on one frame id.
 
 ## Loop for every screen
 

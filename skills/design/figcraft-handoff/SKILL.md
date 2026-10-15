@@ -13,7 +13,7 @@ frame is the visual spec) and after `figcraft-screen-check`.
 
 1. Confirm the user approved the screens and that the file is saved (`save_file`). Note the file path and frame ids.
 2. Export one PNG per frame: one `export` call per frame with `ids: [<frame id>]`, `path: <absolute path>/<frame>.png`,
-   `format: png`, `scale: 2`. Several ids in one call are composited into a single image, and without `path` the image comes back
+   `format: png`, `scale: 2` (create the folder first; a Haiku agent can run the whole list mechanically from an id-to-name list). Several ids in one call are composited into a single image, and without `path` the image comes back
    inline and no file is written. Put the files in `docs/design/figcraft/<screen>/` next to the `.figcraft` file. The PNG is the
    source of truth. (`figcraft-cli export` exists for scripts; its flags were not tried.)
 3. Write `docs/design/figcraft/<screen>/spec.md`: per frame the layers that matter (hierarchy, text, sizes, tokens used, states),
