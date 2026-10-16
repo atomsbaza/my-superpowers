@@ -116,10 +116,14 @@ Task: <one sentence goal>.   Work only in this worktree; do not push, merge or t
 Context/principles: <project rules that matter, e.g. amounts come from parsers not AI; Swift 6 strict concurrency>.
 Files in scope: <paths>.   Out of scope: <what not to touch>.
 Acceptance criteria: <observable, testable>.
+Design constraints: <standing costs this must not add (polling, listeners, extra requests); behaviour on a transient failure; timing of the first event; the existing data source to reuse before creating a new one>.
+Evidence required in the reply: <for each new test, the test names that FAIL when the pre-change source file is temporarily restored (give the shasum of the file before and after the swap), plus the exact commands and results>.
 Tests: write the regression/unit test first (<where>), then the fix. Run: <lint cmd>, <unit test cmd>.
 Use your own skills/subagents where relevant. When done reply with: changed files, tests run + results, remaining risks.
 ```
 If a build/test would collide with another run (shared simulator), run only lint and unit tests; Claude runs the UI suite on the integrated tree.
+
+Under machine load `herdr agent start` can time out although the agent came up. Check `herdr agent list`; if the agent shows with a null name, run `herdr agent rename <pane-id> <name>` instead of starting another one. A prompt sent with `herdr agent prompt ... --wait` should be launched in the background so a finish notifies the lead.
 
 ## Cursor as an additional agent (added 2026-10-13)
 
