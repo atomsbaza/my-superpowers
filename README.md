@@ -205,6 +205,7 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 | Skill | What it does |
 |---|---|
 | `frontend-design` | Guidance for distinctive, intentional visual design — aesthetic direction, typography, avoiding templated defaults |
+| `taste-skill` | Anti-slop frontend art direction (Leonxlnx/taste-skill, MIT, pinned `f624f37a`): deals researched directions from a 247-site study, finds real credited imagery from open collections, gates the build with a real-browser inspector + screenshot critique. Node 22+ and Chrome for its scripts |
 | `archify` | Polished interactive architecture/workflow/sequence/dataflow/lifecycle diagrams as standalone HTML — typed JSON spec, deterministic validate+deliver, theme/pan/zoom/route-trace built in |
 | `figcraft-screen-check` | Draw app screens in FigCraft through its MCP tools (live vs headless server, screenshot-after-every-section loop, tool gotchas, delegating the drawing) |
 | `figcraft-tokens` | Freeze a project's design tokens from code into a shared brief before drawing; Liquid Glass settings for FigCraft; brief pattern for drawing agents |
@@ -268,6 +269,9 @@ Claude Code agent definitions live in `agents/` (one flat `.md` each).
 | Agent | What it does |
 |---|---|
 | `code-reviewer` | Reviews code changes for bugs, logic errors, edge cases, security issues, and silent failures (swallowed errors, unsafe fallbacks, false-success states). |
+| `performance-reviewer` | Reviews diffs for performance problems — N+1 queries, memory leaks, blocking work on async/main-thread contexts, redundant recomputation, expensive hot paths. Read-only. |
+| `dependency-reviewer` | Reviews dependency changes — semver/breaking-change risk against actual usage, transitive delta, license compatibility, supply-chain trust, rollback safety. Read-only; may search the web for advisories. |
+| `web-ui-reviewer` | Independent visual/UX review of implemented web pages from rendered screenshots at three widths plus source — hierarchy, consistency, contrast, touch targets, direction fidelity. Needs a vision-capable model. Read-only. |
 | `debugger` | Investigates bugs and unexpected behavior, root cause analysis. |
 | `docs` | Writes and maintains documentation: new READMEs/API docs/changelogs plus keeping existing docs aligned with implementation. |
 | `research` | Web research agent — structured markdown report with cited sources. |
@@ -281,6 +285,7 @@ Claude Code agent definitions live in `agents/` (one flat `.md` each).
 | Agent | What it does |
 |---|---|
 | `solution-architect` | Cross-platform system design: candidate architectures with tradeoffs, seams, reversibility, ADRs. Opus. |
+| `architect-reviewer` | Independent architecture critique: design documents (alternatives, boundaries, coupling trajectory, reversibility) and diffs that cross boundaries (leaky seams, hidden coupling, drift, two sources of truth). Read-only, skills-heavy. |
 | `tech-lead` | Turns designs into sequenced, delegable task plans with dependencies, verification, and cut lines. Opus. |
 | `sre` | Production readiness review, incident response, blameless post-mortems, alerting/SLOs, failure-mode analysis. Opus. |
 | `security-engineer` | Threat modeling, trust-boundary review, authz analysis, secrets, AI/agent security. Opus. |

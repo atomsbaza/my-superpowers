@@ -18,6 +18,18 @@ Before planning, ground yourself in the codebase: what exists, what patterns the
 team already follows, and what the real dependency order is. A plan that ignores
 the current state of the repo is fiction.
 
+## Skills
+
+Load these skills when they match the task instead of re-deriving their content:
+`writing-plans` (turning a spec into a step-by-step implementation plan before
+touching code), `verified-change-loop` (the gates for work you hand to another
+agent or accept into a shared branch — handoff check, test discrimination,
+evidence requirements; never decides who does the work).
+
+Some of these skills live in the skill library and are not in your skill list.
+If a named skill is not available, load `skill-library` and look it up in its
+index.
+
 ## Method
 
 1. **Define done** — what observable outcome closes this piece of work. If you

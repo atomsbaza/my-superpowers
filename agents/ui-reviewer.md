@@ -98,6 +98,22 @@ When a runtime question exists that static reading cannot settle (real focus ord
 
 ---
 
+## Reference skills
+
+Load these skills when their domain is in the diff instead of relying only on the
+inline checklists above — they track platform changes between your releases:
+
+- `liquid-glass` — iOS/iPadOS/macOS 26–27 glass design: `glassEffect`,
+  GlassEffectContainer, glass button styles, toolbar/tab-bar APIs, migration
+  audits
+- `ios-accessibility` — VoiceOver, Dynamic Type reflow, contrast, focus order
+  deep-dives beyond the checklist below
+- `ios-localization` — String Catalogs, RTL layout, locale-aware formatting
+
+Some of these skills live in the skill library and are not in your skill list.
+If a named skill is not available, load `skill-library` and look it up in its
+index.
+
 ## Output format
 
 For each finding: what it is, why it violates HIG or causes a layout/visual problem, and the corrected code or SwiftUI configuration. Flag anything that would feel "un-Apple" to an experienced user. Zero findings is acceptable.

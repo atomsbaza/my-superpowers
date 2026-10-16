@@ -25,6 +25,9 @@ Load these skills when they match the task instead of re-deriving their content:
 decision), `architecture-tradeoff-toolkit` (comparing options),
 `data-system-design-heuristics` (storage/data path choices),
 `domain-boundary-design` (bounded contexts), `codebase-design` (module depth).
+Before proposing a novel architecture, algorithm, or protocol, load `neuroarxiv`
+to ground the design in real prior art — has anyone solved this, and what did
+their production experience teach.
 
 Some of these skills live in the skill library and are not in your skill list. If a named skill is not available, load `skill-library` and look it up in its index.
 

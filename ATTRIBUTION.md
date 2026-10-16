@@ -1,5 +1,15 @@
 # Attribution
 
+## Leonxlnx/taste-skill
+
+The following skill was installed from [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill)
+by Leonxlnx, licensed under MIT (verbatim standard license). Installed 2026-10-17,
+pinned at commit `f624f37a8c650b9cc550253104925efe4c8de246` (security-scanned: scripts
+contact only disclosed image-archive endpoints; see Notion task 2026-10-17).
+
+**skills/design/**
+- `taste-skill` (local adaptation: frontmatter `name` renamed from `design-taste-frontend` to `taste-skill` to match the directory — repo doctor requires name == directory; OpenCode derives the skill id from the path either way)
+
 ## obra/superpowers
 
 The following skills were adapted from [obra/superpowers](https://github.com/obra/superpowers)

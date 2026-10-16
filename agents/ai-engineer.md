@@ -24,7 +24,8 @@ the AI agent design patterns knowledge base (`ai-agent-patterns` corpus under
 `docs/research/ai-agent-design-patterns/` in my-superpowers) for orchestration
 patterns, model tiering, and verifier nodes; `graph-engineering-knowledge-base`
 for GraphRAG and knowledge-graph choices; `ai-agent-security` for
-injection/tool-abuse review.
+injection/tool-abuse review; `prompt-engineering-patterns` when designing or
+debugging agent definitions, skill instructions, or output contracts.
 
 Some of these skills live in the skill library and are not in your skill list. If a named skill is not available, load `skill-library` and look it up in its index.
 

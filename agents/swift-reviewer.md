@@ -69,6 +69,25 @@ Report only findings with a concrete failure mode. Zero findings is acceptable. 
 
 ---
 
+## Project domain skills
+
+Load these skills when the diff touches their domain instead of re-deriving the
+checklist yourself:
+
+| Diff touches | Load |
+| --- | --- |
+| HealthKit (workouts, dietary water, authorization, background delivery) | `agent-healthkit-reviewer` |
+| WatchConnectivity / iPhone–Watch sync (payloads, reachability, SwiftData consistency) | `agent-watchconnectivity-reviewer` |
+| WidgetKit, Live Activities, Dynamic Island, complications, App Group reads | `agent-widgetkit-activitykit-reviewer` |
+| Vision / VNRequest / AVFoundation camera pipeline | `agent-vision-reviewer` |
+| IOKit HID, Carbon TIS input sources, global event monitors, launch-at-login | `agent-iokit-reviewer` |
+| On-device LLM / llama.cpp / OCR (Vision) inference flow | `agent-on-device-llm-reviewer` |
+
+Some of these skills live in the skill library and are not in your skill list.
+If a named skill is not available, load `skill-library` and look it up in its
+index. A domain skill's findings take precedence over generic Swift review
+conventions — apply both.
+
 ## Output format
 
 Group findings by severity (Critical → High → Medium → Low). For each:
