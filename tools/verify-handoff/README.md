@@ -35,6 +35,8 @@ The verifier prints one PASS/WARN/FAIL line per check, writes combined command o
 - `SCOPE`: every changed/untracked path must match one `--scope` glob; omitted scopes produce WARN.
 - `CLAIMED FILE` / `CLAIMED TEXT`: claims must be visible in the changed/untracked set or worktree files.
 - `COMMAND`: command exit status is checked, and known failure phrases are checked even when status is zero.
+- `COMMAND` zero tests: output containing `Ran 0 tests`, `collected 0 items`, `no tests ran`, or `No test files found` is FAIL, even when status is zero.
+- `COMMAND` checked nothing: zero-exit output with `(0 changed file` or ` 0 files changed` and no failure phrase is WARN instead of PASS.
 - `FULL SUITE`: absent `--full-cmd` warns; `--require-full` promotes that warning to FAIL.
 
 ## Exit codes

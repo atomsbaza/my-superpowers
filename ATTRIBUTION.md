@@ -736,6 +736,7 @@ The following were created independently in this repo:
 - `skills/quality/secrets-guardrail/` — PostToolUse credential redaction hook
 - `skills/quality/verify-before-stop/` — always-on regression guard
 - `skills/quality/test-verdict-triage/` — verdict triage for test runs, distilled from the user's own learning-log lessons (original; no upstream source)
+- `skills/quality/verified-change-loop/` — harness-agnostic gates and evidence for accepting a handed-off change, distilled from the user's own PR runs; the idea of a meta loop (inner/outer/meta) follows a public conference talk summary by Dru Knox, but the text is original (no upstream source)
 - `skills/planning/spec-writer/` — spec-first development with PreToolUse gate
 - `skills/execution/loop/` — engineering loop with Stop-hook maker-checker
 - `skills/execution/tdd-loop/` — TDD with automated loop verification

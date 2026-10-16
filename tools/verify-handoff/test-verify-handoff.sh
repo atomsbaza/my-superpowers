@@ -261,6 +261,51 @@ output="$(run_tool "$repo" \
 assert_equal 0 "$?" 'literal glob-metacharacter path passes scope'
 assert_output_contains "$output" 'SCOPE: PASS' 'literal glob-metacharacter path is preserved'
 
+# 15. Zero-test output fails even when the command exits zero.
+repo="$TMP_ROOT/zero-tests"
+base="$(make_repo "$repo")" || { echo "FATAL: could not create zero-tests repo" >&2; exit 1; }
+for zero_text in 'Ran 0 tests' 'collected 0 items' 'no tests ran' 'No test files found'; do
+  output="$(run_tool "$repo" --worktree "$repo" --base "$base" --cmd "echo '$zero_text'" --full-cmd 'true')"
+  assert_equal 1 "$?" "zero-test output '$zero_text' fails the invocation"
+  assert_output_contains "$output" "COMMAND: FAIL" "zero-test output '$zero_text' is reported as COMMAND failure"
+  assert_output_contains "$output" "ran zero tests: $zero_text" "zero-test output '$zero_text' names the pattern"
+done
+
+# 16. A non-zero exit with zero-test output is one FAIL record, reported by its exit code.
+repo="$TMP_ROOT/zero-tests-nonzero"
+base="$(make_repo "$repo")" || { echo "FATAL: could not create zero-tests-nonzero repo" >&2; exit 1; }
+output="$(run_tool "$repo" --worktree "$repo" --base "$base" --cmd "echo 'Ran 0 tests'; exit 3" --full-cmd 'true')"
+assert_equal 1 "$?" 'non-zero zero-test command fails the invocation'
+assert_output_contains "$output" 'COMMAND: FAIL exit=3 log=' 'non-zero zero-test command reports its exit code'
+assert_equal 1 "$(printf '%s\n' "$output" | grep -c '^COMMAND: ')" 'non-zero zero-test command has one COMMAND record'
+
+# 17. Zero-exit output that shows nothing was checked warns instead of passing.
+repo="$TMP_ROOT/vacuous"
+base="$(make_repo "$repo")" || { echo "FATAL: could not create vacuous repo" >&2; exit 1; }
+for vacuous_text in '(0 changed file' ' 0 files changed'; do
+  output="$(run_tool "$repo" --worktree "$repo" --base "$base" --cmd "echo 'x$vacuous_text'" --full-cmd 'true')"
+  assert_equal 0 "$?" "vacuous output '$vacuous_text' still exits zero"
+  assert_output_contains "$output" 'COMMAND: WARN' "vacuous output '$vacuous_text' is reported as COMMAND warning"
+  assert_output_contains "$output" "possibly vacuous: the command checked nothing ($vacuous_text)" "vacuous output '$vacuous_text' names the pattern"
+  assert_equal 1 "$(printf '%s\n' "$output" | grep -c '^COMMAND: ')" "vacuous output '$vacuous_text' has one COMMAND record"
+done
+
+# 18. A zero-test full command fails the full-suite check.
+repo="$TMP_ROOT/zero-tests-full"
+base="$(make_repo "$repo")" || { echo "FATAL: could not create zero-tests-full repo" >&2; exit 1; }
+output="$(run_tool "$repo" --worktree "$repo" --base "$base" --cmd 'true' --full-cmd "echo 'Ran 0 tests'")"
+assert_equal 1 "$?" 'zero-test full command fails the invocation'
+assert_output_contains "$output" 'FULL SUITE: FAIL' 'zero-test full command is reported as full-suite failure'
+assert_output_contains "$output" 'ran zero tests: Ran 0 tests' 'zero-test full command names the pattern'
+
+# 19. Ordinary command output still passes.
+repo="$TMP_ROOT/ordinary-output"
+base="$(make_repo "$repo")" || { echo "FATAL: could not create ordinary-output repo" >&2; exit 1; }
+output="$(run_tool "$repo" --worktree "$repo" --base "$base" --cmd "echo 'Ran 12 tests'" --full-cmd 'true')"
+assert_equal 0 "$?" 'ordinary command output succeeds'
+assert_output_contains "$output" 'COMMAND: PASS' 'ordinary command output is still PASS'
+assert_output_lacks "$output" 'COMMAND: WARN' 'ordinary command output has no command warning'
+
 printf '\nTest summary: %d assertions, %d failures\n' "$TESTS" "$FAILURES"
 if [ "$FAILURES" -ne 0 ]; then
   exit 1
