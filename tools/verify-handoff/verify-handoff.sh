@@ -42,6 +42,7 @@ Checks:
   CLAIMED FILE  Claimed files really changed or are untracked.
   CLAIMED TEXT  Claimed fixed strings exist in files on disk.
   COMMAND       Commands have exit 0 and no known hidden failure verdict.
+                Zero-test output is FAIL; "checked nothing" output is WARN.
   FULL SUITE    Full command ran; otherwise WARN, or FAIL with --require-full.
 USAGE
 }
@@ -391,6 +392,8 @@ run_command() {
   local command_log="$LOG_ROOT/$label.log"
   local command_rc=0
   local matched_patterns=
+  local zero_patterns=
+  local vacuous_patterns=
   (
     cd "$WORKTREE" || exit 125
     bash -c "$command_string"
@@ -410,11 +413,33 @@ run_command() {
   if grep -Eq 'Test Case .* failed' "$command_log" 2>/dev/null; then
     matched_patterns="${matched_patterns:+$matched_patterns, }Test Case .* failed"
   fi
+  if grep -Fq 'Ran 0 tests' "$command_log" 2>/dev/null; then
+    zero_patterns="${zero_patterns:+$zero_patterns, }Ran 0 tests"
+  fi
+  if grep -Fq 'collected 0 items' "$command_log" 2>/dev/null; then
+    zero_patterns="${zero_patterns:+$zero_patterns, }collected 0 items"
+  fi
+  if grep -Fq 'no tests ran' "$command_log" 2>/dev/null; then
+    zero_patterns="${zero_patterns:+$zero_patterns, }no tests ran"
+  fi
+  if grep -Fq 'No test files found' "$command_log" 2>/dev/null; then
+    zero_patterns="${zero_patterns:+$zero_patterns, }No test files found"
+  fi
+  if grep -Fq '(0 changed file' "$command_log" 2>/dev/null; then
+    vacuous_patterns="${vacuous_patterns:+$vacuous_patterns, }(0 changed file"
+  fi
+  if grep -Fq ' 0 files changed' "$command_log" 2>/dev/null; then
+    vacuous_patterns="${vacuous_patterns:+$vacuous_patterns, } 0 files changed"
+  fi
 
   if [ "$command_rc" -ne 0 ]; then
     record FAIL "$check_label" "exit=$command_rc log=$command_log"
   elif [ -n "$matched_patterns" ]; then
     record FAIL "$check_label" "exit=0 log=$command_log; matched failure pattern: $matched_patterns"
+  elif [ -n "$zero_patterns" ]; then
+    record FAIL "$check_label" "exit=0 log=$command_log; ran zero tests: $zero_patterns"
+  elif [ -n "$vacuous_patterns" ]; then
+    record WARN "$check_label" "exit=0 log=$command_log; possibly vacuous: the command checked nothing ($vacuous_patterns)"
   else
     record PASS "$check_label" "exit=0 log=$command_log"
   fi
