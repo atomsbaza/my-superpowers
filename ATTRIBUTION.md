@@ -185,6 +185,7 @@ The following skill was created in this repo, derived from concepts in
 *Loop Engineering* (NotebookLM, 2025) by Bassem Dghaidi:
 
 - `skills/planning/loop-architect/` — Loop Prompt design: project read → scope verification → task breakdown → four-component Loop Prompt generation
+- `skills/planning/obsidian-dev-workflow/` — vault-brief-in, session-log-out contract for work under ~/Work; rewritten harness-neutral from the author's own earlier Hermes-specific version (original; no upstream source)
 
 ## Original work — The Pragmatic Engineering Playbook
 

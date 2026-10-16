@@ -105,6 +105,7 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 | `brainstorming` | Explore intent and design before implementation |
 | `spec-writer` | Spec-first: feature request → structured spec + ACs + test skeletons, gates code until approved |
 | `writing-plans` | Turn a spec into a step-by-step implementation plan |
+| `obsidian-dev-workflow` | Work under `~/Work`: read the project brief in the Obsidian vault first, then write a Terminal Log note and record non-obvious decisions in `Decisions.md`; says nothing about which agent does the work |
 | `spike` | Time-boxed investigation to answer "can we do X?" |
 | `prototype` | Build throwaway prototypes to explore designs |
 | `adr` | Capture architecture decisions as ADR documents |
