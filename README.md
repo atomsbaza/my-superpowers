@@ -157,6 +157,7 @@ Then start a new session or reload skills if the runtime requires it, and invoke
 | `verification-before-completion` | Run checks before claiming work is done — evidence-backed, with external itemized checklists (beats generic verify instructions, arXiv 2607.17937), self-report failure statistics (75% of failed runs report success; acceptance checks beyond green tests), the Verification Tax framing (measure by production-qualified change, decompose (CI+review+security+rework)/generation cost, arXiv 2609.04681), and separate-comprehension-from-judgment (Sakana MLR arXiv 2610.11087: outline-then-judge caught 73% vs 14.81% core-claim errors; prompt injection in reviewed text skewed every AI reviewer — on untrusted input an AI review is evidence, not a gate) |
 | `test-verdict-triage` | After a full-suite/CI run: read the verdict from the log (FAIL / PASS / NO RESULT), compare failures against clean main, rerun alone to separate load flakes from regressions |
 | `verified-change-loop` | Before accepting a handed-off or non-trivial change: the gates and the evidence each needs (handoff check, design read, test discrimination, UI evidence, fork-PR realities, ledger); says nothing about who does the work |
+| `skill-library` | Entry to the library of rarely used skills kept out of the scanned directories (`tools/skill-library/library.txt` decides which): read the generated `INDEX.md`, pick at most two, read them in place |
 | `good-enough` | Detects the Esthetics Trap — finds the value ceiling, audits remaining effort as VALUE vs AESTHETICS, and recommends ship/defer |
 | `pragmatic-review` | Scores a proposal against the Engineering Diagnostic Matrix (scale strategy, tech choice, quality definition, reaction to AI) and outputs concrete adjustments |
 | `security-review` | Security checklist for auth, user input, secrets, API endpoints, and payment/sensitive features |
@@ -391,6 +392,6 @@ Measure and improve these definitions with [`tools/agent-evals/`](tools/agent-ev
 **Original work in this repo:**
 `loop`, `tdd-loop`, `spec-writer`, `circuit-breaker`, `secrets-guardrail`, `verify-before-stop`,
 `session-promoter`, `research`, `diagnose`, `improve-codebase-architecture`, `session-summary`,
-`handoff`, `management-talk`, `learning-pairing`, `test-verdict-triage`, `verified-change-loop`
+`handoff`, `management-talk`, `learning-pairing`, `test-verdict-triage`, `verified-change-loop`, `skill-library`
 
 See [ATTRIBUTION.md](ATTRIBUTION.md) for full details.
