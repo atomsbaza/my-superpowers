@@ -20,6 +20,7 @@ FORCE=false
 SKILL_NAME=""
 CODEX_ONLY=false
 CLAUDE_ONLY=false
+LIBRARY_LIST="$REPO_DIR/tools/skill-library/library.txt"
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
@@ -39,6 +40,15 @@ while [ "$#" -gt 0 ]; do
   esac
   shift
 done
+
+is_library_skill() {
+  [ -f "$LIBRARY_LIST" ] && grep -Fxq -- "$1" < <(grep -v '^#' "$LIBRARY_LIST")
+}
+
+if [ -n "$SKILL_NAME" ] && is_library_skill "$SKILL_NAME"; then
+  echo "[library] skipped $SKILL_NAME"
+  exit 0
+fi
 
 if $CODEX_ONLY && $CLAUDE_ONLY; then
   echo "Choose only one of --codex-only or --claude-only" >&2
@@ -94,6 +104,10 @@ install_skills() {
   while IFS= read -r skill_md; do
     skill_dir="$(dirname "$skill_md")"
     name="$(basename "$skill_dir")"
+    if is_library_skill "$name"; then
+      echo "  [library] skipped $name"
+      continue
+    fi
     if [ -n "$SKILL_NAME" ] && [ "$name" != "$SKILL_NAME" ]; then
       continue
     fi
