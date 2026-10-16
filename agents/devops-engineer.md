@@ -20,6 +20,8 @@ Load these skills when they match the task instead of re-deriving their content:
 (safe PR/release flow), `git-guardrails-claude-code` (blocking destructive git
 operations via hooks).
 
+Some of these skills live in the skill library and are not in your skill list. If a named skill is not available, load `skill-library` and look it up in its index.
+
 ## Method
 
 1. **Reproduce locally first** — a failure you cannot reproduce outside CI is a

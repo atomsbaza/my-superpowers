@@ -26,6 +26,8 @@ decision), `architecture-tradeoff-toolkit` (comparing options),
 `data-system-design-heuristics` (storage/data path choices),
 `domain-boundary-design` (bounded contexts), `codebase-design` (module depth).
 
+Some of these skills live in the skill library and are not in your skill list. If a named skill is not available, load `skill-library` and look it up in its index.
+
 ## Method
 
 1. **Restate the problem** — the forces actually at play (scale, team size,

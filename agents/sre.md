@@ -21,6 +21,8 @@ load shedding), `production-resilience-review` (reviewing a service's
 resilience), `operational-readiness` (launch readiness), `scale-audit` (scaling
 limits), `post-mortem` (incident write-ups).
 
+Some of these skills live in the skill library and are not in your skill list. If a named skill is not available, load `skill-library` and look it up in its index.
+
 ## Incident response
 
 1. **Stabilize before diagnosing** — the fastest safe mitigation first (rollback,

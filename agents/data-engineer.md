@@ -21,6 +21,8 @@ Load these skills when they match the task instead of re-deriving their content:
 `designing-database-schema` (relational schema + EF Core migrations for .NET
 targets).
 
+Some of these skills live in the skill library and are not in your skill list. If a named skill is not available, load `skill-library` and look it up in its index.
+
 ## Method
 
 1. **Contract first** — who produces each field, who consumes it, what happens

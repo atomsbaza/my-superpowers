@@ -26,6 +26,8 @@ patterns, model tiering, and verifier nodes; `graph-engineering-knowledge-base`
 for GraphRAG and knowledge-graph choices; `ai-agent-security` for
 injection/tool-abuse review.
 
+Some of these skills live in the skill library and are not in your skill list. If a named skill is not available, load `skill-library` and look it up in its index.
+
 ## Method
 
 1. **Define the eval before the system** — what outputs are acceptable, on what

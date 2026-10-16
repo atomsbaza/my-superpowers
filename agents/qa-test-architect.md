@@ -39,8 +39,8 @@ If the requirement or oracle contract is missing, return `status: needs_input` o
 
 Load with the Skill tool or Read as needed:
 
-- `~/.claude/skills/qa-risk-traceability/SKILL.md`
-- `~/.claude/skills/qa-oracle-comparison/SKILL.md`
+- `~/.agents/skill-library/qa-risk-traceability/SKILL.md`
+- `~/.agents/skill-library/qa-oracle-comparison/SKILL.md`
 - Schemas: `/Users/pisitkoolplukpol/.kiro/crew/workspace/docs/superpowers/qa-core/schemas/base-envelope.schema.json` and `typed-payloads.schema.json`
 
 ## Response contract

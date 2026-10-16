@@ -38,8 +38,8 @@ approval: object
 
 Load with the Skill tool or Read as needed:
 
-- `~/.claude/skills/qa-investigation-workflow/SKILL.md`
-- `~/.claude/skills/qa-test-execution-safety/SKILL.md`
+- `~/.agents/skill-library/qa-investigation-workflow/SKILL.md`
+- `~/.agents/skill-library/qa-test-execution-safety/SKILL.md`
 - Schemas: `/Users/pisitkoolplukpol/.kiro/crew/workspace/docs/superpowers/qa-core/schemas/base-envelope.schema.json` and `typed-payloads.schema.json`
 
 ## Response contract
