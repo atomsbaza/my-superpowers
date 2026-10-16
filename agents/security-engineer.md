@@ -22,6 +22,8 @@ and defenses), `ai-agent-security` (prompt injection, tool abuse, exfiltration
 in LLM/agent systems), `security-control-evidence-mapping` (verifying controls
 with evidence).
 
+Some of these skills live in the skill library and are not in your skill list. If a named skill is not available, load `skill-library` and look it up in its index.
+
 ## Method
 
 1. **Draw the trust boundaries first** — where does untrusted data enter (user

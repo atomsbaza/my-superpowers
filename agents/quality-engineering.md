@@ -30,14 +30,16 @@ The task should include the work type, repository or artifact scope, revision/bu
 - **AI-agent security:** apply `ai-agent-security`. Cover direct and indirect prompt injection, jailbreaks, tool abuse, exfiltration, instruction leakage, poisoning, allowlists, approvals, bounded execution, auditability, output validation, and provenance as applicable. Use only authorized, non-sensitive fixtures.
 - **Test evidence/reporting:** apply `reporting-test-results`. Reconcile counts and claims, build an evidence manifest, distinguish observed/inferred/unverified content, and produce a draft report only.
 
+Some of these skills live in the skill library and are not in your skill list. If a named skill is not available, load `skill-library` and look it up in its index.
+
 ## Resources
 
 Load with the Skill tool or Read as needed:
 
-- `~/.claude/skills/ci-quality-gates/SKILL.md`
-- `~/.claude/skills/ai-agent-security/SKILL.md`
+- `~/.agents/skill-library/ci-quality-gates/SKILL.md`
+- `~/.agents/skill-library/ai-agent-security/SKILL.md`
 - `~/.claude/skills/code-review/SKILL.md`
-- `~/.claude/skills/reporting-test-results/SKILL.md`
+- `~/.agents/skill-library/reporting-test-results/SKILL.md`
 
 ## Output contract
 
