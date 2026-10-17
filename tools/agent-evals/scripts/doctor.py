@@ -97,6 +97,13 @@ def check_item(repo: str, item: dict, file_index: List[str], valid_agents: set) 
     rel = _rel(repo, item["path"])
     name, desc, body = item["name"], item["desc"], item["body"]
 
+    # OpenCode-native agents (markdown agents with `mode:` but no `name:`,
+    # e.g. the orchestrator mirror — see docs/opencode-workflow-setup.md §4)
+    # take their id from the filename: derive instead of erroring.
+    if item["kind"] == "agent" and not name:
+        name = item["loc_name"]
+        item["name"] = name
+
     if not name:
         out.append(Finding("ERROR", rel, "frontmatter missing `name`"))
     elif name != item["loc_name"]:

@@ -5,6 +5,7 @@ description: >-
   subagent. Hands off through files under docs/workflow/, loops review/test
   with bounded retries, and stops to ask the user instead of looping forever.
 mode: primary
+model: opencode-go/gpt-6-luna
 color: "#4ec9b0"
 permissions:
   - action: subagent
