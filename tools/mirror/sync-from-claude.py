@@ -10,7 +10,7 @@ import glob, json, os, re
 HOME = os.path.expanduser("~")
 CFG = os.path.join(HOME, ".config/opencode/opencode.json")
 SRC = os.path.join(HOME, ".claude/agents")
-SKIP = {"haiku-engineer", "qa-execution-operator"}  # engineer joined the OpenCode workflow 2026-10-17 (IMPLEMENT stage)
+SKIP = {"haiku-engineer", "qa-execution-operator"}  # engineer joined the OpenCode workflow 2026-10-17 (IMPLEMENT stage; it never commits — the orchestrator commits)
 TOOL_ACTION = {"Read": "read", "Grep": "grep", "Glob": "glob", "Write": "edit", "Edit": "edit",
                "MultiEdit": "edit", "NotebookEdit": "edit", "Bash": "shell",
                "WebFetch": "webfetch", "WebSearch": "websearch"}
@@ -51,7 +51,7 @@ NO_SHELL = ["wiki-updater"]
 # plan.md) but nothing else. Appended AFTER the edit deny, so the scoped
 # allow wins for this path only — last matching rule wins.
 ARTIFACT_WRITERS = ["research", "solution-architect", "tech-lead"]
-WORKFLOW_DIR = "docs/workflow/*"
+WORKFLOW_DIR = "**/docs/workflow/*"
 # Playwright MCP (browser automation) is for roles that build or verify web
 # behavior. Everyone else gets playwright_* denied.
 PLAYWRIGHT_ALLOW = ["engineer", "web-ui-reviewer", "debugger",

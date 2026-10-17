@@ -1,6 +1,7 @@
 ---
 name: qa-test-architect
 description: Designs risk-based test cases and oracle contracts from validated requirements without executing commands or writing test code. Use for test case design, coverage planning, oracle contracts, or risk-based test selection from requirements.
+model: opus
 tools: Read, Grep, Glob, Skill
 ---
 

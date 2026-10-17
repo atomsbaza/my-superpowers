@@ -1,6 +1,7 @@
 ---
 name: qa-requirements-risk-analyst
 description: Analyzes requirements, ambiguity, risk, lifecycle impact, acceptance criteria, and traceability gaps without editing source records. Use for requirements analysis, risk analysis, acceptance criteria review, or traceability gap assessment.
+model: opus
 tools: Read, Grep, Glob, Skill
 ---
 

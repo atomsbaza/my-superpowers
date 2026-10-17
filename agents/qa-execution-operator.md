@@ -1,6 +1,7 @@
 ---
 name: qa-execution-operator
 description: Requests approved sandbox execution through an allowlisted adapter and reports test-run evidence without direct shell or production access. Use for coordinating approved test runs and reporting run evidence.
+model: haiku
 tools: Read, Grep, Glob, Skill
 ---
 
