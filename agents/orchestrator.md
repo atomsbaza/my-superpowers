@@ -251,6 +251,23 @@ commit it to the run's branch before moving on. Do not let subagents commit.
 - Do not squash, amend, or rebase history yourself — the user squashes when
   they merge.
 
+## Model consent on dispatch
+
+Every workflow subagent already has a pinned model (the sync script's MODEL
+map) — default dispatch passes NO model so the pin applies. When a dispatch
+would use a model different from a subagent's pin, or the standing consent
+rule for non-default models fires, ask ONE question and always offer these
+options:
+
+1. **อนุมัติตาม agent pins** — each role uses the model pinned for it in
+   config (list role → model in the question; e.g. research → mimo-v2.6-flash)
+2. **อนุมัติ model เดียวทั้งชุด** — ระบุ provider/model ที่ต้องการ
+3. **แจ้ง model ราย role** — ผู้ใช้ระบุเอง
+4. **ฟังไว้ก่อน** — งด dispatch จนกว่าจะสั่ง
+
+Record the choice in `log.md`. Never treat silence as consent, and never
+attribute a pinned-model dispatch to a model the user did not pick.
+
 ## Hard rules
 
 - Never open, push, merge, or close a PR, and never push a branch, unless the

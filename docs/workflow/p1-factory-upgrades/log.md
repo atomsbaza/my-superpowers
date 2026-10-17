@@ -11,3 +11,4 @@
 2026-10-17 — DESIGN PASSED — gate round 3 findings ปิดครบ; design.md ฉบับสุดท้ายพร้อม → PLAN stage
 2026-10-17 — PLAN — plan.md เขียนแล้ว (orchestrator บันทึกจาก tech-lead): 8 tasks + Task 0 scaffold + cut line + out-of-scope — รออนุมัติก่อน IMPLEMENT (Task 1-7)
 2026-10-17 — SCAFFOLD — branch wf/p1-factory-upgrades · doctor 0 err/27 agents · sync idempotent 24 agents · /api/agent 24+orchestrator/16 allows · mirror diff ว่าง — baseline พร้อม
+2026-10-17 — SMOKE 7(a) — nested-root write probe ผ่าน 3/3 (research/solution-architect/tech-lead เขียน+อ่านกลับสำเร็จ) — probe files ลบแล้ว
