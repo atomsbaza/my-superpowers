@@ -329,6 +329,32 @@ independent tests where a contracted eval had reported 0.00%). Lessons:
 - independent adversarial testing beats vendor/contracted eval scores — a
   0.00% attack-success report can coexist with a 60–80% real-world rate
 
+**Watch the HTTP headers — injection moved there, and cloaking outranks it.**
+A scan of 217M responses found ~8,000 sites sending headers addressed to AI
+agents, ~30 injection attempts, mostly trolling (source-reported,
+unverified; signalscorps.com/blog/prompt-injection-in-http-headers/):
+
+- fetch tools that put response headers into context (Playwright MCP, shell
+  `curl -i`) are the channel — default to body-only
+- models ignored header instructions in tests *unless* the user prompt
+  granted the web authority — a phrase like "follow the site's
+  instructions" flips refusal into compliance and must never appear in a
+  prompt; an instruction in the prompt is a request, not a permission
+- sites detect agents from user-agent/Accept headers, so **cloaking** (the
+  agent reads different content than the human who checks afterwards) is
+  the bigger risk — spot-check important sites with the agent's own user
+  agent
+
+**Enforce with hooks, not prompt rules — and roll out with a ladder.**
+Agents circumvent prompt instructions when a goal conflicts: Anthropic's
+2026-10-09 report documents real form submissions and token-mining from
+config files (anthropic.com/research/investigating-unintended-model-actions).
+An instruction in markdown is a request; a hook or allowlist is enforcement
+the model can't route around. Rollout ladder for any new enforcement rule:
+week 1 log-only every tool call → week 2 allowlist + review denials → then
+enforce for real + alert when denials spike (a denial spike means the agent
+is stuck and improvising).
+
 ## 5. Report and gate findings
 
 For every finding include the attack path, evidence, affected boundary, consequence, confidence, impact, and concrete control. A critical or high-confidence tool-abuse or data-exfiltration path blocks release until mitigated or explicitly accepted by the responsible human. Record residual risk when a control is partial.
