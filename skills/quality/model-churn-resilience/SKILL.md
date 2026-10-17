@@ -29,13 +29,20 @@ fail **silently** — nothing errors, the workflow just gets worse or stops.
 2. **Pin, then diff behavior.** When upgrading a model, pin the exact version
    and diff behavior on the tasks you care about (tool-use format, caching
    hits, reasoning-block compatibility) — don't assume continuity.
-3. **Track budget/promo deltas with dates.** Promo vs permanent limits must
+4. **Track budget/promo deltas with dates.** Promo vs permanent limits must
    be recorded with the comparison date; vendor "before/after" framing often
    cherry-picks the baseline. The arithmetic works both ways.
-4. **Fail loudly at startup.** A persistent workflow should validate its model
+5. **Switch down mid-session, never up (asymmetric switch economics).**
+   With a prompt cache, switching to a cheaper model recovers the lost
+   cache within ~2 calls; switching back *up* never pays — every remaining
+   call is both cache-cold and pricier per call. A router that sees session
+   history (per-turn, not per-request) adds ~3 points
+   (arxiv.org/abs/2610.19292). Practical rule for hand-curated routing:
+   decide model/effort at spawn; allow only down-switches mid-session.
+6. **Fail loudly at startup.** A persistent workflow should validate its model
    reference against the provider's current model list and refuse to run on a
    missing/renamed ID rather than degrade silently.
-5. **Set budget alerts on consumption, not on plan announcements.** Limit
+7. **Set budget alerts on consumption, not on plan announcements.** Limit
    changes arrive as marketing, not changelog entries.
 
 ## References
