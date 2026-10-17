@@ -68,3 +68,16 @@ Or copy `~/.claude/skills/secrets-guardrail/settings-snippet.json` and merge it 
 
 - `/secrets-guardrail setup` — show setup instructions
 - `/secrets-guardrail test` — run the redact script on sample input to verify it works
+
+## The stronger doctrine: bypass the context entirely
+
+Redaction is a safety net, not the design. The correct credential-handling
+pattern is that secrets never enter the model's context at all — Simon
+Willison's web-edit runs a tiny server on the machine via Tailscale; the
+agent says "this file needs the human" and the human edits it in a browser,
+so the secret never appears in the context or transcript
+(simonwillison.net/2026/Oct/12/web-edit/). Why "don't paste it into the
+prompt" is insufficient: memory files the agent writes itself will pull the
+secret back into the transcript automatically. When a task requires touching
+a credential, prefer handing it to the human (or a non-model tool) over
+reading and rewriting it, even with this hook active.
