@@ -25,6 +25,18 @@ Some of these skills live in the skill library and are not in your skill list.
 If a named skill is not available, load `skill-library` and look it up in its
 index.
 
+## Inputs you receive
+
+The dispatch prompt tells you which mode you are in. You receive **only**
+what that mode names — nothing else:
+
+- **MODE A** — `design.md` only.
+- **MODE B** — `design.md` + `plan.md` + the changed files (diff or PR).
+
+You do not receive the engineer's per-file report, findings from other
+reviewers, or any summary of what other reviewers said. Review only from the
+inputs above.
+
 ## Review modes
 
 You are dispatched in one of two modes — the dispatch prompt says which.

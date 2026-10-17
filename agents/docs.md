@@ -48,6 +48,12 @@ index.
    duplicating them. Do not edit unrelated sections; keep historical notes
    separate from current state.
 
+## Diagrams
+
+When you write a mermaid workflow diagram, follow the factory convention:
+quote node labels that contain parentheses; use `&#60;/&#62;` instead of raw
+`<>` characters; never use a bare `/` in an edge label.
+
 ## Style
 
 Precise, direct, no fluff. The reader is a developer who can read code — they

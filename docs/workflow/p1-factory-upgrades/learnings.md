@@ -6,3 +6,6 @@
 - แก้ installed agents (~/.claude/agents) แล้ว diff+copy กลับ repo `agents/` ทุกครั้ง — repo มีหลาย session แกะพร้อมกัน
 - mermaid ในไฟล์: quote ป้ายที่มีวงเล็บ, ใช้ &#60;/&#62; แทน <>, ห้าม / เปล่าใน edge labels
 - จบ turn: ตรวจ artifact จริงก่อนรายงานเสร็จ (doctor.py, /api/agent, mcp list, git rev-list)
+- บันทึก artifact ฉบับแก้ลง disk ก่อนเรียก gate/reviewer รอบถัดไปเสมอ — gate อ่านจากไฟล์ ไม่ใช่ context (run นี้ gate round 2 อ่านฉบับเก่าจน flag ซ้ำ)
+- scoped edit allow pattern ต้อง nested-root-safe: ใช้ **/docs/workflow/* และ probe จาก session cwd ที่ซ้อนใต้ project root ก่อน wrap (run นี้ research/solution-architect/tech-lead เขียนไม่ได้จนแก้)
+- Notion: id จาก url ของ create-pages ใช้อ้างอิงได้ ไม่ต้องพึ่ง field id (field id อาจคลาดเคลื่อน)

@@ -10,3 +10,8 @@
 2026-10-17 — GATE FIX (ทาง a) — doctor.py derive name จาก filename สำหรับ OpenCode-native agents + sync script baseline mirror ที่ tools/mirror/ — doctor rerun: 0 errors (27 agents)
 2026-10-17 — DESIGN PASSED — gate round 3 findings ปิดครบ; design.md ฉบับสุดท้ายพร้อม → PLAN stage
 2026-10-17 — PLAN — plan.md เขียนแล้ว (orchestrator บันทึกจาก tech-lead): 8 tasks + Task 0 scaffold + cut line + out-of-scope — รออนุมัติก่อน IMPLEMENT (Task 1-7)
+2026-10-17 — SCAFFOLD — branch wf/p1-factory-upgrades · doctor 0 err/27 agents · sync idempotent 24 agents · /api/agent 24+orchestrator/16 allows · mirror diff ว่าง — baseline พร้อม
+2026-10-17 — SMOKE 7(a) — nested-root write probe ผ่าน 3/3 (research/solution-architect/tech-lead เขียน+อ่านกลับสำเร็จ) — probe files ลบแล้ว
+2026-10-17 — SMOKE 7(b) ตัดตาม cut line — ROUTINE real run รอ routine task ธรรมชาติตัวถัดไป
+2026-10-17 — WRAP-UP — diff-summary.md ผลิตโดย docs (longcat-2.0) · retro lessons ลง learnings.md + my-memory
+2026-10-17 — DONE: 2026-10-17 — P1 factory upgrades implement ครบ (blind isolation, commit backstop, SCAFFOLD, ROUTINE lane, mermaid diff-summary, allow-pattern nested-root probe ผ่าน 3/3, consent options มี agent-pins choice) — branch wf/p1-factory-upgrades (commits e0a90ec..2618b13 ยังไม่ merge)

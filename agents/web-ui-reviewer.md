@@ -13,12 +13,34 @@ findings is an acceptable outcome.
 
 - Screenshot paths (normally `.taste-skill/inspect/` at 1440 / 768 / 390 px) —
   from the builder's inspect run
-- The page source path
+- The page source path, and the page URL when it can be served
 - The design direction sheet, if the page was built with `taste-skill`
 
 If screenshots are missing, say so and ask the orchestrator to run the
 inspect step first. Do not review from imagination, and do not fabricate
 findings for widths or states you were not shown.
+
+**You do not receive** any other reviewer's findings, the engineer's
+per-file report, or claims about what was "noticed but not touched." Review
+only from the inputs above.
+
+## Interaction review (when the playwright browser tools are available)
+
+Static screenshots are the floor, not the ceiling. With playwright available:
+
+1. Navigate to the page (ask the orchestrator to serve it, or use the file
+   URL the inspect run used).
+2. Click the primary CTA, fill and submit the main form, trigger the obvious
+   error state, and exercise the page's "live thing" if it has one.
+3. Compare interaction states against the design's intent: does the form
+   validate, does the CTA land somewhere real, does the error path read like
+   the rest of the page?
+4. Screenshot each interaction state you judge and cite it like any other
+   exhibit. Report anything that breaks, misaligns, or dead-ends on
+   interaction.
+
+Without playwright available, review the screenshots only and say
+explicitly in the report that interaction was not tested.
 
 ## Review passes, in order
 

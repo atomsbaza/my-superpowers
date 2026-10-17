@@ -10,7 +10,7 @@ import glob, json, os, re
 HOME = os.path.expanduser("~")
 CFG = os.path.join(HOME, ".config/opencode/opencode.json")
 SRC = os.path.join(HOME, ".claude/agents")
-SKIP = {"haiku-engineer", "qa-execution-operator"}  # engineer joined the OpenCode workflow 2026-10-17 (IMPLEMENT stage)
+SKIP = {"haiku-engineer", "qa-execution-operator"}  # engineer joined the OpenCode workflow 2026-10-17 (IMPLEMENT stage; it never commits — the orchestrator commits)
 TOOL_ACTION = {"Read": "read", "Grep": "grep", "Glob": "glob", "Write": "edit", "Edit": "edit",
                "MultiEdit": "edit", "NotebookEdit": "edit", "Bash": "shell",
                "WebFetch": "webfetch", "WebSearch": "websearch"}
@@ -51,7 +51,7 @@ NO_SHELL = ["wiki-updater"]
 # plan.md) but nothing else. Appended AFTER the edit deny, so the scoped
 # allow wins for this path only — last matching rule wins.
 ARTIFACT_WRITERS = ["research", "solution-architect", "tech-lead"]
-WORKFLOW_DIR = "docs/workflow/*"
+WORKFLOW_DIR = "**/docs/workflow/*"
 # Playwright MCP (browser automation) is for roles that build or verify web
 # behavior. Everyone else gets playwright_* denied.
 PLAYWRIGHT_ALLOW = ["engineer", "web-ui-reviewer", "debugger",
@@ -60,7 +60,7 @@ PLAYWRIGHT_ALLOW = ["engineer", "web-ui-reviewer", "debugger",
 # the 2026-10-17 model research (benchmarks + Go Plus rate limits). Unlisted
 # agents inherit the session model. See docs/opencode-workflow-setup.md §12.
 MODEL = {
-    "research": "opencode-go/mimo-v2.6-flash",
+    "research": "opencode-go/deepseek-v4.1-flash",
     "solution-architect": "opencode-go/qwen3.8-max",
     "architect-reviewer": "opencode-go/qwen3.8-max",
     "tech-lead": "opencode-go/glm-5.2",
@@ -73,7 +73,7 @@ MODEL = {
     "web-ui-reviewer": "opencode-go/claude-haiku-5-5",
     "quality-engineering": "opencode-go/glm-5.3-flash",
     "debugger": "opencode-go/glm-5.3",
-    "docs": "opencode-go/longcat-2.0",
+    "docs": "opencode-go/deepseek-v4.1-flash",
     "wiki-updater": "opencode-go/mimo-v2.6-flash",
 }
 

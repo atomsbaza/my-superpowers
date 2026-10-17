@@ -1,6 +1,7 @@
 ---
 name: qa-incident-investigator
 description: Correlates prepared logs, traces, batch results, API observations, and restricted data evidence without mutating systems. Use for incident investigation, log/trace correlation, and failure classification from prepared evidence.
+model: opus
 tools: Read, Grep, Glob, Skill
 ---
 
