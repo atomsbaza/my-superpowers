@@ -298,14 +298,14 @@ own model in its Markdown frontmatter (`opencode-go/gpt-6-luna`).
 | Agent | Model | Go Plus /5h | Rationale |
 | --- | --- | --- | --- |
 | `orchestrator` | `gpt-6-luna` | 16,920 | judgment + coordination volume |
-| `research`, `wiki-updater` | `mimo-v2.6-flash` | 60,200 | high-volume repetitive work |
+| `research`, `docs` | `deepseek-v4.1-flash` | 69,330 | strongest volume-tier model (DeepSWE 74.2) — research quality feeds design; ⚠️ **requires workspace Privacy = Global** |
+| `wiki-updater` | `mimo-v2.6-flash` | 60,200 | mechanical vault updates — region-safe |
 | `solution-architect`, `architect-reviewer` | `qwen3.8-max` | 640 | SWE-bench Pro 67.7% — best quality, few calls |
 | `tech-lead` | `glm-5.2` | 2,640 | planning strength at $60/mo |
 | `engineer` | `kimi-k2.7-code` | 4,050 | purpose-built agentic coder, −30% thinking tokens |
 | 5 reviewers + `web-ui-reviewer` | `claude-haiku-5-5` | 15,380 | judgment at haiku price, vision-capable |
 | `quality-engineering` | `glm-5.3-flash` | 18,960 | TB2.1 84.3 — high-volume test runs |
 | `debugger` | `glm-5.3` | 1,760 | TB3.0 open-weight lead — long-horizon root cause |
-| `docs` | `longcat-2.0` | 45,600 | document volume |
 | ROUTINE lane | engineer's pin | — | the lane rides the IMPLEMENT model |
 
 Notes: `#variant` effort suffixes are NOT usable today — none of the Go models
@@ -313,6 +313,12 @@ expose catalog variants (verified against the Go models endpoint and
 models.dev); define custom variants per model in config if effort control
 becomes necessary. ZDR note: GLM/Kimi/DeepSeek/MiMo/Qwen/LongCat models retain
 0 days; Haiku 5.5 retains 30 days; Gemini 4 Argon and Muse Spark train on
-prompts (not pinned anywhere). The Go roster rotates — re-verify quarterly.
+prompts (not pinned anywhere). The Go roster rotates — re-verify quarterly
+(**including region requirements**: `deepseek-v4.1-flash` serves only from
+Global regions — if its pin errors with "requires Global regions", either
+re-select Global in the Console workspace Privacy settings or re-pin
+`research`/`docs` to `mimo-v2.6-flash`/`longcat-2.0`). Cheap probe:
+`opencode run --model opencode-go/deepseek-v4.1-flash "OK"` — nonzero exit
+means the region setting moved.
 Unpinned (inherit session model): `sre`, `data-engineer`, `ai-engineer`,
 `api-designer`, `devops-engineer`, `qa-*`, `explore`, `general`.
