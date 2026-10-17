@@ -735,6 +735,47 @@ Extensions adapted from the X-scout knowledge-scout digest of 2026-10-15
   hypotheses from scratch when evidence doesn't converge
   (x.com/dbreunig/status/2110245047493173467).
 
+## Adapted from X-scout digest (2026-10-17)
+
+Extensions adapted from the X-scout knowledge-scout digest of 2026-10-17
+(Discord thread #xTreand, cron job f933f5a8d591); full cited analysis:
+`docs/research/agentic-ai/2026-10-17-trajectory-permission-context.md`:
+
+- `skills/execution/loop/` — grade evals from the tool-call trajectory,
+  not the agent's closing summary; preserve turn structure in telemetry
+  (parallel dispatch makes flattened timelines blame the agent for the
+  harness's mistake); run live + plan-only pairs from day one (Google
+  Cloud, cloud.google.com/blog/topics/developers-practitioners/four-eval-engineering-lessons);
+  outcome grader primary + trajectory assertions only for prohibitions,
+  with error-compounding arithmetic 95%/step × 20 steps = 64% (Terminal-Bench
+  methodology, engineermaxxing.com/micro/lessons/agent-evaluation.html);
+  collapse pipeline seams before adding another agent — single agent +
+  filesystem-as-shared-state beat chained multi-agent (~30% → ~2×;
+  x.com/AndrewQu, finance.biggo.com/news/c666e43fb1cec09e).
+- `skills/quality/model-churn-resilience/` — asymmetric switch economics:
+  switching down mid-session recovers the cache within ~2 calls, switching
+  back up never pays; hand-curated routing rule = decide at spawn, allow
+  only down-switches (arXiv 2610.19292).
+- `skills/quality/ai-agent-security/` — prompt injection moved to HTTP
+  headers (fetch tools that put headers into context are the channel —
+  default body-only; "follow the site's instructions" in a prompt flips
+  refusal into compliance; cloaking outranks injection — spot-check
+  important sites with the agent's own user agent;
+  signalscorps.com/blog/prompt-injection-in-http-headers/); enforce with
+  hooks not prompt rules — markdown instruction = request, hook/allowlist
+  = enforcement; rollout ladder log-only → allowlist → enforce + alert on
+  denial spike (anthropic.com/research/investigating-unintended-model-actions).
+- `skills/quality/secrets-guardrail/` — the stronger doctrine: bypass the
+  context entirely for credential edits (web-edit pattern; memory files
+  the agent writes itself pull secrets back into the transcript;
+  simonwillison.net/2026/Oct/12/web-edit/).
+- `skills/knowledge-base/agent-memory-design/` — context-file cost ceiling
+  (~150 lines → reasoning cost +20–23%, arXiv 2601.20404; monthly memory
+  pruning; memory stores only what can't be inferred from git state) and
+  production agentic search over normalized files replacing RAG ("the RAG
+  obituary" — x.com/nicbstme/status/2015174818497437834)
+  (chenguangliang.com/en/posts/blog194_project-passport-agents-md-claude-md-memory).
+
 ## Original work
 
 The following were created independently in this repo:

@@ -560,4 +560,12 @@ see the research note):
 - 2026-10-08 additions: knowledge-must-converge / slug-reuse archiving (github.com/Tespera/alluvium), offline cleanup loop / Devin Dreaming over git+markdown memory + stale-checkout concurrency gap (x.com/walden_yan/status/2107139645921296465, github.com/AgentMemoryRepo/agentmemoryrepo, ai.thesatyajit.com/articles/agent-memory-repo), claim-named memory files + authority ordering (x.com/nykdotdev/status/2031581912071127158) — full curated analysis: `docs/research/agentic-ai/2026-10-08-eval-verification-fleet-memory.md`
 - 2026-10-13 additions: memory writeback or dead weight + compliance_count over used_count + fire-the-hook-once (ani.computer/writings/self-improving-fleet, joeyhipolito.dev/log/2026-02-23-memory-in-practice), memory doesn't transfer across harnesses + freeze the snapshot + verify-on-read (x.com/nicbstme/status/2050301124314563025), shared facts need owner + expiry + source link, memory ≠ permission (x.com/0xwhrrari/status/2107093781807775896) — full curated analysis: `docs/research/agentic-ai/2026-10-13-eval-instrument-memory-writeback-skill-leakage.md`
 - 2026-10-15 additions: memory paper trail — epistemic status + source citation + human sign-off per write (barlark.com/2026/10/14/agent-memory-with-a-paper-trail), roll-forward memory grading + workflow-vs-period-specific provenance (Ramp, dev.to/dailycontext/building-better-agents-through-end-to-end-evals-pgh), offload-not-truncate + owned-markdown memory + base-token diet (langchain.com/blog/context-engineering-deep-agents-remember) — full curated analysis: `docs/research/agentic-ai/2026-10-15-loop-evals-memory-audit.md`
+- 2026-10-17 additions: context-file cost ceiling — a context file past ~150
+  lines raises reasoning cost 20–23% (Project Passport,
+  chenguangliang.com/en/posts/blog194_project-passport-agents-md-claude-md-memory,
+  citing arXiv 2601.20404), reinforcing non-inferable-only context rules and
+  monthly memory pruning; agentic search over normalized files replacing
+  RAG pipelines in production finance agents ("the RAG obituary" —
+  x.com/nicbstme/status/2015174818497437834) — full curated analysis:
+  `docs/research/agentic-ai/2026-10-17-trajectory-permission-context.md`
 - `docs/research/agentic-ai/2026-09-12-write-path-control-skills-sandboxes.md` — 2026-09-12 additions (abstraction-first embedding, write-path control, context-files-as-index; sources: x.com/marfinxx/status/2098184256677699929, x.com/mem0ai/article/2074509697689002254, openai.com/index/harness-engineering)
