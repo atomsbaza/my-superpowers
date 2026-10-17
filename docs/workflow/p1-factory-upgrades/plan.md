@@ -290,3 +290,6 @@ payload = cross-run learnings pointer: สร้าง/append `docs/workflow/lea
 - เพิ่ม/ลด agent หรือ allowlist entry ใหม่ (20/4/16 คงเดิมทั้ง run)
 
 **ประมาณรวม:** ~3–3.5 ชม. (ตรง design §10) — Task 0 ~15 นาที · Tasks 1–5 ~2.2 ชม. · 5a ~20 นาที · Task 6 ~1 ชม. · Task 7 ~1 ชม.
+
+---
+Postscript (2026-10-17, หลัง plan เขียน): user สมัคร OpenCode Go Plus และ model pinning ถูก implement แยกเสร็จก่อน IMPLEMENT stage (MODEL map ใน sync script + orchestrator frontmatter + doc §12) — ข้อความ "Out of scope: model pinning" ด้านบนอ้างถึงสถานะ ณ เวลาเขียน plan เท่านั้น

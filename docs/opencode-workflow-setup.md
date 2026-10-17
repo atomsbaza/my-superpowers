@@ -197,14 +197,19 @@ comparison reports them as allowed when the engine would deny.
 
 ## 7. Replicating on another machine
 
-1. Install OpenCode V2 and sign in to a provider (`/connect`).
+The packaged copies live in **`framework/agent-framework/`** in this repo —
+clone the repo and copy from there instead of pulling from another machine:
+
+1. Install OpenCode V2 and sign in to a provider (`/connect`), plus the
+   repo's own workers/skills (`./install.sh --force`).
 2. Configure the MCP servers you actually have under `mcp.servers`; the
    hardening denies are harmless if a named server is absent.
-3. Copy `sync-from-claude.py` (or just its `hardening()` section into your own
-   mirror script) and run it: `python3 ~/.config/opencode/sync-from-claude.py`.
-4. Copy `agents/orchestrator.md`, `commands/wf.md`, `commands/wf-status.md`,
-   `commands/wf-list.md` from this machine (or from the vault snapshot of
-   this doc's date).
+3. Copy the package into the live config:
+   `cp framework/agent-framework/orchestrator.md ~/.config/opencode/agents/`
+   `cp framework/agent-framework/sync-from-claude.py ~/.config/opencode/`
+   `cp framework/agent-framework/commands/*.md ~/.config/opencode/commands/`
+4. Run `python3 ~/.config/opencode/sync-from-claude.py` to generate the
+   `agents` map (hardening + model pins included).
 5. Back up `opencode.json` before the first run; run the verification in §6.
 
 ## 8. Known gaps and follow-ups
