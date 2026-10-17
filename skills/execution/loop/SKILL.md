@@ -241,6 +241,35 @@ After each turn, the hook injects one of these into your next context:
   (x.com/dbreunig/status/2110245047493173467). Pairs with the
   same-error-2+-turns rule above: the fundamentally-different-approach
   reset is also how you escape inertia.
+- **Grade evals from the tool-call trajectory, not the agent's closing
+  summary (2026-10-17, Google Cloud).** An LLM-judge reading only the
+  final message mis-grades correct work — rubrics ask "did it run X?" and
+  a correct agent that doesn't say so in its summary gets tagged fail;
+  grade from the raw tool-call log. Telemetry must preserve turn
+  structure: parallel tool dispatch makes a skill's instructions arrive
+  *after* a search already ran, and a flattened timeline turns the
+  harness's mistake into "the agent ignored instructions." Run live +
+  plan-only pairs from day one — permission errors in live runs bury
+  cognitive flaws, plan-only exposes bare reasoning; half of the key
+  findings came from the delta between the two
+  (cloud.google.com/blog/topics/developers-practitioners/four-eval-engineering-lessons).
+- **Outcome grader primary, trajectory assertions only for prohibitions
+  (2026-10-17, Terminal-Bench methodology).** Checking "did it run the
+  right commands" tests one path; checking "is the final state correct"
+  covers unseen paths — but outcome-only misses dangerous intermediate
+  steps. Formula: outcome grader as the primary signal + trajectory
+  assertions only for prohibitions ("never call the delete tool", "must
+  confirm before writing"). Error compounding: 95%/step × 20 steps = 64%
+  chance of at least one failure — long tasks are exactly where eval
+  investment pays
+  (engineermaxxing.com/micro/lessons/agent-evaluation.html).
+- **Before adding another agent to a pipeline, try collapsing the seams
+  (2026-10-17, Vercel).** Chained multi-agent loses context at the seams
+  between agents; a single agent with the filesystem as shared state +
+  bash/read/write + skills as knowledge prefix jumped eval pass rate from
+  ~30% to ~2× (source-reported, unverified). The filesystem — not the
+  message channel — carries the state
+  (x.com/AndrewQu, finance.biggo.com/news/c666e43fb1cec09e).
 
 ## How the maker-checker works
 
